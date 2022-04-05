@@ -1,4 +1,6 @@
 <?php
+require($_SERVER['DOCUMENT_ROOT'].'/include/auth.inc.php');
+
 require($_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php');
 
 $output = '';
@@ -65,17 +67,49 @@ else
 								if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['tab']) == 0)
 								{
 									$allowed_tabs = array('general','location','cis');
-									
+
 									if(in_array($_GET['tab'],$allowed_tabs))
 									{
 										$output .= '<div class="container">';
 										$output .= '<h1>Asset anzeigen</h1>';
+
+										$query = "
+										SELECT lend_document_nr,lend_assets
+										FROM lend
+										WHERE lend_archived = '0'";
+
+										$result = $sql->query($query);
+
+										$amount_gs = mysqli_num_rows($result);
+
+										if($amount_gs > 0)
+										{
+											while($row = $result->fetch_array(MYSQLI_ASSOC))
+											{
+												$lend_assets = json_decode($row['lend_assets']);
+
+												if(in_array($_GET['id'],$lend_assets))
+												{
+													$document_nr = $row['lend_document_nr'];
+
+													break;
+												}
+											}
+
+											if(!empty($document_nr))
+											{
+												$output .= '<table class="block section"><tr>';
+												$output .= '<td class="col-s6 col-m7 col-l8"><div class="ipt-default text-center dark">Asset verausgabt</div></td>';
+												$output .= '<td class="col-s6 col-m5 col-l4"><a href="lend.php?aktion=view&doc='.$document_nr.'" class="block btn-default light-blue">Beleg <span class="hide-small">( '.$document_nr.' )</span>  <i class="fas fa-arrow-right"></i></a></td>';
+												$output .= '</tr></table>';
+											}
+										}
+
 										$output .= '</div>';
-										
 										$output .= '<ul class="flex">';
 										$output .= '<li class="col-s12 col-m12 col-l9">';
 										$output .= '<div class="margin">';
-												
+
 										if($_GET['tab'] == $allowed_tabs[0])
 										{
 											$query = sprintf("
