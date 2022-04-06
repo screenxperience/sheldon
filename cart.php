@@ -85,70 +85,109 @@ else
 												{
 													$cart = $_SESSION['cart']['assets'];
 														
-													$query = sprintf("
-													SELECT asset_serial
-													FROM asset
-													WHERE asset_id = '%s';",
-													$sql->real_escape_string($_GET['id']));
-														
+													$query = "
+													SELECT lend_document_nr,lend_assets
+													FROM lend
+													WHERE lend_archived = '0'";
+
 													$result = $sql->query($query);
-														
-													if($row = $result->fetch_array(MYSQLI_ASSOC))
+
+													$amount_gs = mysqli_num_rows($result);
+
+													if($amount_gs > 0)
 													{
-														$exit = 0;
-															
-														if(!empty($cart))
+														while($row = $result->fetch_array(MYSQLI_ASSOC))
 														{
-															for($i = 0; $i < count($cart); $i++)
+															$lend_assets = json_decode($row['lend_assets']);
+
+															if(in_array($_GET['id'],$lend_assets))
 															{
-																$asset_id = $cart[$i];
-																	
-																if($asset_id == $_GET['id'])
-																{
-																	$exit = 1;
-																}
+																$document_nr = $row['lend_document_nr'];
+
+																break;
 															}
 														}
+													}
+													
+													if(!empty($document_nr))
+													{
+														$output .= '<div class="container">';
+														$output .= '<div class="content-center container white">';
+														$output .= '<h1>Info</h1>';
+														$output .= '<div class="panel dark">';
+														$output .= '<p>Asset zurzeit verausgabt.</p>';
+														$output .= '<p><a class="block btn-default light-blue" href="lend.php?aktion=view&doc='.$document_nr.'">Beleg ( '.$document_nr.' ) <i class="fas fa-arrow-right"></i></a></p>';
+														$output .= '</div>';
+														$output .= '</div>';
+														$output .= '</div>';
+													}
+													else
+													{
+														$query = sprintf("
+														SELECT asset_serial
+														FROM asset
+														WHERE asset_id = '%s';",
+														$sql->real_escape_string($_GET['id']));
 															
-														if($exit == 0)
+														$result = $sql->query($query);
+															
+														if($row = $result->fetch_array(MYSQLI_ASSOC))
 														{
-															array_push($cart,$_GET['id']);		
-																	
-															$output .= '<div class="container">';
-															$output .= '<div class="content-center container white">';
-															$output .= '<div class="panel dark">';
-															$output .= '<p><strong>'.$row['asset_serial'].'</strong> wurde in ihren Warenkorb gelegt.</p>';
-															$output .= '</div>'; 
-															$output .= '</div>'; 
-															$output .= '</div>';
+															$exit = 0;
+																
+															if(!empty($cart))
+															{
+																for($i = 0; $i < count($cart); $i++)
+																{
+																	$asset_id = $cart[$i];
+																		
+																	if($asset_id == $_GET['id'])
+																	{
+																		$exit = 1;
+																	}
+																}
+															}
+																
+															if($exit == 0)
+															{
+																array_push($cart,$_GET['id']);		
+																		
+																$output .= '<div class="container">';
+																$output .= '<div class="content-center container white">';
+																$output .= '<div class="panel dark">';
+																$output .= '<p><strong>'.$row['asset_serial'].'</strong> wurde in ihren Warenkorb gelegt.</p>';
+																$output .= '</div>'; 
+																$output .= '</div>'; 
+																$output .= '</div>';
+															}
+															else if($exit == 1)
+															{
+																$output .= '<div class="container">';
+																$output .= '<div class="content-center container white">';
+																$output .= '<h1>Error</h1>';
+																$output .= '<div class="panel dark">';
+																$output .= '<p><strong>'.$row['asset_serial'].'</strong> befindet sich bereits in ihrem Warenkorb.</p>';
+																$output .= '</div>'; 
+																$output .= '</div>'; 
+																$output .= '</div>';
+															}
 														}
-														else if($exit == 1)
+														else
 														{
 															$output .= '<div class="container">';
 															$output .= '<div class="content-center container white">';
 															$output .= '<h1>Error</h1>';
 															$output .= '<div class="panel dark">';
-															$output .= '<p><strong>'.$row['asset_serial'].'</strong> befindet sich bereits in ihrem Warenkorb.</p>';
+															$output .= '<p>Es wurde kein Asset gefunden.</p>';
 															$output .= '</div>'; 
 															$output .= '</div>'; 
 															$output .= '</div>';
 														}
+															
+														$_SESSION['cart']['assets'] = $cart;
+															
+														$returnto = 'http://'.$_SERVER['HTTP_HOST'].'/list.php?category=asset&site=0&site_amount=5';
 													}
-													else
-													{
-														$output .= '<div class="container">';
-														$output .= '<div class="content-center container white">';
-														$output .= '<h1>Error</h1>';
-														$output .= '<div class="panel dark">';
-														$output .= '<p>Es wurde kein Asset gefunden.</p>';
-														$output .= '</div>'; 
-														$output .= '</div>'; 
-														$output .= '</div>';
-													}
-														
-													$_SESSION['cart']['assets'] = $cart;
-														
-													$returnto = 'http://'.$_SERVER['HTTP_HOST'].'/list.php?category=asset&site=0&site_amount=5';
 												}
 												else if($_GET['category'] == $allowed_category[1])
 												{

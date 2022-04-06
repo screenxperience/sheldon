@@ -188,7 +188,6 @@ else
 		$output .= '</div>';
 	}
 }
-
 ?>
 <!DOCTYPE HTML>
 <html lang="de">

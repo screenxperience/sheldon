@@ -69,34 +69,67 @@ else
 					if(preg_match('/[^0-9]/',$_GET['id']) == 0)
 					{
 						if($_GET['category'] == $allowed_category[0])
-						{
-							$query = sprintf("
-							DELETE FROM asset
-							WHERE asset_id = '%s';",
-							$sql->real_escape_string($_GET['id']));
-								
-							$sql->query($query);
-								
-							if($sql->affected_rows == 1)
+						{	
+							$query = "
+							SELECT lend_assets
+							FROM lend";
+							
+							$result = $sql->query($query);
+							
+							while($row = $result->fetch_array(MYSQLI_ASSOC))
 							{
-								$output .= '<div class="container">';
-								$output .= '<div class="content-center container white">';
-								$output .= '<div class="panel dark">';
-								$output .= '<p>Datensatz wurde gel&ouml;scht.</p>';
-								$output .= '</div>';
-								$output .= '</div>';
-								$output .= '</div>';
+								$lend_assets = json_decode($row['lend_assets']);
+								
+								if(in_array($_GET['id'],$lend_assets))
+								{
+									$exit = 1;
+									
+									break;
+								}
 							}
-							else
+									
+							if(!empty($exit))
 							{
 								$output .= '<div class="container">';
 								$output .= '<div class="content-center container white">';
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel dark">';
 								$output .= '<p>Datensatz konnte nicht gel&ouml;scht werden.</p>';
+								$output .= '<p>Asset ist noch mit Ausgaben verkn&uuml;pft.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';
+							}
+							else
+							{
+								$query = sprintf("
+								DELETE FROM asset
+								WHERE asset_id = '%s';",
+								$sql->real_escape_string($_GET['id']));
+									
+								$sql->query($query);
+									
+								if($sql->affected_rows == 1)
+								{
+									$output .= '<div class="container">';
+									$output .= '<div class="content-center container white">';
+									$output .= '<div class="panel dark">';
+									$output .= '<p>Datensatz wurde gel&ouml;scht.</p>';
+									$output .= '</div>';
+									$output .= '</div>';
+									$output .= '</div>';
+								}
+								else
+								{
+									$output .= '<div class="container">';
+									$output .= '<div class="content-center container white">';
+									$output .= '<h1>Error</h1>';
+									$output .= '<div class="panel dark">';
+									$output .= '<p>Datensatz konnte nicht gel&ouml;scht werden.</p>';
+									$output .= '</div>';
+									$output .= '</div>';
+									$output .= '</div>';
+								}
 							}
 						}
 						else if($_GET['category'] == $allowed_category[1])
@@ -125,6 +158,7 @@ else
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel dark">';
 								$output .= '<p>Datensatz konnte nicht gel&ouml;scht werden.</p>';
+								$output .= '<p>User ist nocht mit Ausgaben verkn&uuml;pft.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';
@@ -419,7 +453,10 @@ else
 		$output .= '</div>';
 	}
 	
-	$output .= '<script>'."ch_location('".$returnto."'".',2);</script>';
+	if(!empty($returnto))
+	{
+		$output .= '<script>'."ch_location('".$returnto."'".',2);</script>';
+	}
 }
 ?>
 <!DOCTYPE HTML>

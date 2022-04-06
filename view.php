@@ -668,7 +668,7 @@ else
 							{
 								if(preg_match('/[^a-z]/',$_GET['tab']) == 0)
 								{
-									$allowed_tabs = array('general','location');
+									$allowed_tabs = array('general','location','lend');
 									
 									if(in_array($_GET['tab'],$allowed_tabs))
 									{
@@ -714,11 +714,14 @@ else
 													$email = $row['user_email'];
 														
 													$output .= '<ul class="flex">';
-													$output .= '<li class="col-s6 col-m6 col-l6">';
+													$output .= '<li class="col-s4 col-m6 col-l4">';
 													$output .= '<a href="#" class="block btn-default light-blue">Allgemein</a>';
 													$output .= '</li>';
-													$output .= '<li class="col-s6 col-m6 col-l6">';
+													$output .= '<li class="col-s4 col-m4 col-l4">';
 													$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location" class="block btn-default white">Lokation</a>';
+													$output .= '</li>';
+													$output .= '<li class="col-s4 col-m4 col-l4">';
+													$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0" class="block btn-default white">Leihgaben</a>';
 													$output .= '</li>';
 													$output .= '</ul>';
 														
@@ -851,11 +854,14 @@ else
 													$room = $row['room_name'];
 														
 													$output .= '<ul class="flex">';
-													$output .= '<li class="col-s6 col-m6 col-l6">';
+													$output .= '<li class="col-s4 col-m4 col-l4">';
 													$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" class="block btn-default white">Allgemein</a>';
 													$output .= '</li>';
-													$output .= '<li class="col-s6 col-m6 col-l6">';
+													$output .= '<li class="col-s4 col-m4 col-l4">';
 													$output .= '<a href="#" class="block btn-default light-blue">Lokation</a>';
+													$output .= '</li>';
+													$output .= '<li class="col-s4 col-m4 col-l4">';
+													$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0" class="block btn-default white">Leihgaben</a>';
 													$output .= '</li>';
 													$output .= '</ul>';
 														
@@ -966,6 +972,86 @@ else
 														
 													$output .= '</div>';
 												}
+											}
+											else if($_GET['tab'] == $allowed_tabs[2])
+											{
+												$output .= '<ul class="flex">';
+												$output .= '<li class="col-s4 col-m4 col-l4">';
+												$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" class="block btn-default white">Allgemein</a>';
+												$output .= '</li>';
+												$output .= '<li class="col-s4 col-m4 col-l4">';
+												$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location" class="block btn-default white">Lokation</a>';
+												$output .= '</li>';
+												$output .= '<li class="col-s4 col-m4 col-l4">';
+												$output .= '<a href="#" class="block btn-default light-blue">Leihgaben</a>';
+												$output .= '</li>';
+												$output .= '</ul>';
+												
+												$output .= '<div class="container dark">';
+												
+												if($_GET['archived'] == "")
+												{
+													$output .= '<p>Es wurde kein ArchivFlag gesendet.</p>';
+												}
+												else
+												{
+													if(preg_match('/[^'.$app_regex['number'].']/',$_GET['archived']) == 0)
+													{
+														if($_GET['archived'] == 0 || $_GET['archived'] == 1)
+														{
+															$output .= '<table class="block section"></tr>';
+															
+															if($_GET['archived'] == 0)
+															{
+																$output .= '<td class="col-s6 col-m6 col-l6"><h2>Aktive Leihgaben</h2></td>';
+																$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=1" class="btn-default light-blue">Historie <i class="fas fa-clock"></td>';	
+															}
+															else if($_GET['archived'] == 1)
+															{
+																$output .= '<td class="col-s6 col-m6 col-l6"><h2>Historie</h2></td>';
+																$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0" class="btn-default light-blue">Aktive Leihgaben <i class="fas fa-arrow-right"></td>';	
+															}
+															
+															$output .= '</tr></table>';
+															
+															$query = sprintf("
+															SELECT lend_start,lend_document_nr
+															FROM lend
+															WHERE lend_user_id = '%s'
+															AND lend_archived = '%s';",
+															$sql->real_escape_string($_GET['id']),
+															$sql->real_escape_string($_GET['archived']));
+															
+															$result = $sql->query($query);
+															
+															$amount_gs = mysqli_num_rows($result);
+															
+															if($amount_gs > 0)
+															{
+																while($row = $result->fetch_array(MYSQLI_ASSOC))
+																{
+																	$lend_start = date('d.m.Y',strtotime($row['lend_start']));
+																	
+																	$output .= '<p><a href="lend.php?aktion=view&doc='.$row['lend_document_nr'].'" class="block btn-default light-blue">'.$lend_start.' ( '.$row['lend_document_nr'].' )</a></p>';
+																}
+															}
+															else
+															{
+																$output .= '<p>Es wurden keine Leihgaben gefunden.</p>';
+															}
+														}
+														else
+														{
+															$output .= '<p>Archivflag kann nur 0 oder 1 sein.</p>';
+														}
+													}
+													else
+													{
+														$output .= '<p>Archivflag kann nur 0 oder 1 sein.</p>';
+													}
+												}
+												
+												$output .= '</div>';
 											}
 											
 											$output .= '</div>';
