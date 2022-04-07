@@ -66,46 +66,14 @@ else
 							{
 								if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['tab']) == 0)
 								{
-									$allowed_tabs = array('general','location','cis');
+									$allowed_tabs = array('general','location','cis','lend');
 
 									if(in_array($_GET['tab'],$allowed_tabs))
 									{
 										$output .= '<div class="container">';
 										$output .= '<h1>Asset anzeigen</h1>';
-
-										$query = "
-										SELECT lend_document_nr,lend_assets
-										FROM lend
-										WHERE lend_archived = '0'";
-
-										$result = $sql->query($query);
-
-										$amount_gs = mysqli_num_rows($result);
-
-										if($amount_gs > 0)
-										{
-											while($row = $result->fetch_array(MYSQLI_ASSOC))
-											{
-												$lend_assets = json_decode($row['lend_assets']);
-
-												if(in_array($_GET['id'],$lend_assets))
-												{
-													$document_nr = $row['lend_document_nr'];
-
-													break;
-												}
-											}
-
-											if(!empty($document_nr))
-											{
-												$output .= '<table class="block section"><tr>';
-												$output .= '<td class="col-s6 col-m7 col-l8"><div class="ipt-default text-center dark">Asset verausgabt</div></td>';
-												$output .= '<td class="col-s6 col-m5 col-l4"><a href="lend.php?aktion=view&doc='.$document_nr.'" class="block btn-default light-blue">Beleg <span class="hide-small">( '.$document_nr.' )</span>  <i class="fas fa-arrow-right"></i></a></td>';
-												$output .= '</tr></table>';
-											}
-										}
-
 										$output .= '</div>';
+										
 										$output .= '<ul class="flex">';
 										$output .= '<li class="col-s12 col-m12 col-l9">';
 										$output .= '<div class="margin">';
@@ -134,17 +102,12 @@ else
 														
 												$serial = $row['asset_serial'];
 														
-												$output .= '<ul class="flex">';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="#" class="block btn-default light-blue">Allgemein</a>';
-												$output .= '</li>';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location" class="block btn-default white">Lokation</a>';
-												$output .= '</li>';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis" class="block btn-default white">CIs</a>';
-												$output .= '</li>';
-												$output .= '</ul>';
+												$output .= '<div class="nowrap overflow-scroll">';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#" >Allgemein</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+												$output .= '</div>';
 														
 												$output .= '<div class="dark">';
 												
@@ -303,17 +266,12 @@ else
 										
 												$room = $row['room_name'];
 														
-												$output .= '<ul class="flex">';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" class="block btn-default white">Allgemein</a>';
-												$output .= '</li>';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="#" class="block btn-default light-blue">Lokation</a>';
-												$output .= '</li>';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis" class="block btn-default white">CIs</a>';
-												$output .= '</li>';
-												$output .= '</ul>';
+												$output .= '<div class="nowrap overflow-scroll">';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" >Allgemein</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#">Lokation</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+												$output .= '</div>';
 														
 												$output .= '<div class="dark">';
 												$output .= '<ul class="flex">';
@@ -438,20 +396,13 @@ else
 													
 											if($row = $result->fetch_array(MYSQLI_ASSOC))
 											{
-												$output .= '<ul class="flex">';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" class="block btn-default white">Allgemein</a>';
-												$output .= '</li>';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location" class="block btn-default white">Lokation</a>';
-												$output .= '</li>';
-												$output .= '<li class="col-s4 col-m3 col-l3">';
-												$output .= '<a href="#" class="block btn-default light-blue">CIs</a>';
-												$output .= '</li>';
-												$output .= '<li class="hide-small col-m1 col-l1">';
-												$output .= '<a href="/add.php?category=cis&id='.$_GET['id'].'" class="block btn-default white"><i class="fas fa-plus"></i></a>';
-												$output .= '</li>';
-												$output .= '</ul>';
+												$output .= '<div class="nowrap overflow-scroll">';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" >Allgemein</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Lokation</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
+												$output .= '<a class="col-s3 col-m2 col-l2 btn-default white" href="add.php?category=cis&id='.$_GET['id'].'"><i class="fas fa-plus"></i></a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+												$output .= '</div>';
 												
 												$output .= '<div class="dark">';
 												
@@ -496,7 +447,7 @@ else
 															
 															$output .= '<form action="change.php" method="get">';
 															$output .= '<table><tr>';
-															$output .= '<td><a href="del.php?category=cis&id='.$_GET['id'].'&ci_id='.$i.'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab']).'"><i class="fas fa-times medium"></i></a>&nbsp;</td>';
+															$output .= '<td><a href="del.php?category=cis&id='.$_GET['id'].'&ci_id='.$i.'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab']).'"><i class="fas fa-times medium"></i></a>&nbsp;&nbsp;&nbsp;</td>';
 															$output .= '<td><h3>'.$row['ci_name'].'</h3></td>';
 															$output .= '</tr></table>';
 															$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
@@ -581,9 +532,6 @@ else
 													$output .= '</div>';
 												}
 												
-												$output .= '<div class="hide-large hide-medium container">';
-												$output .= '<p><a href="/add.php?category=cis&id='.$_GET['id'].'" class="block btn-default light-blue"><i class="fas fa-plus"></i></a></p>';
-												$output .= '</div>';
 												$output .= '</div>';
 											}
 											else

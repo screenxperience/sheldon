@@ -26,7 +26,7 @@ ul {
 	margin:0;
 	list-style-type:none;
 }
-ul.flex, ul.flex-center, ul.flex-reverse {
+ul.flex, ul.flex-center, ul.flex-reverse,ul.flex-nowrap {
 	display:flex;
 	flex-direction:row;
 }
@@ -159,6 +159,10 @@ ul.flex-center {
 }
 .nowrap {
 	white-space:nowrap;
+}
+.overflow-scroll {
+	overflow-x:auto;
+	overflow-y:auto;
 }
 .overflow-hide {
 	overflow-y:hidden;
