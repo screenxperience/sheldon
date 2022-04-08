@@ -505,6 +505,8 @@ else
 								$date_max = date('Y-m-d',strtotime('now')+60*60*24*365);
 									
 								$output .= '<form action="lend.php" method="get">';
+								$output .= '<h2>Bemerkung</h2>';
+								$output .= '<p><textarea class="ipt-default" style="resize:vertical"></textarea></p>';
 								$output .= '<h2>Leihgabe bis</h2>';
 								$output .= '<input type="hidden" name="aktion" value="add"/>';
 								$output .= '<ul class="flex section">';

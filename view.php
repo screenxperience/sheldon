@@ -399,8 +399,8 @@ else
 												$output .= '<div class="nowrap overflow-scroll">';
 												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" >Allgemein</a>';
 												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Lokation</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
-												$output .= '<a class="col-s3 col-m2 col-l2 btn-default white" href="add.php?category=cis&id='.$_GET['id'].'"><i class="fas fa-plus"></i></a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default light-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
+												$output .= '<a class="col-s3 col-m2 col-l1 btn-default white" href="add.php?category=cis&id='.$_GET['id'].'"><i class="fas fa-plus"></i></a>';
 												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
 												$output .= '</div>';
 												
@@ -539,6 +539,98 @@ else
 												$not_found = 1;
 											}
 										}
+										else if($_GET['tab'] == $allowed_tabs[3])
+										{
+											$output .= '<div class="nowrap overflow-scroll">';
+											$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" >Allgemein</a>';
+											$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Lokation</a>';
+											$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
+											$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#">Leihgaben</a>';
+											$output .= '</div>';
+											
+											$output .= '<div class="container dark">';
+											
+											if($_GET['archived'] == "")
+											{
+												$output .= '<p>Es wurde kein ArchivFlag gesetzt</p>';
+											}
+											else
+											{
+												if(preg_match('/[^'.$app_regex['number'].']/',$_GET['archived']) == 0)
+												{
+													if($_GET['archived'] == 0 || $_GET['archived'] == 1)
+													{
+														$output .= '<table class="block section"></tr>';
+															
+														if($_GET['archived'] == 0)
+														{
+															$output .= '<td class="col-s6 col-m6 col-l6"><h2>Aktiv</h2></td>';
+															$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=1" class="btn-default light-blue">Historie <i class="fas fa-clock"></td>';	
+														}
+														else if($_GET['archived'] == 1)
+														{
+															$output .= '<td class="col-s6 col-m6 col-l6"><h2>Historie</h2></td>';
+															$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0" class="btn-default light-blue">Aktiv <i class="fas fa-arrow-right"></td>';	
+														}
+														
+														$output .= '</tr></table>';
+														
+														$query = sprintf("
+														SELECT lend_document_nr,lend_assets,lend_start
+														FROM lend
+														WHERE lend_archived = '%s';",
+														$sql->real_escape_string($_GET['archived']));
+														
+														$result = $sql->query($query);
+														
+														$amount_gs = mysqli_num_rows($result);
+														
+														if($amount_gs > 0)
+														{
+															$lend_exists = 0;
+															
+															while($row = $result->fetch_array(MYSQLI_ASSOC))
+															{
+																$lend_assets = json_decode($row['lend_assets']);
+																
+																if(in_array($_GET['id'],$lend_assets))
+																{
+																	$lend_exists = 1;
+																	
+																	$lend_start = date('d.m.Y',strtotime($row['lend_start']));
+																	
+																	$output .= '<p><a class="block btn-default light-blue" href="lend.php?aktion=view&doc='.$row['lend_document_nr'].'">'.$lend_start.' ( '.$row['lend_document_nr'].' )</a></p>';
+																	
+																	if(!$_GET['archived'])
+																	{
+																		break;
+																	}
+																}
+															}
+															
+															if(!$lend_exists)
+															{
+																$output .= '<p>Es sind keine Leihgaben vorhanden.</p>';
+															}
+														}
+														else
+														{
+															$output .= '<p>Es sind keine Leihgaben vorhanden.</p>';
+														}
+													}
+													else
+													{
+														$output .= '<p>Das ArchivFlag kann nur 1 oder 0 sein.</p>';
+													}
+												}
+												else
+												{
+													$output .= '<p>Das ArchivFlag kann nur 1 oder 0 sein.</p>';
+												}
+											}
+											
+											$output .= '</div>';
+										}
 										
 										$output .= '</div>';
 										$output .= '</li>';
@@ -661,17 +753,11 @@ else
 														
 													$email = $row['user_email'];
 														
-													$output .= '<ul class="flex">';
-													$output .= '<li class="col-s4 col-m6 col-l4">';
-													$output .= '<a href="#" class="block btn-default light-blue">Allgemein</a>';
-													$output .= '</li>';
-													$output .= '<li class="col-s4 col-m4 col-l4">';
-													$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location" class="block btn-default white">Lokation</a>';
-													$output .= '</li>';
-													$output .= '<li class="col-s4 col-m4 col-l4">';
-													$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0" class="block btn-default white">Leihgaben</a>';
-													$output .= '</li>';
-													$output .= '</ul>';
+													$output .= '<div class="nowrap overflow-scroll">';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#">Allgemein</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+													$output .= '</div>';
 														
 													$output .= '<div class="dark">';
 														
@@ -801,17 +887,11 @@ else
 										
 													$room = $row['room_name'];
 														
-													$output .= '<ul class="flex">';
-													$output .= '<li class="col-s4 col-m4 col-l4">';
-													$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" class="block btn-default white">Allgemein</a>';
-													$output .= '</li>';
-													$output .= '<li class="col-s4 col-m4 col-l4">';
-													$output .= '<a href="#" class="block btn-default light-blue">Lokation</a>';
-													$output .= '</li>';
-													$output .= '<li class="col-s4 col-m4 col-l4">';
-													$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0" class="block btn-default white">Leihgaben</a>';
-													$output .= '</li>';
-													$output .= '</ul>';
+													$output .= '<div class="nowrap overflow-scroll">';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#">Lokation</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+													$output .= '</div>';
 														
 													$output .= '<div class="dark">';
 													$output .= '<ul class="flex">';
@@ -923,17 +1003,11 @@ else
 											}
 											else if($_GET['tab'] == $allowed_tabs[2])
 											{
-												$output .= '<ul class="flex">';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" class="block btn-default white">Allgemein</a>';
-												$output .= '</li>';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location" class="block btn-default white">Lokation</a>';
-												$output .= '</li>';
-												$output .= '<li class="col-s4 col-m4 col-l4">';
-												$output .= '<a href="#" class="block btn-default light-blue">Leihgaben</a>';
-												$output .= '</li>';
-												$output .= '</ul>';
+												$output .= '<div class="nowrap overflow-scroll">';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#">Leihgaben</a>';
+												$output .= '</div>';
 												
 												$output .= '<div class="container dark">';
 												
@@ -951,13 +1025,13 @@ else
 															
 															if($_GET['archived'] == 0)
 															{
-																$output .= '<td class="col-s6 col-m6 col-l6"><h2>Aktive Leihgaben</h2></td>';
+																$output .= '<td class="col-s6 col-m6 col-l6"><h2>Aktiv</h2></td>';
 																$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=1" class="btn-default light-blue">Historie <i class="fas fa-clock"></td>';	
 															}
 															else if($_GET['archived'] == 1)
 															{
 																$output .= '<td class="col-s6 col-m6 col-l6"><h2>Historie</h2></td>';
-																$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0" class="btn-default light-blue">Aktive Leihgaben <i class="fas fa-arrow-right"></td>';	
+																$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0" class="btn-default light-blue">Aktiv <i class="fas fa-arrow-right"></td>';	
 															}
 															
 															$output .= '</tr></table>';

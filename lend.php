@@ -94,6 +94,28 @@ else
 										
 										if($sql->affected_rows == 1)
 										{
+											for($i = 0; $i < count($assets); $i++)
+											{
+												$query = sprintf("
+												UPDATE asset
+												SET asset_building_id = (
+												SELECT user_building_id FROM user
+												WHERE user_id = '%s'),
+												asset_floor_id = (
+												SELECT user_floor_id FROM user
+												WHERE user_id = '%s'),
+												asset_room_id = (
+												SELECT user_room_id FROM
+												user WHERE user_id = '%s')
+												WHERE asset_id = '%s';",
+												$sql->real_escape_string($user_id),
+												$sql->real_escape_string($user_id),
+												$sql->real_escape_string($user_id),
+												$sql->real_escape_string($assets[$i]));
+												
+												$sql->query($query);
+											}
+											
 											$_SESSION['cart']['user'] = '';
 											
 											$_SESSION['cart']['assets'] = array();
@@ -104,7 +126,8 @@ else
 											$output .= '<div class="content-center container white">';
 											$output .= '<div class="panel dark">';
 											$output .= '<p>Eintrag wurde mit der Nummer <strong>'.$document_nr.'</strong> im System erfasst.</p>';
-											$output .= '</div>'; 
+											$output .= '</div>';
+											$output .= '<p><a class="block btn-default light-blue" href="lend.php?aktion=print&doc='.$document_nr.'">Dokument erzeugen <i class="fas fa-print"></i></a></p>';
 											$output .= '</div>'; 
 											$output .= '</div>'; 
 										}
@@ -147,6 +170,10 @@ else
 						}
 					}
 					else if($_GET['aktion'] == $allowed_aktions[1])
+					{
+						
+					}
+					else if($_GET['aktion'] == $allowed_aktions[2]);
 					{
 						
 					}
