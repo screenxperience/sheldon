@@ -69,7 +69,9 @@ else
 					if(preg_match('/[^0-9]/',$_GET['id']) == 0)
 					{
 						if($_GET['category'] == $allowed_category[0])
-						{	
+						{
+							$exit = 0;
+							
 							$query = "
 							SELECT lend_assets
 							FROM lend";
@@ -95,7 +97,7 @@ else
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel dark">';
 								$output .= '<p>Datensatz konnte nicht gel&ouml;scht werden.</p>';
-								$output .= '<p>Asset ist noch mit Ausgaben verkn&uuml;pft.</p>';
+								$output .= '<p>Asset wurde bereits ausgeliehen.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';
@@ -126,6 +128,7 @@ else
 									$output .= '<h1>Error</h1>';
 									$output .= '<div class="panel dark">';
 									$output .= '<p>Datensatz konnte nicht gel&ouml;scht werden.</p>';
+									$output .= '<p>Kein Asset mit der gesendeten ID vorhanden.</p>';
 									$output .= '</div>';
 									$output .= '</div>';
 									$output .= '</div>';
@@ -158,7 +161,8 @@ else
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel dark">';
 								$output .= '<p>Datensatz konnte nicht gel&ouml;scht werden.</p>';
-								$output .= '<p>User ist nocht mit Ausgaben verkn&uuml;pft.</p>';
+								$output .= '<p>User hat bereits Hardware ausgeliehen.</p>';
+								$output .= '<p>Kein User mit der gesendeten ID vorhanden.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';
@@ -193,13 +197,14 @@ else
 								}
 							}
 							
-							if($exit)
+							if(!empty($exit))
 							{
 								$output .= '<div class="container">';
 								$output .= '<div class="content-center container white">';
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel dark">';
-								$output .= '<p>Datensatz kann aufgrund bestehender Verkn&uuml;pfungen nicht gel&ouml;scht werden.</p>';
+								$output .= '<p>Datensatz konnte nicht gel&ouml;scht werden.</p>';
+								$output .= '<p>CI ist noch mit Asset verkn&uuml;pft.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';
@@ -207,10 +212,8 @@ else
 							else
 							{
 								$query = sprintf("
-								DELETE FROM %s
-								WHERE %s_id = %s;",
-								$sql->real_escape_string($_GET['category']),
-								$sql->real_escape_string($_GET['category']),
+								DELETE FROM ci
+								WHERE ci_id = %s;",
 								$sql->real_escape_string($_GET['id']));
 								
 								$sql->query($query);
@@ -231,7 +234,8 @@ else
 									$output .= '<div class="content-center container white">';
 									$output .= '<h1>Error</h1>';
 									$output .= '<div class="panel dark">';
-									$output .= '<p>Es konnte kein Datensatz gel&ouml;scht werden.</p>';
+									$output .= '<p>Datensatz konnte nicht gel&ouml;scht werden.</p>';
+									$output .= '<p>Kein CI mit der gesendeten ID vorhanden.</p>';
 									$output .= '</div>';
 									$output .= '</div>';
 									$output .= '</div>';
@@ -265,7 +269,8 @@ else
 								$output .= '<div class="content-center container white">';
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel dark">';
-								$output .= '<p>Es konnte kein Datensatz gel&ouml;scht werden.</p>';
+								$output .= '<p>Datensatz konnte nicht gel&ouml;scht werden.</p>';
+								$output .= '<p>Kein Datensatz mit der gesendeten ID vorhanden.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';
@@ -300,7 +305,8 @@ else
 									$output .= '<div class="content-center container white">';
 									$output .= '<h1>Error</h1>';
 									$output .= '<div class="panel dark">';
-									$output .= '<p>Es konnte kein Datensatz gel&ouml;scht werden.</p>';
+									$output .= '<p>Datensatz konnte nicht gel&ouml;scht werden.</p>';
+									$output .= '<p>Kein Datensatz mit der gesendeten ID vorhanden.</p>';
 									$output .= '</div>';
 									$output .= '</div>';
 									$output .= '</div>';	

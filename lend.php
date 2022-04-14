@@ -47,26 +47,65 @@ else
 						
 						$assets = $_SESSION['cart']['assets'];
 						
-						if(empty($user_id) || empty($assets))
+						if(empty($user_id) || empty($assets) || empty($_GET['lend_end']))
 						{
-							header('location:http://'.$_SERVER['HTTP_HOST'].'/');
-							exit;
+							$output .= '<div class="container">';
+							$output .= '<div class="content-center container white">';
+							$output .= '<h1>Error</h1>';
+							$output .= '<div class="panel dark">';
+							$output .= '<p>Es konnte keine Leihgabe erzeugt werden.</p>';
+							$output .= '</div>'; 
+							$output .= '</div>'; 
+							$output .= '</div>';
 						}
 						else
 						{
-							if(empty($_GET['lend_end']))
+							$exit = 0;
+							
+							if(!empty($_GET['lend_description']))
 							{
-								$output .= '<div class="container">';
-								$output .= '<div class="content-center container white">';
-								$output .= '<h1>Error</h1>';
-								$output .= '<div class="panel dark">';
-								$output .= '<p>Es wurde kein Ausleihzeitraum gew&auml;hlt.</p>';
-								$output .= '</div>'; 
-								$output .= '</div>'; 
-								$output .= '</div>'; 
+								if(preg_match('/[^'.$app_regex['lowerupperumlnumbersz'].'\r\n]/',$_GET['lend_description']) != 0)
+								{
+									$exit = 1;
+									
+									$regex = str_replace('\s',' Leerzeichen ',$app_regex['lowerupperumlnumbersz']);
+									
+									$regex = str_replace('\\','',$regex);
+									
+									$output .= '<div class="container">';
+									$output .= '<div class="content-center container white">';
+									$output .= '<h1>Error</h1>';
+									$output .= '<div class="panel dark">';
+									$output .= '<p>Verwenden Sie nur folgende Zeichen in ihrer Bemerkung: '.$regex.'</p>';
+									$output .= '</div>'; 
+									$output .= '</div>'; 
+									$output .= '</div>';
+								}
+								else if(strlen($_GET['lend_description'] > 200))
+								{
+									$exit = 1;
+								
+									$output .= '<div class="container">';
+									$output .= '<div class="content-center container white">';
+									$output .= '<h1>Error</h1>';
+									$output .= '<div class="panel dark">';
+									$output .= '<p>Verwenden Sie nur 200 Zeichen f&uuml;r ihre Bemerkung.</p>';
+									$output .= '</div>'; 
+									$output .= '</div>'; 
+									$output .= '</div>';
+								}
+								else 
+								{
+									$lend_description = $_GET['lend_description'];
+								}
 							}
 							else
 							{
+								$lend_description = '-';
+							}
+							
+							if(!$exit)
+							{				
 								preg_match('/'.$app_regex['date'].'/',$_GET['lend_end'],$date_matches);
 								
 								if(!empty($date_matches))
@@ -125,7 +164,7 @@ else
 											$output .= '<div class="container">';
 											$output .= '<div class="content-center container white">';
 											$output .= '<div class="panel dark">';
-											$output .= '<p>Eintrag wurde mit der Nummer <strong>'.$document_nr.'</strong> im System erfasst.</p>';
+											$output .= '<p>Leihgabe wurde mit der Nummer <strong>'.$document_nr.'</strong> im System erfasst.</p>';
 											$output .= '</div>';
 											$output .= '<p><a class="block btn-default light-blue" href="lend.php?aktion=print&doc='.$document_nr.'">Dokument erzeugen <i class="fas fa-print"></i></a></p>';
 											$output .= '</div>'; 
@@ -170,10 +209,6 @@ else
 						}
 					}
 					else if($_GET['aktion'] == $allowed_aktions[1])
-					{
-						
-					}
-					else if($_GET['aktion'] == $allowed_aktions[2]);
 					{
 						
 					}

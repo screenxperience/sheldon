@@ -451,7 +451,7 @@ else
 										}
 										else
 										{
-											$allowed_ci_types = array('string' => 'Zeichenkette','select' => 'SelectBox','url' => 'URL');
+											$allowed_ci_types = array('string' => 'Zeichenkette','select' => 'SelectBox','url' => 'URL','list' => 'Liste');
 											
 											$showform = 2;
 										}
@@ -511,7 +511,7 @@ else
 										{
 											if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['ci_type']) == 0)
 											{
-												$allowed_ci_types = array('string','select','url');
+												$allowed_ci_types = array('string','select','url','list');
 											
 												if(in_array($_GET['ci_type'],$allowed_ci_types))
 												{
@@ -520,14 +520,14 @@ else
 												else
 												{
 													$output .= '<div class="panel dark">';
-													$output .= '<p>Es k&ouml;nnen nur folgende Typen verwendet werden: Zeichenkette,SelectBox und URL.</p>';
+													$output .= '<p>Es k&ouml;nnen nur folgende Typen verwendet werden: Zeichenkette,SelectBox,URL und Liste.</p>';
 													$output .= '</div>';
 												}
 											}
 											else
 											{
 												$output .= '<div class="panel dark">';
-												$output .= '<p>Es k&ouml;nnen nur folgende Typen verwendet werden: Zeichenkette,SelectBox und URL.</p>';
+												$output .= '<p>Es k&ouml;nnen nur folgende Typen verwendet werden: Zeichenkette,SelectBox,URL und Liste.</p>';
 												$output .= '</div>';
 											}
 										}
@@ -595,7 +595,7 @@ else
 										{
 											if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['ci_type']) == 0)
 											{
-												$allowed_ci_types = array('string','select','url');
+												$allowed_ci_types = array('string','select','url','list');
 											
 												if(in_array($_GET['ci_type'],$allowed_ci_types))
 												{
