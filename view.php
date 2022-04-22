@@ -37,7 +37,7 @@ else
 		}
 		else
 		{
-			if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['category']) == 0)
+			if(preg_match('/[^a-z]/',$_GET['category']) == 0)
 			{
 				$allowed_category = array('asset','user','ci','vendor','model','type','building','floor','room');
 				
@@ -45,9 +45,9 @@ else
 				{
 					$category_german = array('Asset','User','CI','Hersteller','Modell','Typ','Geb&auml;ude','Stockwerk','Raum');
 					
-					$key = array_search($_GET['category'],$allowed_category);
+					$array_key = array_search($_GET['category'],$allowed_category);
 					
-					if(preg_match('/[^'.$app_regex['number'].']/',$_GET['id']) == 0)
+					if(preg_match('/[^0-9]/',$_GET['id']) == 0)
 					{	
 						if($_GET['category'] == $allowed_category[0])
 						{	
@@ -64,7 +64,7 @@ else
 							}
 							else
 							{
-								if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['tab']) == 0)
+								if(preg_match('/[^a-z]/',$_GET['tab']) == 0)
 								{
 									$allowed_tabs = array('general','location','cis','lend');
 
@@ -72,11 +72,6 @@ else
 									{
 										$output .= '<div class="container">';
 										$output .= '<h1>Asset anzeigen</h1>';
-										$output .= '</div>';
-										
-										$output .= '<ul class="flex">';
-										$output .= '<li class="col-s12 col-m12 col-l9">';
-										$output .= '<div class="margin">';
 
 										if($_GET['tab'] == $allowed_tabs[0])
 										{
@@ -103,13 +98,13 @@ else
 												$serial = $row['asset_serial'];
 														
 												$output .= '<div class="nowrap overflow-scroll">';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#" >Allgemein</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue white text-light-blue" href="#">Allgemein</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tlr border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
 												$output .= '</div>';
 														
-												$output .= '<div class="dark">';
+												$output .= '<div class="black-alpha">';
 												
 												$output .= '<ul class="flex">';
 												$output .= '<li class="col-s12 col-m6 col-l6">';
@@ -121,7 +116,7 @@ else
 												$output .= '<input type="hidden" name="attr" value="type"/>';
 												$output .= '<ul class="flex">';
 												$output .= '<li class="col-s10 col-m10 col-l10">';
-												$output .= '<select class="ipt-default" name="attr_value">';
+												$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 												$output .= '<option value="">'.$type.'</option>';
 										
 												$query = "
@@ -138,7 +133,7 @@ else
 												$output .= '</select>';
 												$output .= '<li>';
 												$output .= '<li class="col-s2 col-m2 col-l2">';
-												$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+												$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 												$output .= '</li>';
 												$output .= '</ul>';
 												$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -155,7 +150,7 @@ else
 												$output .= '<input type="hidden" name="attr" value="vendor"/>';
 												$output .= '<ul class="flex">';
 												$output .= '<li class="col-s10 col-m10 col-l10">';
-												$output .= '<select class="ipt-default" name="attr_value">';
+												$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 												$output .= '<option value="">'.$vendor.'</option>';
 										
 												$query = "
@@ -172,7 +167,7 @@ else
 												$output .= '</select>';
 												$output .= '<li>';
 												$output .= '<li class="col-s2 col-m2 col-l2">';
-												$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+												$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 												$output .= '</li>';
 												$output .= '</ul>';
 												$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -191,7 +186,7 @@ else
 												$output .= '<input type="hidden" name="attr" value="model"/>';
 												$output .= '<ul class="flex">';
 												$output .= '<li class="col-s10 col-m10 col-l10">';
-												$output .= '<select class="ipt-default" name="attr_value">';
+												$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 												$output .= '<option value="">'.$model.'</option>';
 										
 												$query = "
@@ -208,7 +203,7 @@ else
 												$output .= '</select>';
 												$output .= '<li>';
 												$output .= '<li class="col-s2 col-m2 col-l2">';
-												$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+												$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 												$output .= '</li>';
 												$output .= '</ul>';
 												$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -225,10 +220,10 @@ else
 												$output .= '<input type="hidden" name="attr" value="serial"/>';
 												$output .= '<ul class="flex section">';
 												$output .= '<li class="col-s10 col-m10 col-l10">';
-												$output .= '<input class="ipt-default" type="text" name="attr_value" placeholder="Seriennummer" value="'.$serial.'"/>';
+												$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="attr_value" placeholder="Seriennummer" value="'.$serial.'"/>';
 												$output .= '</li>';
 												$output .= '<li class="col-s2 col-m2 col-l2">';
-												$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+												$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 												$output .= '</li>';
 												$output .= '</ul>';
 												$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -236,13 +231,8 @@ else
 												$output .= '</div>';
 												$output .= '</li>';
 												$output .= '</ul>';
-														
-												$output .= '</div>';
 												
-											}
-											else
-											{
-												$not_found = 1;
+												$output .= '</div>';
 											}
 										}
 										else if($_GET['tab'] == $allowed_tabs[1])
@@ -267,13 +257,14 @@ else
 												$room = $row['room_name'];
 														
 												$output .= '<div class="nowrap overflow-scroll">';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" >Allgemein</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#">Lokation</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue white text-light-blue" href="#">Lokation</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tlr border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
 												$output .= '</div>';
 														
-												$output .= '<div class="dark">';
+												$output .= '<div class="black-alpha">';
+												
 												$output .= '<ul class="flex">';
 												$output .= '<li class="col-s12 col-m6 col-l4">';
 												$output .= '<div class="margin">';
@@ -284,7 +275,7 @@ else
 												$output .= '<input type="hidden" name="attr" value="building"/>';
 												$output .= '<ul class="flex">';
 												$output .= '<li class="col-s10 col-m10 col-l10">';
-												$output .= '<select class="ipt-default" name="attr_value">';
+												$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 												$output .= '<option value="">'.$building.'</option>';
 										
 												$query = "
@@ -301,7 +292,7 @@ else
 												$output .= '</select>';
 												$output .= '<li>';
 												$output .= '<li class="col-s2 col-m2 col-l2">';
-												$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+												$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 												$output .= '</li>';
 												$output .= '</ul>';
 												$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -318,7 +309,7 @@ else
 												$output .= '<input type="hidden" name="attr" value="floor"/>';
 												$output .= '<ul class="flex">';
 												$output .= '<li class="col-s10 col-m10 col-l10">';
-												$output .= '<select class="ipt-default" name="attr_value">';
+												$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 												$output .= '<option value="">'.$floor.'</option>';
 										
 												$query = "
@@ -335,7 +326,7 @@ else
 												$output .= '</select>';
 												$output .= '<li>';
 												$output .= '<li class="col-s2 col-m2 col-l2">';
-												$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+												$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 												$output .= '</li>';
 												$output .= '</ul>';
 												$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -352,7 +343,7 @@ else
 												$output .= '<input type="hidden" name="attr" value="room"/>';
 												$output .= '<ul class="flex">';
 												$output .= '<li class="col-s10 col-m10 col-l10">';
-												$output .= '<select class="ipt-default" name="attr_value">';
+												$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 												$output .= '<option value="">'.$room.'</option>';
 										
 												$query = "
@@ -369,7 +360,7 @@ else
 												$output .= '</select>';
 												$output .= '<li>';
 												$output .= '<li class="col-s2 col-m2 col-l2">';
-												$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+												$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 												$output .= '</li>';
 												$output .= '</ul>';
 												$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -377,11 +368,8 @@ else
 												$output .= '</div>';
 												$output .= '</li>';
 												$output .= '</ul>';
+												
 												$output .= '</div>';
-											}
-											else
-											{
-												$not_found = 1;
 											}
 										}
 										else if($_GET['tab'] == $allowed_tabs[2])
@@ -397,21 +385,20 @@ else
 											if($row = $result->fetch_array(MYSQLI_ASSOC))
 											{
 												$output .= '<div class="nowrap overflow-scroll">';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" >Allgemein</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Lokation</a>';
-												$output .= '<a class="col-s6 col-m4 col-l3 btn-default light-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
-												$output .= '<a class="col-s3 col-m2 col-l1 btn-default white" href="add.php?category=cis&id='.$_GET['id'].'"><i class="fas fa-plus"></i></a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue white text-light-blue" href="#">CIs</a>';
+												$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tlr border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
 												$output .= '</div>';
 												
-												$output .= '<div class="dark">';
+												$output .= '<div class="display-container black-alpha">';
 												
 												$asset_cis = json_decode($row['asset_cis']);
 														
 												$asset_cis_count = count($asset_cis);
 														
 												if($asset_cis_count > 0)
-												{
+												{	
 													$j = 0;
 																
 													$output .= '<ul class="flex">';
@@ -447,7 +434,7 @@ else
 															
 															$output .= '<form action="change.php" method="get">';
 															$output .= '<table><tr>';
-															$output .= '<td><a href="del.php?category=cis&id='.$_GET['id'].'&ci_id='.$i.'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab']).'"><i class="fas fa-times medium"></i></a>&nbsp;&nbsp;&nbsp;</td>';
+															$output .= '<td><a href="del.php?category=cis&id='.$_GET['id'].'&ci_id='.$i.'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab']).'"><i class="fas fa-times medium hover-rotate-90"></i></a>&nbsp;&nbsp;&nbsp;</td>';
 															$output .= '<td><h3>'.$row['ci_name'].'</h3></td>';
 															$output .= '</tr></table>';
 															$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
@@ -462,13 +449,13 @@ else
 																		
 																if($row['ci_type'] == 'string')
 																{
-																	$output .= '<input class="ipt-default" type="text" name="attr_value" placeholder="'.$row['ci_regex'].'" value="'.$ci_value.'"/>';
+																	$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="attr_value" placeholder="'.$row['ci_regex'].'" value="'.$ci_value.'"/>';
 																}
 																else if($row['ci_type'] == 'select')
 																{
 																	$ci_regex = json_decode($row['ci_regex']);
 																		
-																	$output .= '<select class="ipt-default" name="attr_value">';
+																	$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 																	$output .= '<option disabled selected value="">'.$ci_regex[$ci_value].'</option>';
 																		
 																	for($I = 0; $I < count($ci_regex); $I++)
@@ -482,7 +469,7 @@ else
 																$output .= '</li>';
 																$output .= '<li class="col-s2 col-m2 col-l2">';
 																$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
-																$output .= '<button class="btn-default block light-blue" type="submit"><i class="fas fa-save"></i></button>';
+																$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 																$output .= '</li>';
 															}
 															else if($row['ci_type'] == 'url')
@@ -490,11 +477,11 @@ else
 																$host = parse_url($ci_value,PHP_URL_HOST);
 																		
 																$output .= '<li class="col-s8 col-m8 col-l8">';
-																$output .= '<div id="attr-show-'.$i.'" class="ipt-default nowrap overflow-hide"><a href="'.$ci_value.'" target="_blank">'.$ci_value.'</a></div>';
-																$output .= '<input id="attr-input-'.$i.'" class="ipt-default" style="display:none;" type="url" name="attr_value" value="'.$ci_value.'"/>';
+																$output .= '<div id="attr-show-'.$i.'" class="input-default border border-tbl border-grey nowrap overflow-hide"><a href="'.$ci_value.'" target="_blank">'.$ci_value.'</a></div>';
+																$output .= '<input id="attr-input-'.$i.'" class="input-default border border-grey focus-border-light-blue" style="display:none;" type="url" name="attr_value" value="'.$ci_value.'"/>';
 																$output .= '</li>';
 																$output .= '<li class="col-s2 col-m2 col-l2">';
-																$output .= '<div id="attr-placeholder-'.$i.'" class="ipt-default text-center">';
+																$output .= '<div id="attr-placeholder-'.$i.'" class="input-default border border-tb border-grey text-center">';
 																		
 																if($host == $_SERVER['HTTP_HOST'])
 																{
@@ -506,12 +493,12 @@ else
 																}
 																		
 																$output .= '</div>';
-																$output .= '<button id="attr-cancel-'.$i.'" onclick="cEdit('.$i.');" class="block btn-default red" type="button" style="display:none;"><i class="fas fa-times"></i></button>';
+																$output .= '<button id="attr-cancel-'.$i.'" onclick="cEdit('.$i.');" class="block btn-default border border-red red hover-white hover-text-red" type="button" style="display:none;"><i class="fas fa-times"></i></button>';
 																$output .= '</li>';
 																$output .= '<li class="col-s2 col-m2 col-l2">';
-																$output .= '<button id="attr-edit-'.$i.'" onclick="edit('.$i.');" class="block btn-default light-blue" type="button"><i class="fas fa-edit"></i></button>';
+																$output .= '<button id="attr-edit-'.$i.'" onclick="edit('.$i.');" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="button"><i class="fas fa-edit"></i></button>';
 																$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
-																$output .= '<button id="attr-save-'.$i.'" class="block btn-default light-blue" type="submit" style="display:none;"><i class="fas fa-save"></i></button>';
+																$output .= '<button id="attr-save-'.$i.'" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit" style="display:none;"><i class="fas fa-save"></i></button>';
 																$output .= '</li>';
 															}
 																	
@@ -524,56 +511,62 @@ else
 													}
 													
 													$output .= '</ul>';
+													$output .= '<div class="container">';
+													$output .= '<p><a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="add.php?category=cis&id='.$_GET['id'].'">CI hinzuf&uuml;gen <i class="fas fa-plus"></i></a></p>';
+													$output .= '</div>';
 												}
 												else
 												{
 													$output .= '<div class="container">';
-													$output .= '<p>Es wurden noch keine CIs hinzugef&uuml;gt.</p>';
+													$output .= '<table class="block section"><tr>';
+													$output .= '<td>Es wurden noch keine CIs hinzugef&uuml;gt.</td>';
+													$output .= '<td class="text-right"><a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="add.php?category=cis&id='.$_GET['id'].'"><i class="fas fa-plus"></i></a></td>';
+													$output .= '</tr></table>';
 													$output .= '</div>';
 												}
 												
 												$output .= '</div>';
 											}
-											else
-											{
-												$not_found = 1;
-											}
 										}
 										else if($_GET['tab'] == $allowed_tabs[3])
 										{
 											$output .= '<div class="nowrap overflow-scroll">';
-											$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general" >Allgemein</a>';
-											$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Lokation</a>';
-											$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
-											$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#">Leihgaben</a>';
+											$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
+											$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
+											$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=cis">CIs</a>';
+											$output .= '<a class="col-s6 col-m4 col-l3 btn-default border border-tlr border-light-blue white text-light-blue" href="#">Leihgaben</a>';
 											$output .= '</div>';
 											
-											$output .= '<div class="container dark">';
+											$output .= '<div class="black-alpha">';
 											
 											if($_GET['archived'] == "")
 											{
-												$output .= '<p>Es wurde kein ArchivFlag gesetzt</p>';
+												$output .= '<div class="container">';
+												$output .= '<p>Es wurde kein Archivflag gesetzt</p>';
+												$output .= '</div>';
 											}
 											else
 											{
-												if(preg_match('/[^'.$app_regex['number'].']/',$_GET['archived']) == 0)
+												if(preg_match('/[^0-9]/',$_GET['archived']) == 0)
 												{
 													if($_GET['archived'] == 0 || $_GET['archived'] == 1)
 													{
+														$output .= '<div class="container">';
 														$output .= '<table class="block section"></tr>';
 															
 														if($_GET['archived'] == 0)
 														{
 															$output .= '<td class="col-s6 col-m6 col-l6"><h2>Aktiv</h2></td>';
-															$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=1" class="btn-default light-blue">Historie <i class="fas fa-clock"></td>';	
+															$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=1">Historie <i class="fas fa-clock"></td>';	
 														}
 														else if($_GET['archived'] == 1)
 														{
 															$output .= '<td class="col-s6 col-m6 col-l6"><h2>Historie</h2></td>';
-															$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0" class="btn-default light-blue">Aktiv <i class="fas fa-arrow-right"></td>';	
+															$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Aktiv <i class="fas fa-arrow-right"></td>';	
 														}
 														
 														$output .= '</tr></table>';
+														$output .= '</div>';
 														
 														$query = sprintf("
 														SELECT lend_document_nr,lend_assets,lend_start
@@ -587,82 +580,72 @@ else
 														
 														if($amount_gs > 0)
 														{
-															$lend_exists = 0;
+															$j = 0;
+															
+															$output .= '<ul class="flex">';
 															
 															while($row = $result->fetch_array(MYSQLI_ASSOC))
 															{
 																$lend_assets = json_decode($row['lend_assets']);
 																
 																if(in_array($_GET['id'],$lend_assets))
-																{
-																	$lend_exists = 1;
-																	
+																{	
+																	if($j == 2)
+																	{
+																		$output .= '</ul>';
+																		$output .= '<ul class="flex">';
+																		
+																		$j = 0;
+																	}
+																
 																	$lend_start = date('d.m.Y',strtotime($row['lend_start']));
 																	
-																	$output .= '<p><a class="block btn-default light-blue" href="lend.php?aktion=view&doc='.$row['lend_document_nr'].'">'.$lend_start.' ( '.$row['lend_document_nr'].' )</a></p>';
+																	$output .= '<li class="col-s12 col-m6 col-l6">';
+																	$output .= '<div class="margin">';
+																	$output .= '<div class="text-center-medium text-center-small container display-container border border-light-blue white">';
+																	$output .= '<p><h3>'.$row['lend_document_nr'].'</h3></p>';
+																	$output .= '<p>'.$lend_start.'</p>';
+																	$output .= '<div class="section-medium section-small container-large display-middle-right-large">';
+																	$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category=lend&id='.$row['lend_document_nr'].'"><i class="fas fa-eye"></i></a> ';
+																	$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="lend.php?aktion=print&document='.$row['lend_document_nr'].'"><i class="fas fa-print"></i></a>';
+																	$output .= '</div>';
+																	$output .= '</div>';
+																	$output .= '</div>';
+																	$output .= '</li>';
 																	
 																	if(!$_GET['archived'])
 																	{
 																		break;
 																	}
+																	
+																	$j++;
 																}
 															}
 															
-															if(!$lend_exists)
-															{
-																$output .= '<p>Es sind keine Leihgaben vorhanden.</p>';
-															}
+															$output .= '</ul>';
 														}
 														else
 														{
+															$output .= '<div class="container">';
 															$output .= '<p>Es sind keine Leihgaben vorhanden.</p>';
+															$output .= '</div>';
 														}
 													}
 													else
 													{
-														$output .= '<p>Das ArchivFlag kann nur 1 oder 0 sein.</p>';
+														$output .= '<div class="container">';
+														$output .= '<p>Das Archivflag kann nur 1 oder 0 sein.</p>';
+														$output .= '</div>';
 													}
 												}
 												else
 												{
-													$output .= '<p>Das ArchivFlag kann nur 1 oder 0 sein.</p>';
+													$output .= '<div class="container">';
+													$output .= '<p>Das Archivflag kann nur 1 oder 0 sein.</p>';
+													$output .= '</div>';
 												}
 											}
 											
-											$output .= '</div>';
-										}
-										
-										$output .= '</div>';
-										$output .= '</li>';
-										$output .= '<li class="col-s12 col-m12 col-l3">';
-										$output .= '<div class="margin dark">';
-										$output .= '<div class="container">';
-										$output .= '<h3>Aktionen</h3>';
-										$output .= '</div>';
-										$output .= '<ul class="flex">';
-										$output .= '<li class="col-s6 col-m6 col-l12">';
-										$output .= '<div class="margin">';
-										$output .= '<a class="block btn-default light-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$_GET['id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
-										$output .= '</div>';
-										$output .= '</li>';
-										$output .= '<li class="col-s6 col-m6 col-l12">';
-										$output .= '<div class="margin">';
-										$output .= '<a class="block btn-default light-blue" href="del.php?category='.$_GET['category'].'&id='.$_GET['id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site=0&site_amount=5').'"><i class="fas fa-trash"></i></a>';
-										$output .= '</div>';
-										$output .= '</li>';
-										$output .= '</ul>';
-										$output .= '</div>';
-										$output .= '</li>';
-										$output .= '</ul>';
-										
-										if(!empty($not_found))
-										{
-											$output  = '<div class="container">';
-											$output .= '<div class="content-center white container">';
-											$output .= '<div class="panel dark">';
-											$output .= '<p>Es wurde kein Asset gefunden.</p>';
-											$output .= '</div>';
-											$output .= '</div>';
 											$output .= '</div>';
 										}
 									}
@@ -672,7 +655,7 @@ else
 										$output .= '<div class="content-center container white">';
 										$output .= '<h1>Error</h1>';
 										$output .= '<div class="panel dark">';
-										$output .= '<p>Es sind nur folgende Tabs vorhanden: Allgemein, Lokation, CIs.</p>';
+										$output .= '<p>Es sind nur folgende Tabs vorhanden: Allgemein, Lokation, CIs, Leihgaben.</p>';
 										$output .= '</div>';
 										$output .= '</div>';
 										$output .= '</div>';
@@ -684,7 +667,7 @@ else
 									$output .= '<div class="content-center container white">';
 									$output .= '<h1>Error</h1>';
 									$output .= '<div class="panel dark">';
-									$output .= '<p>Es sind nur folgende Tabs vorhanden: Allgemein, Lokation, CIs.</p>';
+									$output .= '<p>Es sind nur folgende Tabs vorhanden: Allgemein, Lokation, CIs und Leihgaben.</p>';
 									$output .= '</div>';
 									$output .= '</div>';
 									$output .= '</div>';
@@ -728,11 +711,6 @@ else
 											
 											$output .= '<div class="container">';
 											$output .= '<h1>User anzeigen</h1>';
-											$output .= '</div>';
-											
-											$output .= '<ul class="flex">';
-											$output .= '<li class="col-s12 col-m12 col-l9">';
-											$output .= '<div class="margin">';
 								
 											if($_GET['tab'] == $allowed_tabs[0])
 											{
@@ -754,19 +732,19 @@ else
 													$email = $row['user_email'];
 														
 													$output .= '<div class="nowrap overflow-scroll">';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#">Allgemein</a>';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue white text-light-blue" href="#">Allgemein</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
 													$output .= '</div>';
 														
-													$output .= '<div class="dark">';
+													$output .= '<div class="black-alpha">';
 														
 													$output .= '<ul class="flex">';
-														
+													
 													$output .= '<li class="col-s12 col-m6 col-l6">';
 													$output .= '<div class="margin">';
 													$output .= '<h3>Personalnummer</h3>';
-													$output .= '<p><input class="ipt-default" readonly="true" disabled="true" type="number" placeholder="Personalnummer" value="'.$row['user_id'].'"/></p>';
+													$output .= '<div class="section input-default border border-grey">'.$row['user_id'].'</div>';
 													$output .= '</div>';
 													$output .= '</li>';
 														
@@ -779,7 +757,7 @@ else
 													$output .= '<input type="hidden" name="attr" value="rank"/>';
 													$output .= '<ul class="flex section">';
 													$output .= '<li class="col-s10 col-m10 col-l10">';
-													$output .= '<select class="ipt-default" name="attr_value">';
+													$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 													$output .= '<option disabled selected value="">'.$row['rank_name_long'].'</option>';
 														
 													$query = "
@@ -796,7 +774,7 @@ else
 													$output .= '</select>';														
 													$output .= '</li>';
 													$output .= '<li class="col-s2 col-m2 col-l2">';
-													$output .= '<button class="btn-default block light-blue" type="submit"><i class="fas fa-save"></i></button>';
+													$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 													$output .= '</li>';
 													$output .= '</ul>';
 													$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -805,8 +783,8 @@ else
 													$output .= '</li>';
 														
 													$output .= '</ul>';
-														
 													$output .= '<ul class="flex">';
+													
 													$output .= '<li class="col-s12 col-m6 col-l6">';
 													$output .= '<div class="margin">';
 													$output .= '<form action="change.php" method="get">';
@@ -816,16 +794,17 @@ else
 													$output .= '<input type="hidden" name="attr" value="vname"/>'; 
 													$output .= '<ul class="flex">';
 													$output .= '<li class="col-s10 col-m10 col-l10">';
-													$output .= '<input class="ipt-default" type="text" name="attr_value" placeholder="Vorname" value="'.$vname.'"/>';
+													$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="attr_value" placeholder="Vorname" value="'.$vname.'"/>';
 													$output .= '</li>';
 													$output .= '<li class="col-s2 col-m2 col-l2">';
-													$output .= '<button class="btn-default block light-blue" type="submit"><i class="fas fa-save"></i></button>';
+													$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 													$output .= '</li>';
 													$output .= '</ul>';
 													$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
 													$output .= '</form>';
 													$output .= '</div>';
 													$output .= '</li>';
+													
 													$output .= '<li class="col-s12 col-m6 col-l6">';
 													$output .= '<div class="margin">';
 													$output .= '<form action="change.php" method="get">';
@@ -835,19 +814,20 @@ else
 													$output .= '<input type="hidden" name="attr" value="name"/>'; 
 													$output .= '<ul class="flex">';
 													$output .= '<li class="col-s10 col-m10 col-l10">';
-													$output .= '<input class="ipt-default" type="text" name="attr_value" placeholder="Nachname" value="'.$name.'"/>';
+													$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="attr_value" placeholder="Nachname" value="'.$name.'"/>';
 													$output .= '</li>';
 													$output .= '<li class="col-s2 col-m2 col-l2">';
-													$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+													$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 													$output .= '</li>';
 													$output .= '</ul>';
 													$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
 													$output .= '</form>';
 													$output .= '</div>';
 													$output .= '</li>';
-													$output .= '</ul>';
-														
+													
+													$output .= '</ul>';	
 													$output .= '<div class="container">';
+													
 													$output .= '<form action="change.php" method="get">';
 													$output .= '<h3>E-Mail-Adresse</h3>';
 													$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
@@ -855,14 +835,16 @@ else
 													$output .= '<input type="hidden" name="attr" value="email"/>'; 
 													$output .= '<ul class="flex section">';
 													$output .= '<li class="col-s10 col-m10 col-l10">';
-													$output .= '<input class="ipt-default" type="text" name="attr_value" placeholder="E-Mail-Adresse" value="'.$email.'"/>';
+													$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="attr_value" placeholder="E-Mail-Adresse" value="'.$email.'"/>';
 													$output .= '</li>';
 													$output .= '<li class="col-s2 col-m2 col-l2">';
-													$output .= '<button class="btn-default block light-blue" type="submit"><i class="fas fa-save"></i></button>';
+													$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 													$output .= '</li>';
 													$output .= '</ul>';
 													$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
 													$output .= '</form>';
+													
+													$output .= '</div>';
 													$output .= '</div>';
 												}
 											}
@@ -888,13 +870,15 @@ else
 													$room = $row['room_name'];
 														
 													$output .= '<div class="nowrap overflow-scroll">';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#">Lokation</a>';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue white text-light-blue" href="#">Lokation</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
 													$output .= '</div>';
 														
-													$output .= '<div class="dark">';
+													$output .= '<div class="black-alpha">';
+													
 													$output .= '<ul class="flex">';
+													
 													$output .= '<li class="col-s12 col-m6 col-l4">';
 													$output .= '<div class="margin">';
 													$output .= '<form action="change.php" method="get">';
@@ -904,7 +888,7 @@ else
 													$output .= '<input type="hidden" name="attr" value="building"/>';
 													$output .= '<ul class="flex">';
 													$output .= '<li class="col-s10 col-m10 col-l10">';
-													$output .= '<select class="ipt-default" name="attr_value">';
+													$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 													$output .= '<option disabled selected value="">'.$building.'</option>';
 										
 													$query = "
@@ -921,7 +905,7 @@ else
 													$output .= '</select>';
 													$output .= '<li>';
 													$output .= '<li class="col-s2 col-m2 col-l2">';
-													$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+													$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 													$output .= '</li>';
 													$output .= '</ul>';
 													$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -938,7 +922,7 @@ else
 													$output .= '<input type="hidden" name="attr" value="floor"/>';
 													$output .= '<ul class="flex">';
 													$output .= '<li class="col-s10 col-m10 col-l10">';
-													$output .= '<select class="ipt-default" name="attr_value">';
+													$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 													$output .= '<option disabled selected value="">'.$floor.'</option>';
 										
 													$query = "
@@ -955,7 +939,7 @@ else
 													$output .= '</select>';
 													$output .= '<li>';
 													$output .= '<li class="col-s2 col-m2 col-l2">';
-													$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+													$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 													$output .= '</li>';
 													$output .= '</ul>';
 													$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -972,7 +956,7 @@ else
 													$output .= '<input type="hidden" name="attr" value="room"/>';
 													$output .= '<ul class="flex">';
 													$output .= '<li class="col-s10 col-m10 col-l10">';
-													$output .= '<select class="ipt-default" name="attr_value">';
+													$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 													$output .= '<option disabled selected value="">'.$room.'</option>';
 										
 													$query = "
@@ -989,7 +973,7 @@ else
 													$output .= '</select>';
 													$output .= '<li>';
 													$output .= '<li class="col-s2 col-m2 col-l2">';
-													$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+													$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 													$output .= '</li>';
 													$output .= '</ul>';
 													$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
@@ -1004,37 +988,41 @@ else
 											else if($_GET['tab'] == $allowed_tabs[2])
 											{
 												$output .= '<div class="nowrap overflow-scroll">';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default white" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default light-blue" href="#">Leihgaben</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-light-blue white text-light-blue" href="#">Leihgaben</a>';
 												$output .= '</div>';
 												
-												$output .= '<div class="container dark">';
+												$output .= '<div class="black-alpha">';
 												
 												if($_GET['archived'] == "")
 												{
-													$output .= '<p>Es wurde kein ArchivFlag gesendet.</p>';
+													$output .= '<div class="container">';
+													$output .= '<p>Es wurde kein Archivflag gesendet.</p>';
+													$output .= '</div>';
 												}
 												else
 												{
-													if(preg_match('/[^'.$app_regex['number'].']/',$_GET['archived']) == 0)
+													if(preg_match('/[^0-9]/',$_GET['archived']) == 0)
 													{
 														if($_GET['archived'] == 0 || $_GET['archived'] == 1)
 														{
+															$output .= '<div class="container">';
 															$output .= '<table class="block section"></tr>';
 															
 															if($_GET['archived'] == 0)
 															{
 																$output .= '<td class="col-s6 col-m6 col-l6"><h2>Aktiv</h2></td>';
-																$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=1" class="btn-default light-blue">Historie <i class="fas fa-clock"></td>';	
+																$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=1">Historie <i class="fas fa-clock"></td>';	
 															}
 															else if($_GET['archived'] == 1)
 															{
 																$output .= '<td class="col-s6 col-m6 col-l6"><h2>Historie</h2></td>';
-																$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0" class="btn-default light-blue">Aktiv <i class="fas fa-arrow-right"></td>';	
+																$output .= '<td class="col-s6 col-m6 col-l6 text-right"><a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Aktiv <i class="fas fa-arrow-right"></td>';	
 															}
 															
 															$output .= '</tr></table>';
+															$output .= '</div>';
 															
 															$query = sprintf("
 															SELECT lend_start,lend_document_nr
@@ -1050,88 +1038,64 @@ else
 															
 															if($amount_gs > 0)
 															{
+																$j = 0;
+																
+																$output .= '<ul class="flex">';
+																
 																while($row = $result->fetch_array(MYSQLI_ASSOC))
 																{
+																	if($j == 2)
+																	{
+																		$output .= '</ul>';
+																		$output .= '<ul class="flex">';
+																		
+																		$j = 0;
+																	}
+																	
 																	$lend_start = date('d.m.Y',strtotime($row['lend_start']));
 																	
-																	$output .= '<p><a href="lend.php?aktion=view&doc='.$row['lend_document_nr'].'" class="block btn-default light-blue">'.$lend_start.' ( '.$row['lend_document_nr'].' )</a></p>';
+																	$output .= '<li class="col-s12 col-m6 col-l6">';
+																	$output .= '<div class="margin">';
+																	$output .= '<div class="text-center-medium text-center-small container display-container border border-light-blue white">';
+																	$output .= '<p><h3>'.$row['lend_document_nr'].'</h3></p>';
+																	$output .= '<p>'.$lend_start.'</p>';
+																	$output .= '<div class="section-medium section-small container-large display-middle-right-large">';
+																	$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category=lend&id='.$row['lend_document_nr'].'"><i class="fas fa-eye"></i></a> ';
+																	$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="lend.php?aktion=print&document='.$row['lend_document_nr'].'"><i class="fas fa-print"></i></a>';
+																	$output .= '</div>';
+																	$output .= '</div>';
+																	$output .= '</div>';
+																	$output .= '</li>';
+																	
+																	$j++;
 																}
+																
+																$output .= '</ul>';
 															}
 															else
 															{
+																$output .= '<div class="container">';
 																$output .= '<p>Es wurden keine Leihgaben gefunden.</p>';
+																$output .= '</div>';
 															}
 														}
 														else
 														{
+															$output .= '<div class="container">';
 															$output .= '<p>Archivflag kann nur 0 oder 1 sein.</p>';
+															$output .= '</div>';
 														}
 													}
 													else
 													{
+														$output .= '<div class="container">';
 														$output .= '<p>Archivflag kann nur 0 oder 1 sein.</p>';
+														$output .= '</div>';
 													}
 												}
 												
 												$output .= '</div>';
 											}
-											
-											$output .= '</div>';
-											$output .= '</li>';
-											$output .= '<li class="col-s12 col-m12 col-l3">';
-											$output .= '<div class="margin dark">';
-											$output .= '<div class="container">';
-											$output .= '<h3>Aktionen</h3>';
-											$output .= '</div>';
-											$output .= '<ul class="flex">';
-											$output .= '<li class="col-s6 col-m3 col-l12">';
-											$output .= '<div class="margin">';
-											$output .= '<a href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$_GET['id'].'" class="block btn-default light-blue"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
-											$output .= '</div>';
-											$output .= '</li>';
-											$output .= '<li class="col-s6 col-m3 col-l12">';
-											$output .= '<div class="margin">';
-											
-											if($user_active)
-											{
-												$status = 0;
-												$icon = 'fas fa-times';
-											}
-											else
-											{
-												$status = 1;
-												$icon = 'fas fa-check';
-											}
-											
-											$output .= '<a href="change.php?category='.$_GET['category'].'&id='.$_GET['id'].'&attr=active&attr_value='.$status.'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab']).'" class="block btn-default light-blue"><i class="'.$icon.'"></i></a>';
-											$output .= '</div>';
-											$output .= '</li>';
-											$output .= '<li class="col-s6 col-m3 col-l12">';
-											$output .= '<div class="margin">';
-											
-											if($user_admin)
-											{
-												$status = 0;
-												$icon = 'fas fa-arrow-down';
-											}
-											else
-											{
-												$status = 1;
-												$icon = 'fas fa-arrow-up';
-											}
-											
-											$output .= '<a href="change.php?category='.$_GET['category'].'&id='.$_GET['id'].'&attr=admin&attr_value='.$status.'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab']).'" class="block btn-default light-blue"><i class="'.$icon.'"></i></a>';
-											$output .= '</div>';
-											$output .= '</li>';
-											$output .= '<li class="col-s6 col-m3 col-l12">';
-											$output .= '<div class="margin">';
-											$output .= '<a href="del.php?category='.$_GET['category'].'&id='.$_GET['id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site=0&site_amount=5').'" class="block btn-default light-blue"><i class="fas fa-trash"></i></a>';
-											$output .= '</div>';
-											$output .= '</li>';
-											$output .= '</ul>';
-											$output .= '</div>';
-											$output .= '</li>';
-											$output .= '</ul>';
 										}
 										else
 										{
@@ -1151,7 +1115,7 @@ else
 										$output .= '<div class="content-center container white">';
 										$output .= '<h1>Error</h1>';
 										$output .= '<div class="panel dark">';
-										$output .= '<p>Es sind nur folgende Tabs vorhanden: Allgemein und Lokation.</p>';
+										$output .= '<p>Es sind nur folgende Tabs vorhanden: Allgemein, Lokation und Leihgaben.</p>';
 										$output .= '</div>';
 										$output .= '</div>';
 										$output .= '</div>';
@@ -1163,7 +1127,7 @@ else
 									$output .= '<div class="content-center container white">';
 									$output .= '<h1>Error</h1>';
 									$output .= '<div class="panel dark">';
-									$output .= '<p>Es sind nur folgende Tabs vorhanden: Allgemein und Lokation.</p>';
+									$output .= '<p>Es sind nur folgende Tabs vorhanden: Allgemein, Lokation und Leihgaben.</p>';
 									$output .= '</div>';
 									$output .= '</div>';
 									$output .= '</div>';
@@ -1183,7 +1147,7 @@ else
 							if($row = $result->fetch_array(MYSQLI_ASSOC))
 							{
 								$output .= '<div class="container">';
-								$output .= '<div class="content-center container white">';
+								$output .= '<div class="content-center container white-alpha">';
 								$output .= '<h1>CI anzeigen</h1>';
 								
 								$output .= '<form action="change.php" method="get">';
@@ -1192,10 +1156,10 @@ else
 								$output .= '<input type="hidden" name="attr" value="name"/>';
 								$output .= '<ul class="flex section">';
 								$output .= '<li class="col-s10 col-m10 col-l10">';
-								$output .= '<input class="ipt-default" type="text" name="attr_value" placeholder="CI-Name" value="'.$row['ci_name'].'"/>';
+								$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="attr_value" placeholder="CI-Name" value="'.$row['ci_name'].'"/>';
 								$output .= '</li>';
 								$output .= '<li class="col-s2 col-m2 col-l2">';
-								$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+								$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 								$output .= '</li>';
 								$output .= '</ul>';
 								$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'"/>';
@@ -1207,28 +1171,30 @@ else
 								$output .= '<input type="hidden" name="attr" value="type"/>';
 								$output .= '<ul class="flex section">';
 								$output .= '<li class="col-s10 col-m10 col-l10">';
-								$output .= '<select class="ipt-default" name="attr_value">';
+								$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
+								$output .= '<option selected disabled value="">';
 								
 								if($row['ci_type'] == 'string')
 								{
-									$output .= '<option selected disabled value="">Zeichenkette</option>';
+									$output .= 'Zeichenkette';
 								}
 								else if($row['ci_type'] == 'select')
 								{
-									$output .= '<option selected disabled value="">SelectBox</option>';
+									$output .= 'SelectBox';
 								}
 								else if($row['ci_type'] == 'url')
 								{
-									$output .= '<option selected disbaled value="">URL</option>';
+									$output .= 'URL';
 								}
 								
+								$output .= '</option>';
 								$output .= '<option value="string">Zeichenkette</option>';
 								$output .= '<option value="select">Selectbox</option>';
 								$output .= '<option value="url">URL</option>';
 								$output .= '</select>';
 								$output .= '</li>';
 								$output .= '<li class="col-s2 col-m2 col-l2">';
-								$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+								$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 								$output .= '</li>';
 								$output .= '</ul>';
 								$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'"/>';
@@ -1245,7 +1211,7 @@ else
 								
 									if($row['ci_type'] == 'string')
 									{
-										$output .= '<select class="ipt-default" name="attr_value">';
+										$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
 										$output .= '<option selected disabled value="">'.$row['ci_regex'].'</option>';
 										
 										foreach($app_regex as $regex_name => $regex_value)
@@ -1265,12 +1231,12 @@ else
 										
 										$regex = implode(',',$regex_arr);
 										
-										$output .= '<input class="ipt-default" type="text" name="attr_value" value="'.$regex.'"/>';
+										$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="attr_value" value="'.$regex.'"/>';
 									}
 									
 									$output .= '</li>';
 									$output .= '<li class="col-s2 col-m2 col-l2">';
-									$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+									$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 									$output .= '</li>';
 									$output .= '</ul>';
 									$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'"/>';
@@ -1278,7 +1244,7 @@ else
 								}
 								else if($row['ci_type'] == 'url')
 								{
-									$output .= '<div class="section ipt-default">'.$row['ci_regex'].'</div>';
+									$output .= '<div class="section ipt-default border border-grey">'.$row['ci_regex'].'</div>';
 								}
 							}
 							else
@@ -1309,18 +1275,18 @@ else
 							if($row = $result->fetch_array(MYSQLI_NUM))
 							{
 								$output .= '<div class="container">';
-								$output .= '<div class="content-center container white">';
-								$output .= '<h1>'.$category_german[$key].' anzeigen</h1>';
+								$output .= '<div class="content-center container white-alpha">';
+								$output .= '<h1>'.$category_german[$array_key].' anzeigen</h1>';
 								$output .= '<form action="change.php" method="get">';
 								$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
 								$output .= '<input type="hidden" name="id" value="'.$_GET['id'].'"/>';
 								$output .= '<input type="hidden" name="attr" value="name"/>';
 								$output .= '<ul class="flex section">';
 								$output .= '<li class="col-s10 col-m10 col-l10">';
-								$output .= '<input class="ipt-default" type="text" name="attr_value" placeholder="'.$category_german[$key].'" value="'.$row[0].'"/>';
+								$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="attr_value" placeholder="'.$category_german[$array_key].'" value="'.$row[0].'"/>';
 								$output .= '</li>';
 								$output .= '<li class="col-s2 col-m2 col-l2">';
-								$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-save"></i></button>';
+								$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 								$output .= '</li>';
 								$output .= '</ul>';
 								$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'"/>';
@@ -1334,7 +1300,7 @@ else
 								$output .= '<div class="content-center container white">';
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel dark">';
-								$output .= '<p>Es wurde kein '.$category_german[$key].' mit der gesendeten ID gefunden.</p>';
+								$output .= '<p>Es wurde kein '.$category_german[$array_key].' mit der gesendeten ID gefunden.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';

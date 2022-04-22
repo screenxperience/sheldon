@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 05. Apr 2022 um 15:08
+-- Erstellungszeit: 22. Apr 2022 um 10:06
 -- Server Version: 5.6.13
 -- PHP-Version: 5.4.17
 
@@ -47,7 +47,7 @@ CREATE TABLE IF NOT EXISTS `asset` (
   KEY `asset_building_id` (`asset_building_id`),
   KEY `asset_floor_id` (`asset_floor_id`),
   KEY `asset_room_id` (`asset_room_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=36 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=43 ;
 
 --
 -- Daten für Tabelle `asset`
@@ -68,21 +68,28 @@ INSERT INTO `asset` (`asset_id`, `asset_type_id`, `asset_vendor_id`, `asset_mode
 (18, 4, 1, 8, 1, 1, 1, '5CG8125NKD', '[["4","P0120BG38C"],["7","B4:B6:86:24:5F:D3"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125NKD'),
 (19, 4, 1, 8, 1, 1, 1, '5CG8125S06', '[["4","P0120A69TC"],["7","B4:B6:86:24:BE:07"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125S06'),
 (20, 4, 1, 8, 1, 1, 1, '5CG8125LFJ', '[["4","P0120B5Q1C"],["7","B4:B6:86:24:CE:F3"],["15","http:\\/\\/localhost\\/view.php?category=asset&id=30&tab=general"]]', 'Laptop HP Probook 640G2 5CG8125LFJ'),
-(21, 4, 1, 12, 1, 1, 1, '5CG9173XNC', '[["4","P01208GFXC"],["7","9C:7B:EF:75:98:02"]]', 'Laptop HP EliteBook 840G5 5CG9173XNC'),
+(21, 4, 1, 12, 1, 1, 1, '5CG9173XNC', '[]', 'Laptop HP EliteBook 840G5 5CG9173XNC'),
 (22, 4, 1, 8, 1, 1, 1, '5CG8125NBZ', '[["4","P0120AWRWC"],["7","B4:B6:86:24:FE:19"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125NBZ'),
 (23, 4, 1, 8, 1, 1, 1, '5CG8125MDC', '[["4","P0120AYPWC"],["7","B4:B6:86:25:11:EE"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125MDC'),
 (24, 4, 1, 8, 1, 1, 1, '5CG8125GLZ', '[["4","P0120AWV9C"],["7","B4:B6:86:25:21:7B"],["15","http:\\/\\/localhost\\/view.php?category=asset&id=33&tab=general"]]', 'Laptop HP Probook 640G2 5CG8125GLZ'),
-(25, 4, 1, 9, 1, 1, 1, '5CG0218NLP', '[["4","P0120BZKHC"],["7","B0:5C:DA:EE:EC:74"],["8","registriert"]]', 'Laptop HP EliteBook 840G6 5CG0218NLP'),
+(25, 4, 1, 9, 2, 3, 5, '5CG0218NLP', '[["4","P0120BZKHC"],["7","B0:5C:DA:EE:EC:74"]]', 'Laptop HP EliteBook 840G6 5CG0218NLP'),
 (26, 4, 1, 8, 1, 1, 1, '5CG8125KVG', '[["4","P0120A67PC"],["7","B4:B6:86:24:7D:69"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125KVG'),
 (27, 4, 1, 8, 1, 1, 1, '5CG81259M9', '[["4","P0120AWRCC"],["7","B4:B6:86:25:70:AB"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG81259M9'),
 (28, 4, 1, 8, 1, 1, 1, '5CG8125N13', '[["4","P0120A69VC"],["7","B4:B6:86:24:CF:9D"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125N13'),
-(29, 4, 1, 9, 1, 1, 1, '5CG017D9DT', '[["4","P0120BSKWC"],["7","B0:5C:DA:A9:0D:42"],["8","nicht registriert"]]', 'Laptop HP EliteBook 840G6 5CG017D9DT'),
-(30, 11, 18, 14, 1, 1, 1, '180485018591', '[["16","https:\\/\\/www.genua.de\\/it-sicherheitsloesungen\\/personal-security-device-genucard"]]', 'Mobile Security Device Genua Genucard 3 180485018591'),
-(31, 11, 18, 14, 1, 1, 1, '180485018612', '[["16","https:\\/\\/www.genua.de\\/it-sicherheitsloesungen\\/personal-security-device-genucard"]]', 'Mobile Security Device Genua Genucard 3 180485018612'),
+(29, 4, 1, 9, 2, 3, 3, '5CG017D9DT', '[["4","P0120BSKWC"],["7","B0:5C:DA:A9:0D:42"],["8","nicht registriert"]]', 'Laptop HP EliteBook 840G6 5CG017D9DT'),
+(30, 11, 18, 14, 2, 3, 3, '180485018591', '[]', 'Mobile Security Device Genua Genucard 3 180485018591'),
+(31, 11, 18, 14, 2, 3, 5, '180485018612', '[]', 'Mobile Security Device Genua Genucard 3 180485018612'),
 (32, 11, 18, 14, 1, 1, 1, '180485018625', '[["16","https:\\/\\/www.genua.de\\/it-sicherheitsloesungen\\/personal-security-device-genucard"]]', 'Mobile Security Device Genua Genucard 3 180485018625'),
 (33, 11, 18, 14, 1, 1, 1, '180485015149', '[["16","https:\\/\\/www.genua.de\\/it-sicherheitsloesungen\\/personal-security-device-genucard"]]', 'Mobile Security Device Genua Genucard 3 180485015149'),
 (34, 12, 1, 15, 3, 2, 4, 'CZK8170CL4', '[]', 'Monitor HP L2245W CZK8170CL4'),
-(35, 3, 19, 10, 1, 1, 1, 'Q72W947AAAAAC0139', '[["18","1"],["17","4200"]]', 'Beamer Optoma EH-416 Q72W947AAAAAC0139');
+(35, 13, 1, 16, 2, 3, 3, 'THY13405VG', '[["7","34:99:71:DF:BC:30"]]', 'Dockingstation HP USB-C Mini Dock THY13405VG'),
+(36, 13, 1, 16, 2, 3, 3, 'THY13406M4', '[["7","34:99:71:DF:BF:F0"]]', 'Dockingstation HP USB-C Mini Dock THY13406M4'),
+(37, 13, 1, 16, 1, 1, 1, 'THY13409T7', '[["7","34:99:71:E1:08:86"]]', 'Dockingstation HP USB-C Mini Dock THY13409T7'),
+(38, 13, 1, 17, 1, 1, 1, '5CG138ZWSP', '[["7","84:3A:5B:38:6D:6F"]]', 'Dockingstation HP USB-C Dock G5 5CG138ZWSP'),
+(39, 13, 1, 17, 1, 1, 1, '5CG138ZWT2', '[["7","84:3A:5B:38:2E:1C"]]', 'Dockingstation HP USB-C Dock G5 5CG138ZWT2'),
+(40, 13, 1, 17, 1, 1, 1, '5CG203W0QN', '[["7","84:3A:5B:64:B2:7C"]]', 'Dockingstation HP USB-C Dock G5 5CG203W0QN'),
+(41, 4, 1, 18, 2, 3, 3, '5CG204326B', '[]', 'Laptop HP EliteBook 840G7 5CG204326B'),
+(42, 12, 1, 19, 1, 1, 1, 'CN413309Q4', '[]', 'Monitor HP E23 G4 CN413309Q4');
 
 -- --------------------------------------------------------
 
@@ -117,11 +124,11 @@ INSERT INTO `building` (`building_id`, `building_name`) VALUES
 CREATE TABLE IF NOT EXISTS `ci` (
   `ci_id` int(255) NOT NULL AUTO_INCREMENT,
   `ci_name` varchar(200) NOT NULL,
-  `ci_type` enum('string','select','url') NOT NULL,
+  `ci_type` enum('string','select','url','list') NOT NULL,
   `ci_regex` varchar(200) NOT NULL,
   PRIMARY KEY (`ci_id`),
   UNIQUE KEY `ci_name` (`ci_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Daten für Tabelle `ci`
@@ -131,10 +138,12 @@ INSERT INTO `ci` (`ci_id`, `ci_name`, `ci_type`, `ci_regex`) VALUES
 (4, 'Hostname', 'string', 'A-Z0-9'),
 (7, 'MAC Adresse', 'string', 'A-Z0-9\\:'),
 (8, 'IT-Poolverwalter', 'select', '["registriert","nicht registriert"]'),
-(15, 'Genucard-URL', 'url', 'a-zA-Z0-9\\?\\&\\=\\.\\:\\/\\_'),
+(15, 'Mobile Security Device', 'url', 'a-zA-Z0-9\\?\\&\\=\\.\\:\\/\\_'),
 (16, 'Homepage', 'url', 'a-zA-Z0-9\\?\\&\\=\\.\\:\\/\\_\\-'),
 (17, 'Lumen', 'string', '0-9'),
-(18, 'Auflösung', 'select', '["720p","1080p"]');
+(18, 'Auflösung', 'select', '["720p","1080p"]'),
+(19, 'Dockingstation', 'url', 'a-zA-Z0-9\\?\\&\\=\\.\\:\\/\\_\\-'),
+(20, 'Monitor', 'url', 'a-zA-Z0-9\\?\\&\\=\\.\\:\\/\\_\\-');
 
 -- --------------------------------------------------------
 
@@ -172,18 +181,23 @@ CREATE TABLE IF NOT EXISTS `lend` (
   `lend_creator_id` int(255) NOT NULL,
   `lend_user_id` int(255) NOT NULL,
   `lend_assets` longtext NOT NULL,
+  `lend_description` varchar(200) NOT NULL,
   `lend_start` date NOT NULL,
   `lend_end` date NOT NULL,
   `lend_archived` enum('0','1') NOT NULL DEFAULT '0',
-  PRIMARY KEY (`lend_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+  PRIMARY KEY (`lend_id`),
+  KEY `lend_creator_id` (`lend_creator_id`),
+  KEY `lend_user_id` (`lend_user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Daten für Tabelle `lend`
 --
 
-INSERT INTO `lend` (`lend_id`, `lend_document_nr`, `lend_creator_id`, `lend_user_id`, `lend_assets`, `lend_start`, `lend_end`, `lend_archived`) VALUES
-(2, 1649169741, 11549851, 10103631, '["25","29"]', '2022-04-05', '2022-04-30', '0');
+INSERT INTO `lend` (`lend_id`, `lend_document_nr`, `lend_creator_id`, `lend_user_id`, `lend_assets`, `lend_description`, `lend_start`, `lend_end`, `lend_archived`) VALUES
+(12, 1649411166, 11549851, 11837260, '["21"]', '', '2022-04-08', '2022-04-09', '0'),
+(13, 1649773202, 11549851, 11549851, '["30","29"]', '', '2022-04-12', '2022-04-22', '1'),
+(14, 1649773202, 11549851, 11549851, '["30","29"]', '', '2022-04-12', '2022-04-22', '1');
 
 -- --------------------------------------------------------
 
@@ -196,7 +210,7 @@ CREATE TABLE IF NOT EXISTS `model` (
   `model_name` varchar(200) NOT NULL,
   PRIMARY KEY (`model_id`),
   UNIQUE KEY `model_name` (`model_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Daten für Tabelle `model`
@@ -205,15 +219,19 @@ CREATE TABLE IF NOT EXISTS `model` (
 INSERT INTO `model` (`model_id`, `model_name`) VALUES
 (7, 'A 415'),
 (5, 'B525'),
+(19, 'E23 G4'),
 (10, 'EH-416'),
 (12, 'EliteBook 840G5'),
 (9, 'EliteBook 840G6'),
+(18, 'EliteBook 840G7'),
 (1, 'EliteDisplay E231'),
 (2, 'EliteDisplay E232'),
 (13, 'FZ-55'),
 (14, 'Genucard 3'),
 (15, 'L2245W'),
 (8, 'ProBook 640G2'),
+(17, 'USB-C Dock G5'),
+(16, 'USB-C Mini Dock'),
 (11, 'XJ-A252');
 
 -- --------------------------------------------------------
@@ -317,7 +335,7 @@ CREATE TABLE IF NOT EXISTS `room` (
   `room_name` varchar(200) NOT NULL,
   PRIMARY KEY (`room_id`),
   UNIQUE KEY `room_name` (`room_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Daten für Tabelle `room`
@@ -325,6 +343,7 @@ CREATE TABLE IF NOT EXISTS `room` (
 
 INSERT INTO `room` (`room_id`, `room_name`) VALUES
 (1, 'Eingang'),
+(5, 'R. 1.20'),
 (3, 'R. 1.33'),
 (4, 'R. 18');
 
@@ -339,7 +358,7 @@ CREATE TABLE IF NOT EXISTS `type` (
   `type_name` varchar(200) NOT NULL,
   PRIMARY KEY (`type_id`),
   UNIQUE KEY `type_name` (`type_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
 
 --
 -- Daten für Tabelle `type`
@@ -347,6 +366,7 @@ CREATE TABLE IF NOT EXISTS `type` (
 
 INSERT INTO `type` (`type_id`, `type_name`) VALUES
 (3, 'Beamer'),
+(13, 'Dockingstation'),
 (7, 'Drucker'),
 (4, 'Laptop'),
 (11, 'Mobile Security Device'),
@@ -375,6 +395,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `user_salt` varchar(10) NOT NULL,
   `user_active` enum('0','1') NOT NULL DEFAULT '0',
   `user_admin` enum('0','1') NOT NULL DEFAULT '0',
+  `user_failed_login` enum('0','1','2') NOT NULL DEFAULT '0',
   `user_keywords` longtext NOT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_email` (`user_email`),
@@ -388,11 +409,10 @@ CREATE TABLE IF NOT EXISTS `user` (
 -- Daten für Tabelle `user`
 --
 
-INSERT INTO `user` (`user_id`, `user_rank_id`, `user_vname`, `user_name`, `user_email`, `user_building_id`, `user_floor_id`, `user_room_id`, `user_password`, `user_salt`, `user_active`, `user_admin`, `user_keywords`) VALUES
-(10103631, 26, 'Oliver', 'Diester', 'oliverdiester@bundeswehr.org', 1, 1, 1, 'e82ee6a97cf70d44602d52717bc85387fc02df0ef062f3aab43ac53905d8bf3f', 'K92GfL%Eau', '0', '0', '10103631 Oberstabsbootsmann Oliver Diester oliverdiester@bundeswehr.org'),
-(11549851, 12, 'Alexander', 'Brosch', 'alexanderbrosch@bundeswehr.org', 2, 3, 3, '78be7d99d95e79e9807476f6964f97c8560ee703c9aff44d8d94f1f8e8b81b56', 'j2GVy94PPP', '1', '1', '11549851 Obermaat Alexander Brosch alexanderbrosch@bundeswehr.org'),
-(11761012, 12, 'Marcin', 'Jurek', 'marcinjurek@bundeswehr.org', 1, 1, 1, 'cbae6a38acaaa78ec88d6a62a864cab361efe9381405961e28495c54b66fc587', 'LbDJSBAIpH', '0', '0', '11761012 Obermaat Marcin Jurek marcinjurek@bundeswehr.org'),
-(11837260, 24, 'Arne', 'Roemer', 'arne1roemer@bundeswehr.org', 1, 1, 1, 'd175051a5031cd32593c4144e6158cc41cd75c56bb08ab435ec3cda996a81dfc', 'N6wZEYEI6Q', '0', '0', '11837260 Stabsbootsmann Arne Roemer arne1roemer@bundeswehr.org');
+INSERT INTO `user` (`user_id`, `user_rank_id`, `user_vname`, `user_name`, `user_email`, `user_building_id`, `user_floor_id`, `user_room_id`, `user_password`, `user_salt`, `user_active`, `user_admin`, `user_failed_login`, `user_keywords`) VALUES
+(10103631, 26, 'Oliver', 'Diester', 'oliverdiester@bundeswehr.org', 2, 3, 5, 'e82ee6a97cf70d44602d52717bc85387fc02df0ef062f3aab43ac53905d8bf3f', 'K92GfL%Eau', '0', '0', '0', '10103631 Oberstabsbootsmann Oliver Diester oliverdiester@bundeswehr.org'),
+(11549851, 12, 'Alexander', 'Brosch', 'alexanderbrosch@bundeswehr.org', 2, 3, 3, '78be7d99d95e79e9807476f6964f97c8560ee703c9aff44d8d94f1f8e8b81b56', 'j2GVy94PPP', '1', '1', '0', '11549851 Obermaat Alexander Brosch alexanderbrosch@bundeswehr.org'),
+(11837260, 24, 'Arne', 'Roemer', 'arne1roemer@bundeswehr.org', 1, 1, 1, 'd175051a5031cd32593c4144e6158cc41cd75c56bb08ab435ec3cda996a81dfc', 'N6wZEYEI6Q', '0', '0', '0', '11837260 Stabsbootsmann Arne Roemer arne1roemer@bundeswehr.org');
 
 -- --------------------------------------------------------
 
@@ -432,6 +452,13 @@ ALTER TABLE `asset`
   ADD CONSTRAINT `asset_ibfk_4` FOREIGN KEY (`asset_building_id`) REFERENCES `building` (`building_id`),
   ADD CONSTRAINT `asset_ibfk_5` FOREIGN KEY (`asset_floor_id`) REFERENCES `floor` (`floor_id`),
   ADD CONSTRAINT `asset_ibfk_6` FOREIGN KEY (`asset_room_id`) REFERENCES `room` (`room_id`);
+
+--
+-- Constraints der Tabelle `lend`
+--
+ALTER TABLE `lend`
+  ADD CONSTRAINT `lend_ibfk_1` FOREIGN KEY (`lend_creator_id`) REFERENCES `user` (`user_id`),
+  ADD CONSTRAINT `lend_ibfk_2` FOREIGN KEY (`lend_user_id`) REFERENCES `user` (`user_id`);
 
 --
 -- Constraints der Tabelle `user`
