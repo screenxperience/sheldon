@@ -39,31 +39,30 @@ function edit(ID) {
 	
 	ch_style('attr-show-'+ID,'display','none');
 	
+	ch_style('attr-input-'+ID,'display','block');
+	
 	ch_style('attr-placeholder-'+ID,'display','none');
 	
 	ch_style('attr-edit-'+ID,'display','none');
-	
-	ch_style('attr-input-'+ID,'display','block');
 	
 	ch_style('attr-cancel-'+ID,'display','block');
 	
 	ch_style('attr-save-'+ID,'display','block');
 	
 }
-function cEdit(ID) {
+function cedit(ID) {
 	
 	ch_style('attr-show-'+ID,'display','block');
+	
+	ch_style('attr-input-'+ID,'display','none');
 	
 	ch_style('attr-placeholder-'+ID,'display','block');
 	
 	ch_style('attr-edit-'+ID,'display','block');
 	
-	ch_style('attr-input-'+ID,'display','none');
-	
 	ch_style('attr-cancel-'+ID,'display','none');
 	
 	ch_style('attr-save-'+ID,'display','none');
-	
 }
 
 window.onresize = function() {

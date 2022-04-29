@@ -8,7 +8,7 @@ $sql = mysqli_connect($app_sqlhost,$app_sqluser,$app_sqlpasswd,$app_sqldb);
 if(!$sql)
 {
 	$output .= '<div class="container">';
-	$output .= '<div class="content-center container white">';
+	$output .= '<div class="content-center container white-alpha">';
 	$output .= '<h1>Error</h1>';
 	$output .= '<div class="panel dark">';
 	$output .= '<p>Es konnte keine Datenbankverbindung hergestellt werden.</p>';
@@ -25,7 +25,7 @@ else
 		if(empty($_GET['category']))
 		{
 			$output .= '<div class="container">';
-			$output .= '<div class="content-center container white">';
+			$output .= '<div class="content-center container white-alpha">';
 			$output .= '<h1>Error</h1>';
 			$output .= '<div class="panel dark">';
 			$output .= '<p>Es konnte keine Datenbankverbindung hergestellt werden.</p>';
@@ -35,7 +35,7 @@ else
 		}
 		else
 		{
-			if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['category']) == 0)
+			if(preg_match('/[^a-z]/',$_GET['category']) == 0)
 			{
 				$allowed_category = array('asset','user','ci','cis','vendor','model','type','building','floor','room');
 				
@@ -46,7 +46,7 @@ else
 					$key = array_search($_GET['category'],$allowed_category);
 					
 					$output .= '<div class="container">';
-					$output .= '<div class="content-center container white">';
+					$output .= '<div class="content-center container white-alpha">';
 					$output .= '<h1>'.$category_german[$key].' hinzuf&uuml;gen</h1>';
 							
 					if($_GET['category'] == $allowed_category[0])
@@ -55,13 +55,13 @@ else
 						{
 							if(empty($_GET['type_id']) || empty($_GET['vendor_id']) || empty($_GET['model_id']) || empty($_GET['asset_serial']))
 							{
-								$output .= '<div class="panel dark">';
+								$output .= '<div class="panel black-alpha">';
 								$output .= '<p>Es wurden nicht alle Daten gesendet.</p>';
 								$output .= '</div>';
 							}
 							else
 							{
-								if(preg_match('/[^'.$app_regex['number'].']/',$_GET['type_id']) == 0)
+								if(preg_match('/[^0-9]/',$_GET['type_id']) == 0)
 								{
 									$query = sprintf("
 									SELECT type_name
@@ -75,7 +75,7 @@ else
 									{
 										$type_name = $row['type_name'];
 										
-										if(preg_match('/[^'.$app_regex['number'].']/',$_GET['vendor_id']) == 0)
+										if(preg_match('/[^0-9]/',$_GET['vendor_id']) == 0)
 										{
 											$query = sprintf("
 											SELECT vendor_name
@@ -89,7 +89,7 @@ else
 											{
 												$vendor_name = $row['vendor_name'];
 												
-												if(preg_match('/[^'.$app_regex['number'].']/',$_GET['model_id']) == 0)
+												if(preg_match('/[^0-9]/',$_GET['model_id']) == 0)
 												{
 													$query = sprintf("
 													SELECT model_name
@@ -103,7 +103,7 @@ else
 													{
 														$model_name = $row['model_name'];
 														
-														if(preg_match('/[^'.$app_regex['loweruppernumbersz'].']/',$_GET['asset_serial']) == 0)
+														if(preg_match('/[^A-Z0-9\-\.]/',$_GET['asset_serial']) == 0)
 														{	
 															$asset_cis = array();
 															
@@ -126,66 +126,62 @@ else
 												
 															if($sql->affected_rows == 1)
 															{
-																$output .= '<div class="panel dark">';
+																$output .= '<div class="panel black-alpha">';
 																$output .= '<p><strong>'.$_GET['asset_serial'].'</strong> wurde hinzugef&uuml;gt.</p>';
 																$output .= '</div>';
 															}
 															else
 															{
-																$output .= '<div class="panel dark">';
+																$output .= '<div class="panel black-alpha">';
 																$output .= '<p>Es konnte kein Asset hinzugef&uuml;gt werden.</p>';
 																$output .= '</div>';
 															}
 														}
 														else
-														{
-															$regex = str_replace('\s',' Leerzeichen ',$app_regex['loweruppernumbersz']);
-														
-															$regex = str_replace('\\','',$regex);
-															
-															$output .= '<div class="panel dark">';
-															$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r die Seriennummer: '.$regex.'</p>';
+														{	
+															$output .= '<div class="panel black-alpha">';
+															$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r die Seriennummer: A-Z, 0-9, -.</p>';
 															$output .= '</div>';
 														}
 													}
 													else
 													{
-														$output .= '<div class="panel dark">';
+														$output .= '<div class="panel black-alpha">';
 														$output .= '<p>Es ist kein Modell mit der gesendeten ID vorhanden.</p>';
 														$output .= '</div>';
 													}
 												}
 												else
 												{
-													$output .= '<div class="panel dark">';
+													$output .= '<div class="panel black-alpha">';
 													$output .= '<p>Die ModellID besteht nur aus Zahlen.</p>';
 													$output .= '</div>';
 												}
 											}
 											else
 											{
-												$output .= '<div class="panel dark">';
+												$output .= '<div class="panel black-alpha">';
 												$output .= '<p>Es ist kein Hersteller mit der gesendeten ID vorhanden.</p>';
 												$output .= '</div>';
 											}
 										}
 										else
 										{
-											$output .= '<div class="panel dark">';
+											$output .= '<div class="panel black-alpha">';
 											$output .= '<p>Die HerstellerID besteht nur aus Zahlen.</p>';
 											$output .= '</div>';
 										}
 									}
 									else
 									{
-										$output .= '<div class="panel dark">';
+										$output .= '<div class="panel black-alpha">';
 										$output .= '<p>Es ist kein Typ mit der gesendeten ID vorhanden.</p>';
 										$output .= '</div>';
 									}
 								}
 								else
 								{
-									$output .= '<div class="panel dark">';
+									$output .= '<div class="panel black-alpha">';
 									$output .= '<p>Die TypID besteht nur aus Zahlen.</p>';
 									$output .= '</div>';
 								}
@@ -194,7 +190,7 @@ else
 						
 						$output .= '<form action="add.php" method="get">';
 						$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
-						$output .= '<p><select class="ipt-default" name="type_id">';
+						$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="type_id">';
 						$output .= '<option value="">Typ w&auml;hlen</option>';
 								
 						$query = "
@@ -209,7 +205,7 @@ else
 						}
 								
 						$output .= '</select></p>';
-						$output .= '<p><select class="ipt-default" name="vendor_id">';
+						$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="vendor_id">';
 						$output .= '<option value="">Hersteller w&auml;hlen</option>';
 								
 						$query = "
@@ -224,7 +220,7 @@ else
 						}
 								
 						$output .= '</select></p>';
-						$output .= '<p><select class="ipt-default" name="model_id">';
+						$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="model_id">';
 						$output .= '<option value="">Modell w&auml;hlen</option>';
 								
 						$query = "
@@ -239,8 +235,8 @@ else
 						}
 								
 						$output .= '</select></p>';
-						$output .= '<p><input class="ipt-default" name="asset_serial" placeholder="Seriennummer"/></p>';
-						$output .= '<p><button class="block btn-default light-blue">weiter <i class="fas fa-arrow-right"></i></button></p>';
+						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" name="asset_serial" placeholder="Seriennummer"/></p>';
+						$output .= '<p><button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">weiter <i class="fas fa-arrow-right"></i></button></p>';
 						$output .= '<input type="hidden" name="send" value="1"/>';
 						$output .= '</form>';
 					}
@@ -254,15 +250,15 @@ else
 						{
 							if(empty($_GET['user_id']) || empty($_GET['user_rank_id']) || empty($_GET['user_vname']) || empty($_GET['user_name']) || empty($_GET['user_email']))
 							{
-								$output .= '<div class="panel dark">';
+								$output .= '<div class="panel black-alpha">';
 								$output .= '<p>Es wurden nicht alle Daten gesendet.</p>';
 								$output .= '</div>';
 							}
 							else
 							{
-								if(strlen($_GET['user_id']) == 8 && preg_match('/[^'.$app_regex['number'].']/',$_GET['user_id']) == 0)
+								if(strlen($_GET['user_id']) == 8 && preg_match('/[^0-9]/',$_GET['user_id']) == 0)
 								{
-									if(preg_match('/[^'.$app_regex['number'].']/',$_GET['user_rank_id']) == 0)
+									if(preg_match('/[^0-9]/',$_GET['user_rank_id']) == 0)
 									{
 										$query = sprintf("
 										SELECT rank_name_long
@@ -274,11 +270,11 @@ else
 											
 										if($row = $result->fetch_array(MYSQLI_ASSOC))
 										{	
-											if(preg_match('/[^'.$app_regex['lowerupperumlsz'].']/',$_GET['user_vname']) == 0)
+											if(preg_match('/[^a-zA-ZöäüÖÄÜß\-\s]/',$_GET['user_vname']) == 0)
 											{
-												if(preg_match('/[^'.$app_regex['lowerupperumlsz'].']/',$_GET['user_name']) == 0)
+												if(preg_match('/[^a-zA-ZöäüÖÄÜß\-\s]/',$_GET['user_name']) == 0)
 												{
-													preg_match('/'.$app_regex['email'].'/',$_GET['user_email'],$matches);
+													preg_match('/^[a-zA-Z0-9]{1,}+\@{1}+[a-zA-Z]{1,}+\.{1}+[a-zA-Z]{1,}$/',$_GET['user_email'],$matches);
 													
 													if(!empty($matches))
 													{
@@ -318,13 +314,13 @@ else
 																			
 																if($sql->affected_rows == 1)
 																{
-																	$output .= '<div class="panel dark">';
+																	$output .= '<div class="panel black-alpha">';
 																	$output .= '<p><strong>'.$_GET['user_id'].'</strong> wurde hinzugef&uuml;gt.</p>';
 																	$output .= '</div>';
 																}
 																else
 																{
-																	$output .= '<div class="panel dark">';
+																	$output .= '<div class="panel black-alpha">';
 																	$output .= '<p>Es konnte kein User hinzugef&uuml;gt werden.</p>';
 																	$output .= '<p>Personalnummer oder E-Mail-Adresse bereits vorhanden.</p>';
 																	$output .= '</div>';
@@ -332,60 +328,56 @@ else
 															}
 															else
 															{
-																$output .= '<div class="panel dark">';
+																$output .= '<div class="panel black-alpha">';
 																$output .= '<p>Verwenden Sie eine @bundeswehr.org E-Mail-Adresse.</p>';
 																$output .= '</div>';
 															}
 														}
 														else
 														{
-															$output .= '<div class="panel dark">';
+															$output .= '<div class="panel black-alpha">';
 															$output .= '<p>In der E-Mail-Adresse fehlt das @-Zeichen.</p>';
 															$output .= '</div>';		
 														}
 													}
 													else
 													{
-														$output .= '<div class="panel dark">';
+														$output .= '<div class="panel black-alpha">';
 														$output .= '<p>Geben Sie eine valide E-Mail-Adresse ein.</p>';
 														$output .= '</div>';
 													}
 												}
 												else
-												{
-													$regex = str_replace('\\','',$app_regex['lowerupperumlsz']);
-													
-													$output .= '<div class="panel dark">';
-													$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den Nachname: '.$regex.'</p>';
+												{	
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den Nachname: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
 													$output .= '</div>';
 												}
 											}
 											else
 											{
-												$regex = str_replace('\\','',$app_regex['lowerupperumlsz']);
-												
-												$output .= '<div class="panel dark">';
-												$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den Vorname: '.$regex.'</p>';
+												$output .= '<div class="panel black-alpha">';
+												$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den Vorname: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
 												$output .= '</div>';
 											}
 										}
 										else
 										{
-											$output .= '<div class="panel dark">';
+											$output .= '<div class="panel black-alpha">';
 											$output .= '<p>Es ist kein Dienstgrad mit der gesendeten ID vorhanden.</p>';
 											$output .= '</div>';
 										}
 									}
 									else
 									{
-										$output .= '<div class="panel dark">';
+										$output .= '<div class="panel black-alpha">';
 										$output .= '<p>Die DienstgradID besteht nur aus Zahlen.</p>';
 										$output .= '</div>';
 									}
 								}
 								else
 								{
-									$output .= '<div class="panel dark">';
+									$output .= '<div class="panel black-alpha">';
 									$output .= '<p>Die Personalnummer ist 8 Zeichen lang und besteht nur aus Zahlen.</p>';
 									$output .= '</div>';
 								}
@@ -394,8 +386,8 @@ else
 						
 						$output .= '<form action="add.php" method="get">';
 						$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
-						$output .= '<p><input class="ipt-default" type="number" name="user_id" placeholder="Personalnummer"/></p>';
-						$output .= '<p><select class="ipt-default" name="user_rank_id">';
+						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="number" name="user_id" placeholder="Personalnummer"/></p>';
+						$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="user_rank_id">';
 						$output .= '<option value="">Dienstgrad w&auml;hlen</option>';
 								
 						$query = "
@@ -410,10 +402,10 @@ else
 						}
 								
 						$output .= '</select></p>';
-						$output .= '<p><input class="ipt-default" type="text" name="user_vname" placeholder="Vorname"/></p>';
-						$output .= '<p><input class="ipt-default" type="text" name="user_name" placeholder="Nachname"/></p>';
-						$output .= '<p><input class="ipt-default" type="text" name="user_email" placeholder="E-Mail-Adresse"/></p>';
-						$output .= '<p><button class="block btn-default light-blue" type="submit">weiter <i class="fas fa-arrow-right"></i></button></p>';
+						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="user_vname" placeholder="Vorname"/></p>';
+						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="user_name" placeholder="Nachname"/></p>';
+						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="user_email" placeholder="E-Mail-Adresse"/></p>';
+						$output .= '<p><button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit">weiter <i class="fas fa-arrow-right"></i></button></p>';
 						$output .= '<input type="hidden" name="send" value="1"/>';
 						$output .= '</form>';
 					}
@@ -427,13 +419,13 @@ else
 							{
 								if(empty($_GET['ci_name']))
 								{
-									$output .= '<div class="panel dark">';
+									$output .= '<div class="panel black-alpha">';
 									$output .= '<p>Es wurde kein CI-Name gesendet.</p>';
 									$output .= '</div>';
 								}
 								else
 								{
-									if(preg_match('/[^'.$app_regex['lowerupperumlnumbersz'].']/',$_GET['ci_name']) == 0)
+									if(preg_match('/[^a-zA-ZöäüÖÄÜß0-9\-\.\(\)\s]/',$_GET['ci_name']) == 0)
 									{
 										$query = sprintf("
 										SELECT ci_id
@@ -445,7 +437,7 @@ else
 							
 										if($row = $result->fetch_array(MYSQLI_ASSOC))
 										{
-											$output .= '<div class="panel dark">';
+											$output .= '<div class="panel black-alpha">';
 											$output .= '<p><strong>'.$_GET['ci_name'].'</strong> ist bereits vorhanden.</p>';
 											$output .= '</div>';
 										}
@@ -458,10 +450,8 @@ else
 									}
 									else
 									{
-										$regex = str_replace('\\','',$app_regex['lowerupperumlnumbersz']);
-								
-										$output .= '<div class="panel dark">';
-										$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den CI-Name: '.$regex.'</p>';
+										$output .= '<div class="panel black-alpha">';
+										$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den CI-Name: a-z, A-Z, öäüÖÄÜß, 0-9, -.()</p>';
 										$output .= '</div>';
 									}
 								}
@@ -472,24 +462,24 @@ else
 								
 								if(empty($_GET['ci_name']) || empty($_GET['ci_type']))
 								{
+									$output .= '<div class="panel black-alpha">';
+									
 									if(empty($_GET['ci_name']))
 									{
-										$output .= '<div class="panel dark">';
-										$output .= '<p>Es wurde kein CI-Name gesendet</p>';
-										$output .= '</div>';
+										$output .= '<p>Es wurde kein CI-Name gesendet.</p>';
 										
 										$showform = 1;
 									}
 									else if(empty($_GET['ci_type']))
 									{
-										$output .= '<div class="panel dark">';
 										$output .= '<p>Es wurde kein CI-Typ gesendet.</p>';
-										$output .= '</div>';
 									}
+									
+									$output .= '</div>';
 								}
 								else
 								{
-									if(preg_match('/[^'.$app_regex['lowerupperumlnumbersz'].']/',$_GET['ci_name']) == 0)
+									if(preg_match('/[^a-zA-ZöäüÖÄÜß0-9\-\.\(\)\s]/',$_GET['ci_name']) == 0)
 									{
 										$query = sprintf("
 										SELECT ci_id
@@ -501,7 +491,7 @@ else
 										
 										if($row = $result->fetch_array(MYSQLI_ASSOC))
 										{
-											$output .= '<div class="panel dark">';
+											$output .= '<div class="panel black-alpha">';
 											$output .= '<p><strong>'.$_GET['ci_name'].'</strong> ist bereits vorhanden.</p>';
 											$output .= '</div>';
 											
@@ -509,7 +499,7 @@ else
 										}
 										else
 										{
-											if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['ci_type']) == 0)
+											if(preg_match('/[^a-z]/',$_GET['ci_type']) == 0)
 											{
 												$allowed_ci_types = array('string','select','url','list');
 											
@@ -519,14 +509,14 @@ else
 												}
 												else
 												{
-													$output .= '<div class="panel dark">';
+													$output .= '<div class="panel black-alpha">';
 													$output .= '<p>Es k&ouml;nnen nur folgende Typen verwendet werden: Zeichenkette,SelectBox,URL und Liste.</p>';
 													$output .= '</div>';
 												}
 											}
 											else
 											{
-												$output .= '<div class="panel dark">';
+												$output .= '<div class="panel black-alpha">';
 												$output .= '<p>Es k&ouml;nnen nur folgende Typen verwendet werden: Zeichenkette,SelectBox,URL und Liste.</p>';
 												$output .= '</div>';
 											}
@@ -534,10 +524,8 @@ else
 									}
 									else
 									{
-										$regex = str_replace('\\','',$app_regex['lowerupperumlnumbersz']);
-								
-										$output .= '<div class="panel dark">';
-										$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den CI-Name: '.$regex.'</p>';
+										$output .= '<div class="panel black-alpha">';
+										$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den CI-Name: a-z, A-Z, öäüÖÄÜß, 0-9, -.()</p>';
 										$output .= '</div>';
 										
 										$showform = 1;
@@ -573,7 +561,7 @@ else
 								}
 								else
 								{
-									if(preg_match('/[^'.$app_regex['lowerupperumlnumbersz'].']/',$_GET['ci_name']) == 0)
+									if(preg_match('/[^a-zA-ZöäüÖÄÜß0-9\-\.\(\)\s]/',$_GET['ci_name']) == 0)
 									{
 										$query = sprintf("
 										SELECT ci_id
@@ -585,7 +573,7 @@ else
 										
 										if($row = $result->fetch_array(MYSQLI_ASSOC))
 										{
-											$output .= '<div class="panel dark">';
+											$output .= '<div class="panel black-alpha">';
 											$output .= '<p><strong>'.$_GET['ci_name'].'</strong> ist bereits vorhanden.</p>';
 											$output .= '</div>';
 											
@@ -593,7 +581,7 @@ else
 										}
 										else
 										{
-											if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['ci_type']) == 0)
+											if(preg_match('/[^a-z]/',$_GET['ci_type']) == 0)
 											{
 												$allowed_ci_types = array('string','select','url','list');
 											
@@ -603,39 +591,25 @@ else
 													
 													if($_GET['ci_type'] == $allowed_ci_types[0])
 													{
-														if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['ci_regex']) != 0)
-														{
-															$output .= '<div class="panel dark">';
-															$output .= '<p>W&auml;hlen Sie einen Regex aus.</p>';
+														if(preg_match('/[^azAZ09öäüÖÄÜßs\-\:\\\.]/',$_GET['ci_regex']) != 0)
+														{	
+															$output .= '<div class="container black-alpha">';
+															$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den Regex: az, AZs, 09, öäüÖÄÜß, -:\.</p>';
 															$output .= '</div>';
 															
 															$exit = 1;
 														}
 														else
 														{
-															if(!array_key_exists($_GET['ci_regex'],$app_regex))
-															{
-																$output .= '<div class="panel dark">';
-																$output .= '<p>W&auml;hlen Sie einen Regex aus.</p>';
-																$output .= '</div>';
-															
-																$exit = 1;
-															}
-															else
-															{
-																$ci_regex = $app_regex[$_GET['ci_regex']];
-															}
+															$ci_regex = $_GET['ci_regex'];
 														}
 													}
 													else if($_GET['ci_type'] == $allowed_ci_types[1])
 													{
-														if(preg_match('/[^'.$app_regex['lowerupperumlnumbersz'].']/',$_GET['ci_regex']) != 0)
-														{
-															$regex = str_replace('\\','',$app_regex['lowerupperumlnumbersz']);
-															
-															$output .= '<div class="panel dark">';
-															$output .= '<p>Verwenden Sie nur folgende Zeichen: '.$regex.'</p>';
-															$output .= '<p>Das Komma(,) wird f&uuml;r die Auswahlm&ouml;glichkeiten verwendet.</p>';
+														if(preg_match('/[^a-zA-Z0-9öäüÖÄÜß\s\-\.\,]/',$_GET['ci_regex']) != 0)
+														{	
+															$output .= '<div class="container black-alpha">';
+															$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r die Auswahlm&ouml;glichkeiten: a-z, A-Z, 0-9, öäüÖÄÜß, -.,</p>';
 															$output .= '</div>';
 															
 															$exit = 1;
@@ -646,8 +620,8 @@ else
 															
 															if(!$pos)
 															{
-																$output .= '<div class="panel dark">';
-																$output .= '<p>Verwenden Sie ein Komma(,) um die Auswahlm&ouml;glichkeiten festzulegen.</p>';
+																$output .= '<div class="container black-alpha">';
+																$output .= '<p>Verwenden Sie ein Komma um die Auswahlm&ouml;glichkeiten festzulegen.</p>';
 																$output .= '</div>';
 															
 																$exit = 1;
@@ -662,10 +636,40 @@ else
 													}
 													else if($_GET['ci_type'] == $allowed_ci_types[2])
 													{
-														$ci_regex = $app_regex['url'];	
+														$ci_regex = 'a-zA-Z0-9\?\&\=\.\:\/\_\-';	
 													}
-													
-													if(empty($exit))
+													else if($_GET['ci_type'] == $allowed_ci_types[3])
+													{
+														if(preg_match('/[^a-zA-Z0-9öäüÖÄÜß\s\-\.\,]/',$_GET['ci_regex']) != 0)
+														{
+															$output .= '<div class="container black-alpha">';
+															$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r die Listeneintr&auml;ge: a-z, A-Z, 0-9, öäüÖÄÜß, -.,</p>';
+															$output .= '</div>';
+															
+															$exit = 1;
+														}
+														else
+														{
+															$pos = strpos($_GET['ci_regex'],',');
+															
+															if(!$pos)
+															{
+																$output .= '<div class="container black-alpha">';
+																$output .= '<p>Verwenden Sie ein Komma um die Listeneintr&auml;ge zu trennen.</p>';
+																$output .= '</div>';
+															
+																$exit = 1;
+															}
+															else
+															{
+																$ci_regex_arr = explode(',',$_GET['ci_regex']);
+																
+																$ci_regex = json_encode($ci_regex_arr);
+															}
+														}
+													}
+										
+													if(!$exit)
 													{
 														$query = sprintf("
 														INSERT INTO ci
@@ -679,7 +683,7 @@ else
 														
 														if($sql->affected_rows == 1)
 														{
-															$output .= '<div class="panel dark">';
+															$output .= '<div class="panel black-alpha">';
 															$output .= '<p><strong>'.$_GET['ci_name'].'</strong> wurde erfolgreich hinzugef&uuml;gt.</p>';
 															$output .= '</div>';
 															
@@ -687,7 +691,7 @@ else
 														}
 														else
 														{
-															$output .= '<div class="panel dark">';
+															$output .= '<div class="panel black-alpha">';
 															$output .= '<p>Es konnte kein CI hinzugef&uuml;gt werden.</p>';
 															$output .= '</div>';
 														}
@@ -695,8 +699,8 @@ else
 												}
 												else
 												{
-													$output .= '<div class="panel dark">';
-													$output .= '<p>Es k&ouml;nnen nur folgende Typen verwendet werden: Zeichenkette,SelectBox und URL.</p>';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Es k&ouml;nnen nur folgende Typen verwendet werden: Zeichenkette,SelectBox,URL und Liste.</p>';
 													$output .= '</div>';
 													
 													$showform = 2;
@@ -704,8 +708,8 @@ else
 											}
 											else
 											{
-												$output .= '<div class="panel dark">';
-												$output .= '<p>Es k&ouml;nnen nur folgende Typen verwendet werden: Zeichenkette,SelectBox und URL.</p>';
+												$output .= '<div class="panel black-alpha">';
+												$output .= '<p>Es k&ouml;nnen nur folgende Typen verwendet werden: Zeichenkette,SelectBox,URL und Liste.</p>';
 												$output .= '</div>';
 												
 												$showform = 2;
@@ -714,10 +718,8 @@ else
 									}
 									else
 									{
-										$regex = str_replace('\\','',$app_regex['lowerupperumlnumbersz']);
-								
-										$output .= '<div class="panel dark">';
-										$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den CI-Name: '.$regex.'</p>';
+										$output .= '<div class="panel black-alpha">';
+										$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den CI-Name: a-z, A-Z, öäüÖÄÜß, 0-9, -.()</p>';
 										$output .= '</div>';
 										
 										$showform = 1;
@@ -731,14 +733,14 @@ else
 						
 						if($showform == 1)
 						{								
-							$output .= '<p><input class="ipt-default" type="text" name="ci_name" placeholder="CI-Name"/></p>';
+							$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="ci_name" placeholder="CI-Name"/></p>';
 							$output .= '<p><input type="hidden" name="send" value="1"/></p>';
 						}
 						else if($showform == 2)
 						{
 							$output .= '<input type="hidden" name="ci_name" value="'.$_GET['ci_name'].'"/>';
-							$output .= '<div class="section ipt-default">'.$_GET['ci_name'].'</div>';
-							$output .= '<p><select class="ipt-default" name="ci_type">';
+							$output .= '<div class="section input-default border border-grey">'.$_GET['ci_name'].'</div>';
+							$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="ci_type">';
 							$output .= '<option disabled selected value="">CI-Typ w&auml;hlen</option>';
 							
 							foreach($allowed_ci_types as $type_name => $type_value)
@@ -753,50 +755,41 @@ else
 						{
 							$output .= '<input type="hidden" name="ci_name" value="'.$_GET['ci_name'].'"/>';
 							$output .= '<input type="hidden" name="ci_type" value="'.$_GET['ci_type'].'"/>';
-							$output .= '<div class="section ipt-default">'.$_GET['ci_name'].'</div>';
+							$output .= '<div class="section input-default border border-grey">'.$_GET['ci_name'].'</div>';
 							
 							if($_GET['ci_type'] == $allowed_ci_types[0])
 							{
-								$output .= '<div class="section ipt-default">Zeichenkette</div>';
-								$output .= '<p><select class="ipt-default" name="ci_regex">';
-								$output .= '<option value="">Regex w&auml;hlen</option>';
-								
-								foreach($app_regex as $regex_name => $regex_value)
-								{
-									$regex = str_replace('\s',' Leerzeichen ',$regex_value);
-									
-									$regex = str_replace('\\','',$regex);
-									
-									$output .= '<option value="'.$regex_name.'">'.$regex.'</option>';
-								}
-								
-								$output .= '</select></p>';
+								$output .= '<div class="section input-default border border-grey">Zeichenkette</div>';
+								$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="ci_regex" placeholder="CI-Regex"/></p>';
 							}
-							if($_GET['ci_type'] == $allowed_ci_types[1])
+							else if($_GET['ci_type'] == $allowed_ci_types[1])
 							{
-								$output .= '<div class="section ipt-default">SelectBox</div>';
-								$output .= '<p><input class="ipt-default" name="ci_regex" placeholder="Option 1,Option 2"/></p>';
+								$output .= '<div class="section input-default border border-grey">SelectBox</div>';
+								$output .= '<p><input class="input-default border border-grey focus-border-light-blue" name="ci_regex" placeholder="Option 1,Option 2"/></p>';
 							}
-							if($_GET['ci_type'] == $allowed_ci_types[2])
+							else if($_GET['ci_type'] == $allowed_ci_types[2])
 							{
-								$regex = str_replace('\\','',$app_regex['url']);
-								
-								$output .= '<div class="section ipt-default">URL</div>';
-								$output .= '<input type="hidden" name="ci_regex" value="url"/>';
-								$output .= '<div class="section ipt-default">'.$regex.'</div>';
+								$output .= '<div class="section input-default border border-grey">URL</div>';
+								$output .= '<input type="hidden" name="ci_regex" value="URL_REGEX"/>';
+								$output .= '<div class="section input-default border border-grey focus-border-light-blue">URL_REGEX</div>';
+							}
+							else if($_GET['ci_type'] == $allowed_ci_types[3])
+							{
+								$output .= '<div class="section input-default border border-grey">Liste</div>';
+								$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="ci_regex" placeholder="Eintrag1,Eintrag2,Eintrag3"/></p>';
 							}
 							
 							$output .= '<input type="hidden" name="send" value="3"/>';
 						}
 						
-						$output .= '<p><button class="block btn-default light-blue" type="submit">weiter <i class="fas fa-arrow-right"></i></button></p>';
+						$output .= '<p><button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit">weiter <i class="fas fa-arrow-right"></i></button></p>';
 						$output .= '</form>';
 					}
 					else if($_GET['category'] == $allowed_category[3])
 					{
 						if(!empty($_GET['id']))
 						{
-							if(preg_match('/[^'.$app_regex['number'].']/',$_GET['id']) == 0)
+							if(preg_match('/[^0-9]/',$_GET['id']) == 0)
 							{
 								$query = sprintf("
 								SELECT asset_cis
@@ -818,13 +811,13 @@ else
 										{
 											if(empty($_GET['ci_id']))
 											{
-												$output .= '<div class="panel dark">';
+												$output .= '<div class="panel black-alpha">';
 												$output .= '<p>Es wurde keine CI-ID gesendet.</p>';
 												$output .= '</div>';
 											}
 											else
 											{
-												if(preg_match('/[^'.$app_regex['number'].']/',$_GET['ci_id']) == 0)
+												if(preg_match('/[^0-9]/',$_GET['ci_id']) == 0)
 												{
 													$query = sprintf("
 													SELECT ci_name,ci_type,ci_regex
@@ -854,27 +847,27 @@ else
 												
 														if($exit)
 														{
-															$output .= '<div class="panel dark">';
+															$output .= '<div class="panel black-alpha">';
 															$output .= '<p>CI ist bereits vorhanden.</p>';
 															$output .= '</div>';
 														}
 														else
-														{
-															$allowed_ci_types = array('string','select','url');
+														{		
+															$allowed_ci_types = array('string','select','url','list');
 															
 															$showform = 2;
 														}
 													}
 													else
 													{
-														$output .= '<div class="panel dark">';
+														$output .= '<div class="panel black-alpha">';
 														$output .= '<p>Es wurde kein CI gefunden.</p>';
 														$output .= '</div>';
 													}
 												}
 												else
 												{
-													$output .= '<div class="panel dark">';
+													$output .= '<div class="panel black-alpha">';
 													$output .= '<p>Die CI-ID besteht nur aus Zahlen.</p>';
 													$output .= '</div>';
 												}
@@ -882,13 +875,13 @@ else
 										}
 										else if($_GET['send'] == 2)
 										{	
-											$allowed_ci_types = array('string','select','url');
+											$allowed_ci_types = array('string','select','url','list');
 											
 											$showform = 2;
 											
 											if(empty($_GET['ci_id']) || $_GET['ci_value'] == "")
 											{
-												$output .= '<div class="panel dark">';
+												$output .= '<div class="panel black-alpha">';
 												
 												if(empty($_GET['ci_id']))
 												{
@@ -905,7 +898,7 @@ else
 											}
 											else
 											{
-												if(preg_match('/[^'.$app_regex['number'].']/',$_GET['ci_id']) == 0)
+												if(preg_match('/[^0-9]/',$_GET['ci_id']) == 0)
 												{
 													$query = sprintf("
 													SELECT ci_name,ci_type,ci_regex
@@ -935,30 +928,36 @@ else
 														
 														if($exit)
 														{
-															$output .= '<div class="panel dark">';
+															$output .= '<div class="panel black-alpha">';
 															$output .= '<p>CI ist bereits vorhanden.</p>';
 															$output .= '</div>';
 														}
 														else
 														{
-															if($row['ci_type'] == 'string' || $row['ci_type'] == 'url')
+															if($row['ci_type'] == $allowed_ci_types[0] || $row['ci_type'] == $allowed_ci_types[2])
 															{
 																if(preg_match('/[^'.$row['ci_regex'].']/',$_GET['ci_value']) != 0)
 																{
+																	$regex = str_replace('\s',' Leerzeichen ',$row['ci_regex']);
+																	
 																	$regex = str_replace('\\','',$row['ci_regex']);
 																	
-																	$output .= '<div class="panel dark">';
+																	$output .= '<div class="panel black-alpha">';
 																	$output .= '<p>Verwenden Sie nur folgende Zeichen: '.$regex.'</p>';
 																	$output .= '</div>';
 																	
 																	$exit = 1;
 																}
-															}
-															else if($row['ci_type'] == 'select')
-															{
-																if(preg_match('/[^'.$app_regex['number'].']/',$_GET['ci_value']) != 0)
+																else
 																{
-																	$output .= '<div class="panel dark">';
+																	$ci_value = $_GET['ci_value'];
+																}
+															}
+															else if($row['ci_type'] == $allowed_ci_types[1])
+															{
+																if(preg_match('/[^0-9]/',$_GET['ci_value']) != 0)
+																{
+																	$output .= '<div class="panel black-alpha">';
 																	$output .= '<p>W&auml;hlen Sie eine Option aus.</p>';
 																	$output .= '</div>';
 																	
@@ -970,18 +969,35 @@ else
 																
 																	if(!array_key_exists($_GET['ci_value'],$regex_arr))
 																	{
-																		$output .= '<div class="panel dark">';
+																		$output .= '<div class="panel black-alpha">';
 																		$output .= '<p>W&auml;hlen Sie eine Option aus.</p>';
 																		$output .= '</div>';
 																		
 																		$exit = 1;
 																	}
+																	else
+																	{
+																		$ci_value = $_GET['ci_value'];
+																	}
+																}
+															}
+															else if($row['ci_type'] == $allowed_ci_types[3])
+															{
+																if(preg_match('/[^a-zA-Z0-9öäüÖÄÜß\s\-\.\,]/',$_GET['ci_value']) != 0)
+																{
+																	$output .= '<div class="panel black-alpha">';
+																	$output .= '<p>Verwenden Sie nur folgenden Zeichen in ihrer Liste: a-z, A-Z, 0-9, öäüÖÄÜß, -.,</p>';
+																	$output .= '</div>';
+																}
+																else
+																{
+																	$ci_value = explode(',',$_GET['ci_value']);
 																}
 															}
 															
-															if(empty($exit))
+															if(!$exit)
 															{
-																$asset_ci = array($_GET['ci_id'],$_GET['ci_value']);
+																$asset_ci = array($_GET['ci_id'],$ci_value);
 																
 																array_push($asset_cis,$asset_ci);
 																
@@ -996,7 +1012,7 @@ else
 																
 																if($sql->affected_rows == 1)
 																{
-																	$output .= '<div class="panel dark">';
+																	$output .= '<div class="panel black-alpha">';
 																	$output .= '<p>CI wurde erfolgreich hinzugef&uuml;gt.</p>';
 																	$output .= '</div>';
 																	
@@ -1006,7 +1022,7 @@ else
 																}
 																else
 																{
-																	$output .= '<div class="panel dark">';
+																	$output .= '<div class="panel black-alpha">';
 																	$output .= '<p>CI konnte nicht hinzugef&uuml;gt werden.</p>';
 																	$output .= '</div>';
 																}
@@ -1015,7 +1031,7 @@ else
 													}
 													else
 													{
-														$output .= '<div class="panel dark">';
+														$output .= '<div class="panel black-alpha">';
 														$output .= '<p>Es wurde kein CI gefunden.</p>';
 														$output .= '</div>';
 														
@@ -1024,7 +1040,7 @@ else
 												}
 												else
 												{
-													$output .= '<div class="panel dark">';
+													$output .= '<div class="panel black-alpha">';
 													$output .= '<p>Die CI-ID besteht nur aus Zahlen.</p>';
 													$output .= '</div>';
 													
@@ -1042,7 +1058,7 @@ else
 										
 										if($showform == 1)
 										{
-											$output .= '<p><select class="ipt-default" name="ci_id">';
+											$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="ci_id">';
 									
 											$query = "
 											SELECT ci_id,ci_name
@@ -1061,21 +1077,23 @@ else
 										else if($showform == 2)
 										{
 											$output .= '<input type="hidden" name="ci_id" value="'.$_GET['ci_id'].'"/>';
-											$output .= '<div class="section ipt-default">'.$row['ci_name'].'</div>';
+											$output .= '<div class="section input-default border border-grey">'.$row['ci_name'].'</div>';
 											
 											if($row['ci_type'] == $allowed_ci_types[0])
 											{
+												$regex = str_replace('\s',' Leerzeichen ',$row['ci_regex']);
+												
 												$regex = str_replace('\\','',$row['ci_regex']);
 												
-												$output .= '<div class="section ipt-default">Zeichenkette</div>';
-												$output .= '<p><input class="ipt-default" type="text" name="ci_value" placeholder="'.$regex.'"/></p>';
+												$output .= '<div class="section input-default border border-grey">Zeichenkette</div>';
+												$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="ci_value" placeholder="'.$regex.'"/></p>';
 											}
 											else if($row['ci_type'] == $allowed_ci_types[1])
 											{
 												$regex_arr = json_decode($row['ci_regex']);
 												
-												$output .= '<div class="section ipt-default">SelectBox</div>';
-												$output .= '<p><select class="ipt-default" name="ci_value">';
+												$output .= '<div class="section input-default border border-grey">SelectBox</div>';
+												$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="ci_value">';
 												$output .= '<option value="">Option w&auml;hlen</option>';
 												
 												for($i = 0; $i < count($regex_arr); $i++)
@@ -1086,24 +1104,31 @@ else
 												$output .= '</select></p>';
 											}
 											else if($row['ci_type'] == $allowed_ci_types[2])
+											{	
+												$output .= '<div class="section input-default border border-grey">URL</div>';
+												$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="url" name="ci_value" placeholder="http://"/></p>';
+											}
+											else if($row['ci_type'] == $allowed_ci_types[3])
 											{
-												$regex = str_replace('\\','',$row['ci_regex']);
+												$ci_value = json_decode($row['ci_regex']);
 												
-												$output .= '<div class="section ipt-default">URL</div>';
-												$output .= '<p><input class="ipt-default" type="url" name="ci_value" placeholder="'.$regex.'"/></p>';
+												$ci_value = implode(',',$ci_value);
+												
+												$output .= '<div class="section input-default border border-grey">Liste</div>';
+												$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="ci_value" placeholder="Eintrag1,Eintrag2,Eintrag3" value="'.$ci_value.'"/></p>';
 											}
 														
 											$output .= '<input type="hidden" name="send" value="2"/>';
 										}
 										
-										$output .= '<p><button class="block btn-default light-blue" type="submit">weiter <i class="fas fa-arrow-right"></i></button></p>';
+										$output .= '<p><button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit">weiter <i class="fas fa-arrow-right"></i></button></p>';
 										$output .= '</form>';
 									}
 								}
 								else
 								{
 									$output .= '<h1>Error</h1>';
-									$output .= '<div class="panel dark">';
+									$output .= '<div class="panel black-alpha">';
 									$output .= '<p>Es wurde kein Asset gefunden.</p>';
 									$output .= '</div>';
 								}
@@ -1111,7 +1136,7 @@ else
 							else
 							{
 								$output .= '<h1>Error</h1>';
-								$output .= '<div class="panel dark">';
+								$output .= '<div class="panel black-alpha">';
 								$output .= '<p>Die AssetID besteht nur aus Zahlen.</p>';
 								$output .= '</div>';
 							}
@@ -1119,7 +1144,7 @@ else
 						else
 						{
 							$output .= '<h1>Error</h1>';
-							$output .= '<div class="panel dark">';
+							$output .= '<div class="panel black-alpha">';
 							$output .= '<p>Es wurde keine AssetID gesendet.</p>';
 							$output .= '</div>';
 						}
@@ -1128,17 +1153,21 @@ else
 					{
 						if(!empty($_GET['send']))
 						{
-							$value = $_GET[$_GET['category'].'_name'];
+							$get = $_GET;
+							
+							$category = $get['category'];
+							
+							$value = $get[$category.'_name'];
 							
 							if(empty($value))
 							{
-								$output .= '<div class="panel dark">';
-								$output .= '<p>Es wurde keine Eingabe gesendet.</p>';
+								$output .= '<div class="panel black-alpha">';
+								$output .= '<p>Bitte f&uuml;llen Sie alle Felder aus.</p>';
 								$output .= '</div>';
 							}
 							else
 							{
-								if(preg_match('/[^'.$app_regex['lowerupperumlnumbersz'].']/',$value) == 0)
+								if(preg_match('/[^a-zA-Z0-9öäüÖÄÜß\s\-\.]/',$value) == 0)
 								{
 									$query = sprintf("
 									INSERT INTO
@@ -1146,15 +1175,15 @@ else
 									(%s_name)
 									VALUES
 									('%s');",
-									$sql->real_escape_string($_GET['category']),
-									$sql->real_escape_string($_GET['category']),
+									$sql->real_escape_string($category),
+									$sql->real_escape_string($category),
 									$sql->real_escape_string($value));
 										
 									$sql->query($query);
 										
 									if($sql->affected_rows == 1)
 									{
-										$output .= '<div class="panel dark">';
+										$output .= '<div class="panel black-alpha">';
 										$output .= '<p><strong>'.$value.'</strong> wurde hinzugef&uuml;gt.</p>';
 										$output .= '</div>';
 									}
@@ -1166,41 +1195,34 @@ else
 									}
 								}
 								else
-								{
-									$regex = str_replace('\s',' Leerzeichen ',$app_regex['lowerupperumlnumbersz']);
-									
-									$regex = str_replace('\\','',$regex);
-									
-									$output .= '<div class="panel dark">';
-									$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r ihre Eingabe: '.$regex.'</p>';
+								{	
+									$output .= '<div class="panel black-alpha">';
+									$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r ihre Eingabe:a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
 									$output .= '</div>';
 								}
-							}			
+							}
 						}
 						
 						$output .= '<form action="add.php" method="get">';
 						$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
 						$output .= '<ul class="flex section">';
 						$output .= '<li class="col-s10 col-m10 col-l10">';
-						$output .= '<input class="ipt-default" type="text" name="'.$_GET['category'].'_name" placeholder="'.$category_german[$key].'"/>';
+						$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="'.$_GET['category'].'_name" placeholder="'.$category_german[$key].'"/>';
 						$output .= '</li>';
 						$output .= '<li class="col-s2 col-m2 col-l2">';
-						$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-arrow-right"></i></button>';
+						$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-arrow-right"></i></button>';
 						$output .= '</li>';
 						$output .= '</ul>';
 						$output .= '<input type="hidden" name="send" value="1"/>';
 						$output .= '</form>';
 					}
-					
-					$output .= '</div>';
-					$output .= '</div>';
 				}
 				else
 				{
 					$output .= '<div class="container">';
-					$output .= '<div class="content-center container white">';
+					$output .= '<div class="content-center container white-alpha">';
 					$output .= '<h1>Error</h1>';
-					$output .= '<div class="panel dark">';
+					$output .= '<div class="panel black-alpha">';
 					$output .= '<p>Die gesendete Kategorie kann nicht bearbeitet werden.</p>';
 					$output .= '</div>';
 					$output .= '</div>';
@@ -1210,9 +1232,9 @@ else
 			else
 			{
 				$output .= '<div class="container">';
-				$output .= '<div class="content-center container white">';
+				$output .= '<div class="content-center container white-alpha">';
 				$output .= '<h1>Error</h1>';
-				$output .= '<div class="panel dark">';
+				$output .= '<div class="panel black-alpha">';
 				$output .= '<p>Die gesendete Kategorie kann nicht bearbeitet werden.</p>';
 				$output .= '</div>';
 				$output .= '</div>';
@@ -1223,9 +1245,9 @@ else
 	else
 	{
 		$output .= '<div class="container">';
-		$output .= '<div class="content-center container white">';
+		$output .= '<div class="content-center container white-alpha">';
 		$output .= '<h1>Error</h1>';
-		$output .= '<div class="panel dark">';
+		$output .= '<div class="panel black-alpha">';
 		$output .= '<p>Es wurden keine Daten gesendet.</p>';
 		$output .= '</div>';
 		$output .= '</div>';

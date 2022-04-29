@@ -420,93 +420,130 @@ else
 														$result = $sql->query($query);
 																
 														if($row = $result->fetch_array(MYSQLI_ASSOC))
-														{
-															if($j == 2)
+														{		
+															if($row['ci_type'] == 'string' || $row['ci_type'] == 'select' || $row['ci_type'] == 'url')
 															{
-																$output .= '</ul>';
-																$output .= '<ul class="flex">';
-																		
-																$j = 0;
-															}
-																	
-															$output .= '<li class="col-s12 col-m12 col-l6">';
-															$output .= '<div class="margin">';
+																$output .= '<li class="col-s12 col-m12 col-l6">';
+																$output .= '<div class="margin">';
 															
-															$output .= '<form action="change.php" method="get">';
-															$output .= '<table><tr>';
-															$output .= '<td><a href="del.php?category=cis&id='.$_GET['id'].'&ci_id='.$i.'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab']).'"><i class="fas fa-times medium hover-rotate-90"></i></a>&nbsp;&nbsp;&nbsp;</td>';
-															$output .= '<td><h3>'.$row['ci_name'].'</h3></td>';
-															$output .= '</tr></table>';
-															$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
-															$output .= '<input type="hidden" name="id" value="'.$_GET['id'].'"/>';
-															$output .= '<input type="hidden" name="attr" value="cis"/>';
-															$output .= '<input type="hidden" name="ci_id" value="'.$i.'"/>';
-															$output .= '<ul class="flex">';
-																	
-															if($row['ci_type'] == 'string' || $row['ci_type'] == 'select')
-															{
-																$output .= '<li class="col-s10 col-m10 col-l10">';
+																$output .= '<form action="change.php" method="get">';
+																$output .= '<table><tr>';
+																$output .= '<td><a href="del.php?category=cis&id='.$_GET['id'].'&ci_id='.$i.'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab']).'"><i class="fas fa-times medium hover-rotate-90"></i></a>&nbsp;&nbsp;&nbsp;</td>';
+																$output .= '<td><h3>'.$row['ci_name'].'</h3></td>';
+																$output .= '</tr></table>';
+																$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
+																$output .= '<input type="hidden" name="id" value="'.$_GET['id'].'"/>';
+																$output .= '<input type="hidden" name="attr" value="cis"/>';
+																$output .= '<input type="hidden" name="ci_id" value="'.$i.'"/>';
+																$output .= '<ul class="flex">';
+																
+																if($row['ci_type'] == 'string' || $row['ci_type'] == 'select')
+																{	
+																	$output .= '<li class="col-s10 col-m10 col-l10">';
 																		
-																if($row['ci_type'] == 'string')
-																{
-																	$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="attr_value" placeholder="'.$row['ci_regex'].'" value="'.$ci_value.'"/>';
-																}
-																else if($row['ci_type'] == 'select')
-																{
-																	$ci_regex = json_decode($row['ci_regex']);
-																		
-																	$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
-																	$output .= '<option disabled selected value="">'.$ci_regex[$ci_value].'</option>';
-																		
-																	for($I = 0; $I < count($ci_regex); $I++)
+																	if($row['ci_type'] == 'string')
 																	{
-																		$output .= '<option value="'.$I.'">'.$ci_regex[$I].'</option>';
+																		$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" type="text" name="attr_value" placeholder="'.$row['ci_regex'].'" value="'.$ci_value.'"/>';
+																	}
+																	else if($row['ci_type'] == 'select')
+																	{
+																		$ci_regex = json_decode($row['ci_regex']);
+																		
+																		$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
+																		$output .= '<option disabled selected value="">'.$ci_regex[$ci_value].'</option>';
+																		
+																		for($I = 0; $I < count($ci_regex); $I++)
+																		{
+																			$output .= '<option value="'.$I.'">'.$ci_regex[$I].'</option>';
+																		}
+																		
+																		$output .= '</select>';
 																	}
 																		
-																	$output .= '</select>';
+																	$output .= '</li>';
+																	$output .= '<li class="col-s2 col-m2 col-l2">';
+																	$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
+																	$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
+																	$output .= '</li>';
 																}
-																		
+																else if($row['ci_type'] == 'url')
+																{		
+																	$host = parse_url($ci_value,PHP_URL_HOST);
+																			
+																	$output .= '<li class="col-s8 col-m8 col-l8">';
+																	$output .= '<div id="attr-show-'.$i.'" class="input-default border border-tbl border-grey nowrap overflow-hide"><a href="'.$ci_value.'" target="_blank">'.$ci_value.'</a></div>';
+																	$output .= '<input id="attr-input-'.$i.'" class="input-default border border-grey focus-border-light-blue" style="display:none;" type="url" name="attr_value" value="'.$ci_value.'"/>';
+																	$output .= '</li>';
+																	$output .= '<li class="col-s2 col-m2 col-l2">';
+																	$output .= '<div id="attr-placeholder-'.$i.'" class="input-default border border-tb border-grey text-center">';
+																			
+																	if($host == $_SERVER['HTTP_HOST'])
+																	{
+																		$output .= '<i class="fas fa-link"></i>';
+																	}
+																	else
+																	{
+																		$output .= '<i class="fas fa-external-link-alt"></i>';
+																	}
+																			
+																	$output .= '</div>';
+																	$output .= '<button id="attr-cancel-'.$i.'" onclick="cedit('.$i.');" class="block btn-default border border-red red hover-white hover-text-red" type="button" style="display:none;"><i class="fas fa-times"></i></button>';
+																	$output .= '</li>';
+																	$output .= '<li class="col-s2 col-m2 col-l2">';
+																	$output .= '<button id="attr-edit-'.$i.'" onclick="edit('.$i.');" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="button"><i class="fas fa-edit"></i></button>';
+																	$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
+																	$output .= '<button id="attr-save-'.$i.'" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit" style="display:none;"><i class="fas fa-save"></i></button>';
+																	$output .= '</li>';
+																}
+																
+																$output .= '</ul>';
+																$output .= '</form>';
+																$output .= '</div>';
 																$output .= '</li>';
-																$output .= '<li class="col-s2 col-m2 col-l2">';
-																$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
+															}
+															else if($row['ci_type'] == 'list')
+															{	
+																$ci_value_str = implode(',',$ci_value);
+																
+																$output .= '<li class="col-s12 col-m12 col-l12">';
+																$output .= '<div class="margin">';
+															
+																$output .= '<form action="change.php" method="get">';
+																$output .= '<table><tr>';
+																$output .= '<td><a href="del.php?category=cis&id='.$_GET['id'].'&ci_id='.$i.'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab']).'"><i class="fas fa-times medium hover-rotate-90"></i></a>&nbsp;&nbsp;&nbsp;</td>';
+																$output .= '<td><h3>'.$row['ci_name'].'</h3></td>';
+																$output .= '</tr></table>';
+																$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
+																$output .= '<input type="hidden" name="id" value="'.$_GET['id'].'"/>';
+																$output .= '<input type="hidden" name="attr" value="cis"/>';
+																$output .= '<input type="hidden" name="ci_id" value="'.$i.'"/>';
+																
+																$output .= '<div id="attr-show-'.$i.'">';
+																
+																for($J = 0; $J < count($ci_value); $J++)
+																{
+																	$output .= '<div class="inline container border border-light-blue light-blue" style="margin-top:16px;"><p>'.$ci_value[$J].'</p></div> ';
+																}
+																
+																$output .= '&nbsp;&nbsp;&nbsp;<i onclick="edit('.$i.');" class="fas fa-edit medium"></i>';
+																$output .= '</div>';
+																$output .= '<div id="attr-input-'.$i.'" style="display:none;">';
+																$output .= '<ul class="flex">';
+																$output .= '<li class="col-s2 col-m2 col-l1">';
+																$output .= '<button onclick="cedit('.$i.');" class="block btn-default border border-red red hover-white hover-text-red" type="button"><i class="fas fa-times"></i></button>';
+																$output .= '</li>';
+																$output .= '<li class="col-s8 col-m8 col-l10">';
+																$output .= '<input class="input-default border border-tb border-grey focus-border-light-blue" name="attr_value" value="'.$ci_value_str.'"/>';
+																$output .= '</li>';
+																$output .= '<li class="col-s2 col-m2 col-l1">';
 																$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit"><i class="fas fa-save"></i></button>';
 																$output .= '</li>';
-															}
-															else if($row['ci_type'] == 'url')
-															{	
-																$host = parse_url($ci_value,PHP_URL_HOST);
-																		
-																$output .= '<li class="col-s8 col-m8 col-l8">';
-																$output .= '<div id="attr-show-'.$i.'" class="input-default border border-tbl border-grey nowrap overflow-hide"><a href="'.$ci_value.'" target="_blank">'.$ci_value.'</a></div>';
-																$output .= '<input id="attr-input-'.$i.'" class="input-default border border-grey focus-border-light-blue" style="display:none;" type="url" name="attr_value" value="'.$ci_value.'"/>';
-																$output .= '</li>';
-																$output .= '<li class="col-s2 col-m2 col-l2">';
-																$output .= '<div id="attr-placeholder-'.$i.'" class="input-default border border-tb border-grey text-center">';
-																		
-																if($host == $_SERVER['HTTP_HOST'])
-																{
-																	$output .= '<i class="fas fa-link"></i>';
-																}
-																else
-																{
-																	$output .= '<i class="fas fa-external-link-alt"></i>';
-																}
-																		
+																$output .= '</ul>';
 																$output .= '</div>';
-																$output .= '<button id="attr-cancel-'.$i.'" onclick="cEdit('.$i.');" class="block btn-default border border-red red hover-white hover-text-red" type="button" style="display:none;"><i class="fas fa-times"></i></button>';
-																$output .= '</li>';
-																$output .= '<li class="col-s2 col-m2 col-l2">';
-																$output .= '<button id="attr-edit-'.$i.'" onclick="edit('.$i.');" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="button"><i class="fas fa-edit"></i></button>';
-																$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab='.$_GET['tab'].'"/>';
-																$output .= '<button id="attr-save-'.$i.'" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit" style="display:none;"><i class="fas fa-save"></i></button>';
+																$output .= '</form>';
+																$output .= '</div>';
 																$output .= '</li>';
 															}
-																	
-															$output .= '</form>';
-															$output .= '</div>';
-															$output .= '</li>';
-																	
-															$j++;
 														}
 													}
 													
@@ -732,9 +769,9 @@ else
 													$email = $row['user_email'];
 														
 													$output .= '<div class="nowrap overflow-scroll">';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue white text-light-blue" href="#">Allgemein</a>';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tl border-light-blue white text-light-blue" href="#">Allgemein</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tlr border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
 													$output .= '</div>';
 														
 													$output .= '<div class="black-alpha">';
@@ -870,9 +907,9 @@ else
 													$room = $row['room_name'];
 														
 													$output .= '<div class="nowrap overflow-scroll">';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue white text-light-blue" href="#">Lokation</a>';
-													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tl border-light-blue white text-light-blue" href="#">Lokation</a>';
+													$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tlr border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=lend&archived=0">Leihgaben</a>';
 													$output .= '</div>';
 														
 													$output .= '<div class="black-alpha">';
@@ -988,9 +1025,9 @@ else
 											else if($_GET['tab'] == $allowed_tabs[2])
 											{
 												$output .= '<div class="nowrap overflow-scroll">';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tbl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
-												$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-light-blue white text-light-blue" href="#">Leihgaben</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general">Allgemein</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tl border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=location">Lokation</a>';
+												$output .= '<a class="col-s6 col-m4 col-l4 btn-default border border-tlr border-light-blue white text-light-blue" href="#">Leihgaben</a>';
 												$output .= '</div>';
 												
 												$output .= '<div class="black-alpha">';
@@ -1186,11 +1223,16 @@ else
 								{
 									$output .= 'URL';
 								}
+								else if($row['ci_type'] == 'list')
+								{
+									$output .= 'Liste';
+								}
 								
 								$output .= '</option>';
 								$output .= '<option value="string">Zeichenkette</option>';
 								$output .= '<option value="select">Selectbox</option>';
 								$output .= '<option value="url">URL</option>';
+								$output .= '<option value="list">Liste</option>';
 								$output .= '</select>';
 								$output .= '</li>';
 								$output .= '<li class="col-s2 col-m2 col-l2">';
@@ -1200,7 +1242,7 @@ else
 								$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'"/>';
 								$output .= '</form>';
 									
-								if($row['ci_type'] == 'string' || $row['ci_type'] == 'select')
+								if($row['ci_type'] == 'string' || $row['ci_type'] == 'select' || $row['ci_type'] == 'list')
 								{
 									$output .= '<form action="change.php" method="get">';
 									$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
@@ -1211,21 +1253,9 @@ else
 								
 									if($row['ci_type'] == 'string')
 									{
-										$output .= '<select class="input-default border border-tbl border-grey focus-border-light-blue" name="attr_value">';
-										$output .= '<option selected disabled value="">'.$row['ci_regex'].'</option>';
-										
-										foreach($app_regex as $regex_name => $regex_value)
-										{
-											$regex = str_replace('\s',' Leerzeichen ',$regex_value);
-											
-											$regex = str_replace('\\','',$regex);
-											
-											$output .= '<option value="'.$regex_name.'">'.$regex.'</option>';
-										}
-										
-										$output .= '</select>';
+										$output .= '<input class="input-default border border-tbl border-grey focus-border-light-blue" placeholder="CI-Regex" value="'.$row['ci_regex'].'"/>';
 									}
-									else if($row['ci_type'] == 'select')
+									else if($row['ci_type'] == 'select' || $row['ci_type'] == 'list')
 									{
 										$regex_arr = json_decode($row['ci_regex']);
 										
@@ -1244,15 +1274,15 @@ else
 								}
 								else if($row['ci_type'] == 'url')
 								{
-									$output .= '<div class="section ipt-default border border-grey">'.$row['ci_regex'].'</div>';
+									$output .= '<div class="section input-default border border-grey">URL_REGEX</div>';
 								}
 							}
 							else
 							{
 								$output .= '<div class="container">';
-								$output .= '<div class="content-center container white">';
+								$output .= '<div class="content-center container white-alpha">';
 								$output .= '<h1>Error</h1>';
-								$output .= '<div class="panel dark">';
+								$output .= '<div class="panel black-alpha">';
 								$output .= '<p>Es wurde kein CI gefunden.</p>';
 								$output .= '</div>';
 								$output .= '</div>';

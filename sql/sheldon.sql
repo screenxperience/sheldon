@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 22. Apr 2022 um 10:06
+-- Erstellungszeit: 29. Apr 2022 um 10:26
 -- Server Version: 5.6.13
 -- PHP-Version: 5.4.17
 
@@ -47,49 +47,31 @@ CREATE TABLE IF NOT EXISTS `asset` (
   KEY `asset_building_id` (`asset_building_id`),
   KEY `asset_floor_id` (`asset_floor_id`),
   KEY `asset_room_id` (`asset_room_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=43 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=63 ;
 
 --
 -- Daten für Tabelle `asset`
 --
 
 INSERT INTO `asset` (`asset_id`, `asset_type_id`, `asset_vendor_id`, `asset_model_id`, `asset_building_id`, `asset_floor_id`, `asset_room_id`, `asset_serial`, `asset_cis`, `asset_keywords`) VALUES
-(3, 4, 1, 8, 2, 3, 3, '5CG812560Z', '[["4","P0120A6BXC"],["7","B4:B6:86:24:6D:A0"]]', 'Laptop HP Probook 640G2 5CG812560Z'),
-(4, 4, 1, 8, 2, 3, 3, '5CG8125KY7', '[["4","P0120A6BXC"],["7","B4:B6:86:24:6D:A0"],["16","https:\\/\\/support.hp.com\\/de-de\\/document\\/c04940851"]]', 'Laptop HP Probook 640G2 5CG8125KY7'),
-(5, 4, 1, 8, 1, 1, 1, '5CG8125KLP', '[["4","P0120AWS2C"],["7","B4:B6:86:24:B3:16"]]', 'Laptop HP Probook 640G2 5CG8125KLP'),
-(7, 4, 1, 8, 2, 3, 3, '5CG8125PLW', '[["4","P0120AXS9C"],["7","B4:B6:86:24:8E:4C"],["16","https:\\/\\/support.hp.com\\/de-de\\/document\\/c04940851"]]', 'Laptop HP Probook 640G2 5CG8125PLW'),
-(11, 4, 1, 8, 2, 3, 3, '5CG8125KW8', '[["4","P0120AWRSC"],["7","B4:B6:86:24:CD:FD"],["15","http:\\/\\/localhost\\/view.php?category=asset&id=32&tab=general"]]', 'Laptop HP Probook 640G2 5CG8125KW8'),
-(12, 4, 1, 8, 1, 1, 1, '5CG8125NLC', '[["4","P0120B5Q8C"],["7","B4:B6:86:24:3F:15"],["15","http:\\/\\/localhost\\/view.php?category=asset&id=31&tab=general"]]', 'Laptop HP Probook 640G2 5CG8125NLC'),
-(13, 4, 1, 8, 1, 1, 1, '5CG81251PD', '[["4","P0120AYYNC"],["7","B4:B6:86:24:0A:6D"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG81251PD'),
-(14, 4, 1, 8, 1, 1, 1, '5CG8125S2F', '[["4","P0120AWS8C"],["7","B4:B6:86:25:50:70"],["8","registriert"]]', 'Laptop HP Probook 640G2 5CG8125S2F'),
-(15, 4, 1, 8, 1, 1, 1, '5CG812565Y', '[["4","P0120A70EC"],["7","B4:B6:86:24:EB:03"],["8","registriert"]]', 'Laptop HP Probook 640G2 5CG812565Y'),
-(16, 4, 1, 8, 1, 1, 1, '5CG8125ND9', '[["4","P0120AWSEC"],["7","B4:B6:86:24:EF:C3"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125ND9'),
-(17, 4, 1, 8, 1, 1, 1, '5CG8125NK6', '[["4","P0120AWPHC"],["7","B4:B6:86:24:0F:60"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125NK6'),
-(18, 4, 1, 8, 1, 1, 1, '5CG8125NKD', '[["4","P0120BG38C"],["7","B4:B6:86:24:5F:D3"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125NKD'),
-(19, 4, 1, 8, 1, 1, 1, '5CG8125S06', '[["4","P0120A69TC"],["7","B4:B6:86:24:BE:07"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125S06'),
-(20, 4, 1, 8, 1, 1, 1, '5CG8125LFJ', '[["4","P0120B5Q1C"],["7","B4:B6:86:24:CE:F3"],["15","http:\\/\\/localhost\\/view.php?category=asset&id=30&tab=general"]]', 'Laptop HP Probook 640G2 5CG8125LFJ'),
-(21, 4, 1, 12, 1, 1, 1, '5CG9173XNC', '[]', 'Laptop HP EliteBook 840G5 5CG9173XNC'),
-(22, 4, 1, 8, 1, 1, 1, '5CG8125NBZ', '[["4","P0120AWRWC"],["7","B4:B6:86:24:FE:19"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125NBZ'),
-(23, 4, 1, 8, 1, 1, 1, '5CG8125MDC', '[["4","P0120AYPWC"],["7","B4:B6:86:25:11:EE"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125MDC'),
-(24, 4, 1, 8, 1, 1, 1, '5CG8125GLZ', '[["4","P0120AWV9C"],["7","B4:B6:86:25:21:7B"],["15","http:\\/\\/localhost\\/view.php?category=asset&id=33&tab=general"]]', 'Laptop HP Probook 640G2 5CG8125GLZ'),
-(25, 4, 1, 9, 2, 3, 5, '5CG0218NLP', '[["4","P0120BZKHC"],["7","B0:5C:DA:EE:EC:74"]]', 'Laptop HP EliteBook 840G6 5CG0218NLP'),
-(26, 4, 1, 8, 1, 1, 1, '5CG8125KVG', '[["4","P0120A67PC"],["7","B4:B6:86:24:7D:69"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125KVG'),
-(27, 4, 1, 8, 1, 1, 1, '5CG81259M9', '[["4","P0120AWRCC"],["7","B4:B6:86:25:70:AB"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG81259M9'),
-(28, 4, 1, 8, 1, 1, 1, '5CG8125N13', '[["4","P0120A69VC"],["7","B4:B6:86:24:CF:9D"],["8","nicht registriert"]]', 'Laptop HP Probook 640G2 5CG8125N13'),
-(29, 4, 1, 9, 2, 3, 3, '5CG017D9DT', '[["4","P0120BSKWC"],["7","B0:5C:DA:A9:0D:42"],["8","nicht registriert"]]', 'Laptop HP EliteBook 840G6 5CG017D9DT'),
-(30, 11, 18, 14, 2, 3, 3, '180485018591', '[]', 'Mobile Security Device Genua Genucard 3 180485018591'),
-(31, 11, 18, 14, 2, 3, 5, '180485018612', '[]', 'Mobile Security Device Genua Genucard 3 180485018612'),
-(32, 11, 18, 14, 1, 1, 1, '180485018625', '[["16","https:\\/\\/www.genua.de\\/it-sicherheitsloesungen\\/personal-security-device-genucard"]]', 'Mobile Security Device Genua Genucard 3 180485018625'),
-(33, 11, 18, 14, 1, 1, 1, '180485015149', '[["16","https:\\/\\/www.genua.de\\/it-sicherheitsloesungen\\/personal-security-device-genucard"]]', 'Mobile Security Device Genua Genucard 3 180485015149'),
-(34, 12, 1, 15, 3, 2, 4, 'CZK8170CL4', '[]', 'Monitor HP L2245W CZK8170CL4'),
-(35, 13, 1, 16, 2, 3, 3, 'THY13405VG', '[["7","34:99:71:DF:BC:30"]]', 'Dockingstation HP USB-C Mini Dock THY13405VG'),
-(36, 13, 1, 16, 2, 3, 3, 'THY13406M4', '[["7","34:99:71:DF:BF:F0"]]', 'Dockingstation HP USB-C Mini Dock THY13406M4'),
-(37, 13, 1, 16, 1, 1, 1, 'THY13409T7', '[["7","34:99:71:E1:08:86"]]', 'Dockingstation HP USB-C Mini Dock THY13409T7'),
-(38, 13, 1, 17, 1, 1, 1, '5CG138ZWSP', '[["7","84:3A:5B:38:6D:6F"]]', 'Dockingstation HP USB-C Dock G5 5CG138ZWSP'),
-(39, 13, 1, 17, 1, 1, 1, '5CG138ZWT2', '[["7","84:3A:5B:38:2E:1C"]]', 'Dockingstation HP USB-C Dock G5 5CG138ZWT2'),
-(40, 13, 1, 17, 1, 1, 1, '5CG203W0QN', '[["7","84:3A:5B:64:B2:7C"]]', 'Dockingstation HP USB-C Dock G5 5CG203W0QN'),
-(41, 4, 1, 18, 2, 3, 3, '5CG204326B', '[]', 'Laptop HP EliteBook 840G7 5CG204326B'),
-(42, 12, 1, 19, 1, 1, 1, 'CN413309Q4', '[]', 'Monitor HP E23 G4 CN413309Q4');
+(44, 14, 20, 22, 1, 1, 1, '5CG204326B', '[["28","DEUKEL1AMEF01I0"],["29","C0:18:03:CD:C3:53"],["30",["2x USB-A","2x USB-C","1x HDMI","1x Klinke 3.5mm","1x SC"]]]', 'Laptop HP EliteBook 840 G7 5CG204326B'),
+(45, 14, 20, 22, 1, 1, 1, '5CG2043PN3', '[]', 'Laptop HP EliteBook 840 G7 5CG2043PN3'),
+(46, 14, 20, 22, 1, 1, 1, '5CG2043PB4', '[]', 'Laptop HP EliteBook 840 G7 5CG2043PB4'),
+(47, 14, 20, 22, 1, 1, 1, '5CG2043PS8', '[]', 'Laptop HP EliteBook 840 G7 5CG2043PS8'),
+(48, 14, 20, 22, 1, 1, 1, '5CG20435ZG', '[]', 'Laptop HP EliteBook 840 G7 5CG20435ZG'),
+(49, 14, 20, 22, 1, 1, 1, '5CG2043QHY', '[]', 'Laptop HP EliteBook 840 G7 5CG2043QHY'),
+(50, 14, 20, 21, 1, 1, 1, '5CG1383JNX', '[]', 'Laptop HP EliteBook 840 G8 5CG1383JNX'),
+(51, 14, 20, 21, 1, 1, 1, '5CG1383HM7', '[["28","DEUKEL1AMEF01I3"],["29","E0:70:EA:DC:34:A5"],["30",["2x USB-A","2x USB-C","1x HDMI","1x Klinke 3.5mm","1x SC"]]]', 'Laptop HP EliteBook 840 G8 5CG1383HM7'),
+(52, 14, 20, 21, 1, 1, 1, '5CG1383HM2', '[["28","DEUKEL1AMEF01I5"],["29","E0:70:EA:DC:33:76"],["30",["2x USB-A","2x USB-C","1x HDMI","1x Klinke 3.5mm","1x SC"]]]', 'Laptop HP EliteBook 840 G8 5CG1383HM2'),
+(53, 14, 20, 21, 1, 1, 1, '5CG1380WV2', '[]', 'Laptop HP EliteBook 840 G8 5CG1380WV2'),
+(54, 14, 20, 21, 1, 1, 1, '5CG1380WTJ', '[]', 'Laptop HP EliteBook 840 G8 5CG1380WTJ'),
+(55, 14, 20, 21, 1, 1, 1, '5CG1380XHQ', '[]', 'Laptop HP EliteBook 840 G8 5CG1380XHQ'),
+(56, 14, 20, 21, 1, 1, 1, '5CG1380WT4', '[]', 'Laptop HP EliteBook 840 G8 5CG1380WT4'),
+(57, 14, 20, 21, 1, 1, 1, '5CG1383HLK', '[]', 'Laptop HP EliteBook 840 G8 5CG1383HLK'),
+(58, 14, 20, 21, 1, 1, 1, '5CG1383HSF', '[]', 'Laptop HP EliteBook 840 G8 5CG1383HSF'),
+(59, 14, 20, 21, 1, 1, 1, '5CG137C2GT', '[]', 'Laptop HP EliteBook 840 G8 5CG137C2GT'),
+(60, 14, 20, 21, 1, 1, 1, '5CG1383HS7', '[]', 'Laptop HP EliteBook 840 G8 5CG1383HS7'),
+(61, 14, 20, 21, 1, 1, 1, '5CG1383HM0', '[]', 'Laptop HP EliteBook 840 G8 5CG1383HM0');
 
 -- --------------------------------------------------------
 
@@ -102,18 +84,14 @@ CREATE TABLE IF NOT EXISTS `building` (
   `building_name` varchar(200) NOT NULL,
   PRIMARY KEY (`building_id`),
   UNIQUE KEY `building_name` (`building_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `building`
 --
 
 INSERT INTO `building` (`building_id`, `building_name`) VALUES
-(1, 'Eingang'),
-(4, 'Geb. 15'),
-(3, 'Geb. 17'),
-(5, 'Geb. 22'),
-(2, 'Geb. 31');
+(1, 'Geb. 31');
 
 -- --------------------------------------------------------
 
@@ -128,22 +106,16 @@ CREATE TABLE IF NOT EXISTS `ci` (
   `ci_regex` varchar(200) NOT NULL,
   PRIMARY KEY (`ci_id`),
   UNIQUE KEY `ci_name` (`ci_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
 
 --
 -- Daten für Tabelle `ci`
 --
 
 INSERT INTO `ci` (`ci_id`, `ci_name`, `ci_type`, `ci_regex`) VALUES
-(4, 'Hostname', 'string', 'A-Z0-9'),
-(7, 'MAC Adresse', 'string', 'A-Z0-9\\:'),
-(8, 'IT-Poolverwalter', 'select', '["registriert","nicht registriert"]'),
-(15, 'Mobile Security Device', 'url', 'a-zA-Z0-9\\?\\&\\=\\.\\:\\/\\_'),
-(16, 'Homepage', 'url', 'a-zA-Z0-9\\?\\&\\=\\.\\:\\/\\_\\-'),
-(17, 'Lumen', 'string', '0-9'),
-(18, 'Auflösung', 'select', '["720p","1080p"]'),
-(19, 'Dockingstation', 'url', 'a-zA-Z0-9\\?\\&\\=\\.\\:\\/\\_\\-'),
-(20, 'Monitor', 'url', 'a-zA-Z0-9\\?\\&\\=\\.\\:\\/\\_\\-');
+(28, 'Hostname', 'string', 'A-Z0-9'),
+(29, 'MAC-Adresse', 'string', 'A-Z0-9\\:'),
+(30, 'Anschlüsse', 'list', '["USB","HDMI","VGA","DisplayPort"]');
 
 -- --------------------------------------------------------
 
@@ -156,18 +128,14 @@ CREATE TABLE IF NOT EXISTS `floor` (
   `floor_name` varchar(200) NOT NULL,
   PRIMARY KEY (`floor_id`),
   UNIQUE KEY `floor_name` (`floor_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `floor`
 --
 
 INSERT INTO `floor` (`floor_id`, `floor_name`) VALUES
-(2, 'EG'),
-(1, 'Eingang'),
-(3, 'OG 01'),
-(4, 'OG 02'),
-(5, 'OG 03');
+(1, 'OG01');
 
 -- --------------------------------------------------------
 
@@ -188,16 +156,7 @@ CREATE TABLE IF NOT EXISTS `lend` (
   PRIMARY KEY (`lend_id`),
   KEY `lend_creator_id` (`lend_creator_id`),
   KEY `lend_user_id` (`lend_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
-
---
--- Daten für Tabelle `lend`
---
-
-INSERT INTO `lend` (`lend_id`, `lend_document_nr`, `lend_creator_id`, `lend_user_id`, `lend_assets`, `lend_description`, `lend_start`, `lend_end`, `lend_archived`) VALUES
-(12, 1649411166, 11549851, 11837260, '["21"]', '', '2022-04-08', '2022-04-09', '0'),
-(13, 1649773202, 11549851, 11549851, '["30","29"]', '', '2022-04-12', '2022-04-22', '1'),
-(14, 1649773202, 11549851, 11549851, '["30","29"]', '', '2022-04-12', '2022-04-22', '1');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -210,29 +169,16 @@ CREATE TABLE IF NOT EXISTS `model` (
   `model_name` varchar(200) NOT NULL,
   PRIMARY KEY (`model_id`),
   UNIQUE KEY `model_name` (`model_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
 
 --
 -- Daten für Tabelle `model`
 --
 
 INSERT INTO `model` (`model_id`, `model_name`) VALUES
-(7, 'A 415'),
-(5, 'B525'),
-(19, 'E23 G4'),
-(10, 'EH-416'),
-(12, 'EliteBook 840G5'),
-(9, 'EliteBook 840G6'),
-(18, 'EliteBook 840G7'),
-(1, 'EliteDisplay E231'),
-(2, 'EliteDisplay E232'),
-(13, 'FZ-55'),
-(14, 'Genucard 3'),
-(15, 'L2245W'),
-(8, 'ProBook 640G2'),
-(17, 'USB-C Dock G5'),
-(16, 'USB-C Mini Dock'),
-(11, 'XJ-A252');
+(22, 'EliteBook 840 G7'),
+(21, 'EliteBook 840 G8'),
+(23, 'Probook 640 G2');
 
 -- --------------------------------------------------------
 
@@ -335,17 +281,14 @@ CREATE TABLE IF NOT EXISTS `room` (
   `room_name` varchar(200) NOT NULL,
   PRIMARY KEY (`room_id`),
   UNIQUE KEY `room_name` (`room_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 --
 -- Daten für Tabelle `room`
 --
 
 INSERT INTO `room` (`room_id`, `room_name`) VALUES
-(1, 'Eingang'),
-(5, 'R. 1.20'),
-(3, 'R. 1.33'),
-(4, 'R. 18');
+(1, 'R. 1.33');
 
 -- --------------------------------------------------------
 
@@ -358,23 +301,14 @@ CREATE TABLE IF NOT EXISTS `type` (
   `type_name` varchar(200) NOT NULL,
   PRIMARY KEY (`type_id`),
   UNIQUE KEY `type_name` (`type_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
 
 --
 -- Daten für Tabelle `type`
 --
 
 INSERT INTO `type` (`type_id`, `type_name`) VALUES
-(3, 'Beamer'),
-(13, 'Dockingstation'),
-(7, 'Drucker'),
-(4, 'Laptop'),
-(11, 'Mobile Security Device'),
-(12, 'Monitor'),
-(10, 'Smartphone'),
-(9, 'Tablet'),
-(2, 'Webcam'),
-(5, 'Wlan-Repeater');
+(14, 'Laptop');
 
 -- --------------------------------------------------------
 
@@ -410,9 +344,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_rank_id`, `user_vname`, `user_name`, `user_email`, `user_building_id`, `user_floor_id`, `user_room_id`, `user_password`, `user_salt`, `user_active`, `user_admin`, `user_failed_login`, `user_keywords`) VALUES
-(10103631, 26, 'Oliver', 'Diester', 'oliverdiester@bundeswehr.org', 2, 3, 5, 'e82ee6a97cf70d44602d52717bc85387fc02df0ef062f3aab43ac53905d8bf3f', 'K92GfL%Eau', '0', '0', '0', '10103631 Oberstabsbootsmann Oliver Diester oliverdiester@bundeswehr.org'),
-(11549851, 12, 'Alexander', 'Brosch', 'alexanderbrosch@bundeswehr.org', 2, 3, 3, '78be7d99d95e79e9807476f6964f97c8560ee703c9aff44d8d94f1f8e8b81b56', 'j2GVy94PPP', '1', '1', '0', '11549851 Obermaat Alexander Brosch alexanderbrosch@bundeswehr.org'),
-(11837260, 24, 'Arne', 'Roemer', 'arne1roemer@bundeswehr.org', 1, 1, 1, 'd175051a5031cd32593c4144e6158cc41cd75c56bb08ab435ec3cda996a81dfc', 'N6wZEYEI6Q', '0', '0', '0', '11837260 Stabsbootsmann Arne Roemer arne1roemer@bundeswehr.org');
+(99999999, 48, 'EF1', 'Admin', 'einsfltl1itmanagement@bundeswehr.org', 1, 1, 1, '78be7d99d95e79e9807476f6964f97c8560ee703c9aff44d8d94f1f8e8b81b56', 'j2GVy94PPP', '1', '1', '0', '');
 
 -- --------------------------------------------------------
 
@@ -425,18 +357,14 @@ CREATE TABLE IF NOT EXISTS `vendor` (
   `vendor_name` varchar(200) NOT NULL,
   PRIMARY KEY (`vendor_id`),
   UNIQUE KEY `vendor_name` (`vendor_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 --
 -- Daten für Tabelle `vendor`
 --
 
 INSERT INTO `vendor` (`vendor_id`, `vendor_name`) VALUES
-(18, 'Genua'),
-(16, 'Gigaset'),
-(1, 'HP'),
-(2, 'Logitech'),
-(19, 'Optoma');
+(20, 'HP');
 
 --
 -- Constraints der exportierten Tabellen

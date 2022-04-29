@@ -264,58 +264,87 @@ else
 								}
 								else
 								{
-									$output .= '<div class="panel dark">';
+									$output .= '<div class="container">';
+									$output .= '<div class="content-center container white-alpha">';
+									$output .= '<div class="panel black-alpha">';
 									$output .= '<p>Es wurden keine Eintr&auml;ge gefunden.</p>';
-									$output .= '</div></div>';
+									$output .= '<p><a class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" href="add.php?category='.$_GET['category'].'">'.$category_german[$array_key].' anlegen <i class="fas fa-plus"></i></a></p>';
+									$output .= '</div>';
+									$output .= '</div>';
+									$output .= '</div>';
 								}
 							}
 							else
 							{
+								$output .= '<div class="container">';
+								$output .= '<div class="content-center container white-alpha">';
 								$output .= '<h1>Error</h1>';
-								$output .= '<div class="panel dark">';
+								$output .= '<div class="panel black-alpha">';
 								$output .= '<p>Es k&ouml;nnen nur 5, 10 oder 15 Elemente angezeigt werden.</p>';
-								$output .= '</div></div>';
+								$output .= '</div>';
+								$output .= '</div>';
+								$output .= '</div>';
 							}
 						}
 						else
 						{
+							$output .= '<div class="container">';
+							$output .= '<div class="content-center container white-alpha">';
 							$output .= '<h1>Error</h1>';
-							$output .= '<div class="panel dark">';
+							$output .= '<div class="panel black-alpha">';
 							$output .= '<p>Es k&ouml;nnen nur 5, 10 oder 15 Elemente angezeigt werden.</p>';
-							$output .= '</div></div>';
+							$output .= '</div>';
+							$output .= '</div>';
+							$output .= '</div>';
 						}
 					}
 					else
 					{
+						$output .= '<div class="container">';
+						$output .= '<div class="content-center container white-alpha">';
 						$output .= '<h1>Error</h1>';
-						$output .= '<div class="panel dark">';
+						$output .= '<div class="panel black-alpha">';
 						$output .= '<p>Die Seitenzahl besteht nur aus Zahlen.</p>';
-						$output .= '</div></div>';
+						$output .= '</div>';
+						$output .= '</div>';
+						$output .= '</div>';
 					}
 				}
 				else
 				{
+					$output .= '<div class="container">';
+					$output .= '<div class="content-center container white-alpha">';
 					$output .= '<h1>Error</h1>';
-					$output .= '<div class="panel dark">';
+					$output .= '<div class="panel black-alpha">';
 					$output .= '<p>Die gesendete Kategorie kann nicht bearbeitet werden.</p>';
-					$output .= '</div></div>';
+					$output .= '</div>';
+					$output .= '</div>';
+					$output .= '</div>';
 				}
 			}
 			else
 			{
+				$output .= '<div class="container">';
+				$output .= '<div class="content-center container white-alpha">';
 				$output .= '<h1>Error</h1>';
-				$output .= '<div class="panel dark">';
+				$output .= '<div class="panel black-alpha">';
 				$output .= '<p>Die gesendete Kategorie kann nicht bearbeitet werden.</p>';
-				$output .= '</div></div>';
+				$output .= '</div>';
+				$output .= '</div>';
+				$output .= '</div>';
 			}
 		}
 	}
 	else
 	{
+		$output .= '<div class="container">';
+		$output .= '<div class="content-center container white-alpha">';
 		$output .= '<h1>Error</h1>';
-		$output .= '<div class="panel dark">';
+		$output .= '<div class="panel black-alpha">';
 		$output .= '<p>Es wurden keine Daten gesendet.</p>';
-		$output .= '</div></div>';
+		$output .= '</div>';
+		$output .= '</div>';
+		$output .= '</div>';
 	}
 }
 ?>		

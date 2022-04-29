@@ -65,7 +65,7 @@ ul.flex-center {
 	overflow-y:auto;
 }
 .content-center {
-	margin:20vh auto;
+	margin:10vh auto;
 	max-width:500px;
 }
 .center {
@@ -73,6 +73,9 @@ ul.flex-center {
 }
 .block {
 	width:100%;
+}
+.inline {
+	display:inline-block;
 }
 .panel {
 	margin:16px 0;
