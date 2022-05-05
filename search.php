@@ -8,9 +8,9 @@ $sql = mysqli_connect($app_sqlhost,$app_sqluser,$app_sqlpasswd,$app_sqldb);
 if(!$sql)
 {
 	$output .= '<div class="container">';
-	$output .= '<div class="content-center container white">';
+	$output .= '<div class="content-center container white-alpha">';
 	$output .= '<h1>Error</h1>';
-	$output .= '<div class="panel dark">';
+	$output .= '<div class="panel black-alpha">';
 	$output .= '<p>Es konnte keine Datenbankverbindung hergestellt werden.</p>';
 	$output .= '</div>';
 	$output .= '</div>';
@@ -19,15 +19,15 @@ if(!$sql)
 else
 {
 	$sql->query('SET NAMES UTF8');
-	
+
 	if(!empty($_GET))
 	{
-		if(empty($_GET['category']) || empty($_GET['search']) || $_GET['site'] == "" || empty($_GET['site_amount']))
+		if(empty($_GET['category']) || empty($_GET['search']) || $_GET['site'] == "" || empty($_GET['amount']))
 		{
 			$output .= '<div class="container">';
-			$output .= '<div class="content-center container white">';
+			$output .= '<div class="content-center container white-alpha">';
 			$output .= '<h1>Error</h1>';
-			$output .= '<div class="panel dark">';
+			$output .= '<div class="panel black-alpha">';
 			$output .= '<p>Es konnte kein Suche durchgef&uuml;hrt werden.</p>';
 			$output .= '</div>';
 			$output .= '</div>';
@@ -35,24 +35,24 @@ else
 		}
 		else
 		{
-			if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['category']) == 0)
+			if(preg_match('/[^a-z]/',$_GET['category']) == 0)
 			{
 				$allowed_category = array('asset','user');
-				
+
 				if(in_array($_GET['category'],$allowed_category))
 				{
-					if(preg_match('/[^'.$app_regex['lowerupperumlnumbersz'].']/',$_GET['search']) == 0)
+					if(preg_match('/[^a-zA-Z0-9öäüÖÄÜß\s\-\.\@]/',$_GET['search']) == 0)
 					{
-						if(preg_match('/[^'.$app_regex['number'].']/',$_GET['site']) == 0)
+						if(preg_match('/[^0-9]/',$_GET['site']) == 0)
 						{
-							if(preg_match('/[^'.$app_regex['number'].']/',$_GET['site_amount']) == 0)
+							if(preg_match('/[^0-9]/',$_GET['amount']) == 0)
 							{
-								$allowed_site_amount = array(5,10,15);
-								
-								if(in_array($_GET['site_amount'],$allowed_site_amount))
+								$allowed_amount = array(5,10,15);
+
+								if(in_array($_GET['amount'],$allowed_amount))
 								{
 									$search = $_GET['search'];
-									
+
 									$query = sprintf("
 									SELECT %s_id
 									FROM %s
@@ -61,32 +61,32 @@ else
 									$sql->real_escape_string($_GET['category']),
 									$sql->real_escape_string($_GET['category']),
 									$sql->real_escape_string('%'.$search.'%'));
-									
+
 									$result = $sql->query($query);
-								
+
 									$amount_gs = mysqli_num_rows($result);
-									
+
 									if($amount_gs > 0)
 									{
-										if($_GET['site']*$_GET['site_amount'] >= $amount_gs)
+										if($_GET['site']*$_GET['amount'] >= $amount_gs)
 										{
 											$_GET['site'] = 0;
 										}
-									
+
 										$category_german = array('Assets','User');
-										
-										$key = array_search($_GET['category'],$allowed_category);
-										
+
+										$array_key = array_search($_GET['category'],$allowed_category);
+
 										$output .= '<div class="container">';
 										$output .= '<table class="block"><tr>';
-										$output .= '<td class="col-l6"><h1>'.$category_german[$key].' ( '.$amount_gs.' )</h1></td>';
+										$output .= '<td class="col-l6"><h1>'.$category_german[$array_key].' ( '.$amount_gs.' )</h1></td>';
 										$output .= '<td class="col-l6"><div class="text-right"><a class="btn-default dark" href="add.php?category='.$_GET['category'].'"><i class="fas fa-plus"></i></a></div></td>';
 										$output .= '</tr></table>';
 										$output .= '</div>';
 										$output .= '<ul class="flex">';
-									
+
 										$i = 0;
-										
+
 										if($_GET['category'] == $allowed_category[0])
 										{
 											$query = sprintf("
@@ -98,46 +98,26 @@ else
 											WHERE asset_keywords LIKE '%s'
 											LIMIT %s,%s;",
 											$sql->real_escape_string('%'.$search.'%'),
-											$sql->real_escape_string($_GET['site']*$_GET['site_amount']),
-											$sql->real_escape_string($_GET['site_amount']));
-											
+											$sql->real_escape_string($_GET['site']*$_GET['amount']),
+											$sql->real_escape_string($_GET['amount']));
+
 											$result = $sql->query($query);
-										
+
 											while($row = $result->fetch_array(MYSQLI_ASSOC))
 											{
 												if($i == 2)
 												{
 													$output .= '</ul>';
 													$output .= '<ul class="flex block">';
-											
+
 													$i = 0;
 												}
-												
-												$output .= '<li class="col-s12 col-m6 col-l6">';
-												$output .= '<div class="margin display container dark">';
-												$output .= '<div class="hide-medium hide-small">';
-												$output .= '<div class="container display-middle-right">';
-												$output .= '<a class="btn-default light-blue" href="del.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&site_amount='.$_GET['site_amount']).'"><i class="fas fa-trash"></i></a> ';
-												$output .= '<a class="btn-default light-blue" href="view.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
-												$output .= '<a class="btn-default light-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['asset_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
-												$output .= '</div>';
-												$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
-												$output .= '<p>'.$row['asset_serial'].'</p>';
-												$output .= '</div>';
-												$output .= '<div class="hide-large text-center">';
-												$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
-												$output .= '<p>'.$row['asset_serial'].'</p>';
-												$output .= '<p>';
-												$output .= '<a class="btn-default light-blue" href="del.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&site_amount='.$_GET['site_amount']).'"><i class="fas fa-trash"></i></a> ';
-												$output .= '<a class="btn-default light-blue" href="view.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
-												$output .= '<a class="btn-default light-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['asset_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
-												$output .= '</p>';
-												$output .= '</div>';
-												$output .= '</div>';
-												$output .= '</li>';
-								
+
+
+
+
 												$i++;
-											}	
+											}
 										}
 										else if($_GET['category'] == $allowed_category[1])
 										{
@@ -147,21 +127,21 @@ else
 											WHERE user_keywords LIKE '%s'
 											LIMIT %s,%s;",
 											$sql->real_escape_string('%'.$search.'%'),
-											$sql->real_escape_string($_GET['site']*$_GET['site_amount']),
-											$sql->real_escape_string($_GET['site_amount']));
-											
+											$sql->real_escape_string($_GET['site']*$_GET['amount']),
+											$sql->real_escape_string($_GET['amount']));
+
 											$result = $sql->query($query);
-										
+
 											while($row = $result->fetch_array(MYSQLI_ASSOC))
 											{
 												if($i == 2)
 												{
 													$output .= '</ul>';
 													$output .= '<ul class="flex block">';
-													
+
 													$i = 0;
 												}
-												
+
 												$output .= '<li class="col-s12 col-m6 col-l6">';
 												$output .= '<div class="margin display container dark">';
 												$output .= '<div class="hide-medium hide-small">';
@@ -184,31 +164,31 @@ else
 												$output .= '</div>';
 												$output .= '</div>';
 												$output .= '</li>';
-													
+
 												$i++;
-											}	
+											}
 										}
-										
+
 										$output .= '</ul>';
-										
+
 										if($amount_gs > $_GET['site_amount'])
 										{
 											$sites = ceil($amount_gs/$_GET['site_amount']);
-										
+
 											$next_site = $_GET['site']+1;
-										
+
 											if($next_site >= $sites)
 											{
 												$next_site = 0;
 											}
-										
+
 											$previous_site = $_GET['site']-1;
-										
+
 											if($previous_site < 0)
 											{
 												$previous_site = $sites-1;
 											}
-										
+
 											$output .= '<ul class="flex-center">';
 											$output .= '<li class="col-l1">';
 											$output .= '<div class="margin">';
@@ -253,9 +233,9 @@ else
 									else
 									{
 										$output .= '<div class="container">';
-										$output .= '<div class="content-center container white">';
+										$output .= '<div class="content-center container white-alpha">';
 										$output .= '<h1>Error</h1>';
-										$output .= '<div class="panel dark">';
+										$output .= '<div class="panel black-alpha">';
 										$output .= '<p>Es wurden keine Eintr&auml;ge gefunden.</p>';
 										$output .= '</div>';
 										$output .= '</div>';
@@ -265,9 +245,9 @@ else
 								else
 								{
 									$output .= '<div class="container">';
-									$output .= '<div class="content-center container white">';
+									$output .= '<div class="content-center container white-alpha">';
 									$output .= '<h1>Error</h1>';
-									$output .= '<div class="panel dark">';
+									$output .= '<div class="panel black-alpha">';
 									$output .= '<p>Es k&ouml;nnen nur 5,10 oder 15 Elemente angezeigt werden.</p>';
 									$output .= '</div>';
 									$output .= '</div>';
@@ -277,9 +257,9 @@ else
 							else
 							{
 								$output .= '<div class="container">';
-								$output .= '<div class="content-center container white">';
+								$output .= '<div class="content-center container white-alpha">';
 								$output .= '<h1>Error</h1>';
-								$output .= '<div class="panel dark">';
+								$output .= '<div class="panel black-alpha">';
 								$output .= '<p>Es k&ouml;nnen nur 5,10 oder 15 Elemente angezeigt werden.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
@@ -289,9 +269,9 @@ else
 						else
 						{
 							$output .= '<div class="container">';
-							$output .= '<div class="content-center container white">';
+							$output .= '<div class="content-center container white-alpha">';
 							$output .= '<h1>Error</h1>';
-							$output .= '<div class="panel dark">';
+							$output .= '<div class="panel black-alpha">';
 							$output .= '<p>Die Seitenzahl besteht nur aus Zahlen.</p>';
 							$output .= '</div>';
 							$output .= '</div>';
@@ -300,15 +280,11 @@ else
 					}
 					else
 					{
-						$regex = str_replace('\s',' Leerzeichen ',$app_regex['lowerupperumlnumbersz']);
-					
-						$regex = str_replace('\\','',$regex);
-					
 						$output .= '<div class="container">';
-						$output .= '<div class="content-center container white">';
+						$output .= '<div class="content-center container white-alpha">';
 						$output .= '<h1>Error</h1>';
-						$output .= '<div class="panel dark">';
-						$output .= '<p>Verwenden Sie nur folgende Zeichen: '.$regex.'</p>';
+						$output .= '<div class="panel black-alpha">';
+						$output .= '<p>Verwenden Sie nur folgende Zeichen: a-z, A-Z, 0-9, öäüÖÄÜß-.@</p>';
 						$output .= '</div>';
 						$output .= '</div>';
 						$output .= '</div>';
@@ -317,9 +293,9 @@ else
 				else
 				{
 					$output .= '<div class="container">';
-					$output .= '<div class="content-center container white">';
+					$output .= '<div class="content-center container white-alpha">';
 					$output .= '<h1>Error</h1>';
-					$output .= '<div class="panel dark">';
+					$output .= '<div class="panel black-alpha">';
 					$output .= '<p>Es kann nur in folgenden Kategorien gesucht werden: Assets und User.</p>';
 					$output .= '</div>';
 					$output .= '</div>';
@@ -329,9 +305,9 @@ else
 			else
 			{
 				$output .= '<div class="container">';
-				$output .= '<div class="content-center container white">';
+				$output .= '<div class="content-center container white-alpha">';
 				$output .= '<h1>Error</h1>';
-				$output .= '<div class="panel dark">';
+				$output .= '<div class="panel black-alpha">';
 				$output .= '<p>Es kann nur in folgenden Kategorien gesucht werden: Assets und User.</p>';
 				$output .= '</div>';
 				$output .= '</div>';

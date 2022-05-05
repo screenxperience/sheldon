@@ -15,13 +15,13 @@ if(!$sql)
 	$output .= '<div class="panel black-alpha">';
 	$output .= '<p>Es konnte keine Datenbankverbindung hergestellt werden.</p>';
 	$output .= '</div>';
-	$output .= '</div>'; 
-	$output .= '</div>'; 
+	$output .= '</div>';
+	$output .= '</div>';
 }
 else
 {
 	$sql->query('SET NAMES UTF8');
-	
+
 	if(!empty($_GET))
 	{
 		if(empty($_GET['category']) || $_GET['site'] == "" || empty($_GET['amount']))
@@ -40,31 +40,31 @@ else
 			if(preg_match('/[^a-z]/',$_GET['category']) == 0)
 			{
 				$allowed_category = array('asset','user','vendor','model','type','building','floor','room','ci');
-				
+
 				if(in_array($_GET['category'],$allowed_category))
-				{	
+				{
 					if(preg_match('/[^0-9]/',$_GET['site']) == 0)
 					{
 						if(preg_match('/[^0-9]/',$_GET['amount']) == 0)
 						{
 							$allowed_amount = array(5,10,15);
-							
+
 							if(in_array($_GET['amount'],$allowed_amount))
 							{
 								$category_german = array('Assets','User','Hersteller','Modelle','Typen','Geb&auml;ude','Stockwerke','R&auml;ume','CIs');
-								
+
 								$array_key = array_search($_GET['category'],$allowed_category);
-								
+
 								$query = sprintf("
 								SELECT %s_id
 								FROM %s;",
 								$sql->real_escape_string($_GET['category']),
 								$sql->real_escape_string($_GET['category']));
-								
+
 								$result = $sql->query($query);
-								
+
 								$amount_gs = mysqli_num_rows($result);
-								
+
 								if($amount_gs > 0)
 								{
 									$output .= '<div class="container">';
@@ -73,18 +73,18 @@ else
 									$output .= '<td class="col-l6"><div class="text-right"><a class="btn-default border border-black-alpha black-alpha hover-white-alpha hover-text-black-alpha" href="add.php?category='.$_GET['category'].'"><i class="fas fa-plus"></i></a></div></td>';
 									$output .= '</tr></table>';
 									$output .= '</div>';
-									
+
 									$output .= '<ul class="flex block">';
-									
+
 									if($_GET['site']*$_GET['amount'] >= $amount_gs)
 									{
 										$_GET['site'] = 0;
 									}
-											
+
 									$i = 0;
-								
+
 									if($_GET['category'] == $allowed_category[0])
-									{	
+									{
 										$query = sprintf("
 										SELECT asset_id,type_name,vendor_name,model_name,asset_serial
 										FROM asset
@@ -94,19 +94,19 @@ else
 										LIMIT %s,%s;",
 										$sql->real_escape_string($_GET['site']*$_GET['amount']),
 										$sql->real_escape_string($_GET['amount']));
-								
+
 										$result = $sql->query($query);
-											
+
 										while($row = $result->fetch_array(MYSQLI_ASSOC))
 										{
 											if($i == 2)
 											{
 												$output .= '</ul>';
 												$output .= '<ul class="flex block">';
-											
+
 												$i = 0;
 											}
-												
+
 											$output .= '<li class="col-s12 col-m6 col-l6">';
 											$output .= '<div class="text-center-medium text-center-small margin container display-container black-alpha">';
 											$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
@@ -118,7 +118,7 @@ else
 											$output .= '</div>';
 											$output .= '</div>';
 											$output .= '</li>';
-								
+
 											$i++;
 										}
 									}
