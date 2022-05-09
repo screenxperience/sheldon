@@ -6,7 +6,17 @@
 		<ul>
 			<li>
 				<p>
+					<a href="list.php?category=lend&site=0&amount=5&archived=0" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">Leihgaben</a>
+				</p>
+			</li>
+			<li>
+				<p>
 					<a href="list.php?category=asset&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">Assets</a>
+				</p>
+			</li>
+			<li>
+				<p>
+					<a href="list.php?category=user&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">User</a>
 				</p>
 			</li>
 			<li>
@@ -16,7 +26,7 @@
 			</li>
 			<li>
 				<p>
-					<a href="list.php?category=building&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">Geb&auml;ude</a>
+					<a href="list.php?category=type&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">Typen</a>
 				</p>
 			</li>
 			<li>
@@ -31,7 +41,7 @@
 			</li>
 			<li>
 				<p>
-					<a href="list.php?category=room&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">R&auml;ume</a>
+					<a href="list.php?category=building&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">Geb&auml;ude</a>
 				</p>
 			</li>
 			<li>
@@ -41,12 +51,7 @@
 			</li>
 			<li>
 				<p>
-					<a href="list.php?category=type&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">Typen</a>
-				</p>
-			</li>
-			<li>
-				<p>
-					<a href="list.php?category=user&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">User</a>
+					<a href="list.php?category=room&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">R&auml;ume</a>
 				</p>
 			</li>
 		</ul>
@@ -86,8 +91,8 @@
 						<table align="right">
 							<tr>
 								<td>
-									<a class="btn-default" href="cart.php?aktion=view">
-										<i class="fas fa-shopping-cart large"></i>
+									<a class="btn-default large" href="cart.php?aktion=view">
+										<i class="fas fa-shopping-cart"></i>
 										<?php
 										if(!empty($cart_count))
 										{
@@ -116,17 +121,18 @@
 			<form action="search.php" method="get">
 				<ul class="flex section">
 					<li clasS="col-s4 col-m2 col-l2">
-						<select class="input-default border border-light-blue light-blue hover-white hover-text-blue" name="category">
+						<select class="input-default border border-light-blue light-blue hover-white hover-text-blue" style="height:53px;" name="category">
 							<option value="asset">Assets</option>
 							<option value="user">User</option>
+							<option value="lend">Leihgaben</option>
 						</select>
 					</li>
 					<li class="col-s6 col-m8 col-l9">
-						<input class="input-default border border-tb border-grey focus-border-light-blue" type="text" name="search" value="" placeholder="Suchbegriff"/>
+						<input class="input-default border border-tb border-grey focus-border-light-blue" style="height:53px;" type="text" name="search" value="" placeholder="Suchbegriff"/>
 						<input type="hidden" name="site" value="0"/><input type="hidden" name="amount" value="5"/>
 					</li>
 					<li clasS="col-s2 col-m2 col-l1">
-						<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit">
+						<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" style="height:53px;" type="submit">
 							<i class="fas fa-search"></i>
 						</button>
 					</li>

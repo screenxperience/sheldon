@@ -225,7 +225,7 @@ else
 										}
 									
 										$output .= '<ul class="flex-center">';
-										$output .= '<li class="col-s4 col-m4 col-l1">';
+										$output .= '<li class="col-s3 col-m4 col-l2">';
 										$output .= '<div class="margin">';
 										$output .= '<form action="list.php" method="get">';
 										$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
@@ -235,7 +235,7 @@ else
 										$output .= '</form>';
 										$output .= '</div>';
 										$output .= '</li>';
-										$output .= '<li class="col-s4 col-m4 col-l3">';
+										$output .= '<li class="col-s6 col-m4 col-l4">';
 										$output .= '<div class="margin">';
 										$output .= '<form action="list.php" method="get">';
 										$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
@@ -249,7 +249,7 @@ else
 										$output .= '</form>';
 										$output .= '</div>';
 										$output .= '</li>';
-										$output .= '<li class="col-s4 col-m4 col-l1">';
+										$output .= '<li class="col-s3 col-m4 col-l2">';
 										$output .= '<div class="margin">';
 										$output .= '<form action="list.php" method="get">';
 										$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';

@@ -10,9 +10,9 @@ $sql = mysqli_connect($app_sqlhost,$app_sqluser,$app_sqlpasswd,$app_sqldb);
 if(!$sql)
 {
 	$output .= '<div class="container">';
-	$output .= '<div class="content-center container white">';
+	$output .= '<div class="content-center container white-alpha">';
 	$output .= '<h1>Error</h1>';
-	$output .= '<div class="panel dark">';
+	$output .= '<div class="panel black-alpha">';
 	$output .= '<p>Es konnte keine Datenbankverbindung hergestellt werden.</p>';
 	$output .= '</div>'; 
 	$output .= '</div>'; 
@@ -27,17 +27,17 @@ else
 		if(empty($_GET['aktion']))
 		{
 			$output .= '<div class="container">';
-			$output .= '<div class="content-center container white">';
+			$output .= '<div class="content-center container white-alpha">';
 			$output .= '<h1>Error</h1>';
-			$output .= '<div class="panel dark">';
-			$output .= '<p>Es konnte keine Aktion ausgef&uuml;hrt werden.</p>';
+			$output .= '<div class="panel black-alpha">';
+			$output .= '<p>Es konnte keine Aktion durchgef&uuml;hrt werden.</p>';
 			$output .= '</div>'; 
 			$output .= '</div>'; 
 			$output .= '</div>'; 
 		}
 		else
 		{
-			if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['aktion']) == 0)
+			if(preg_match('/[^a-z]/',$_GET['aktion']) == 0)
 			{
 				$allowed_aktions = array('add','del','view');
 					
@@ -48,9 +48,9 @@ else
 						if(empty($_GET['category']))
 						{
 							$output .= '<div class="container">';
-							$output .= '<div class="content-center container white">';
+							$output .= '<div class="content-center container white-alpha">';
 							$output .= '<h1>Error</h1>';
-							$output .= '<div class="panel dark">';
+							$output .= '<div class="panel black-alpha">';
 							$output .= '<p>Es wurde keine Kategorie gesendet.</p>';
 							$output .= '</div>'; 
 							$output .= '</div>'; 
@@ -58,7 +58,7 @@ else
 						}
 						else
 						{
-							if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['category']) == 0)
+							if(preg_match('/[^a-z]/',$_GET['category']) == 0)
 							{
 								$allowed_category = array('asset','user');
 
@@ -69,9 +69,9 @@ else
 										if(empty($_GET['id']))
 										{
 											$output .= '<div class="container">';
-											$output .= '<div class="content-center container white">';
+											$output .= '<div class="content-center container white-alpha">';
 											$output .= '<h1>Error</h1>';
-											$output .= '<div class="panel dark">';
+											$output .= '<div class="panel black-alpha">';
 											$output .= '<p>Es wurde keine ID gesendet.</p>';
 											$output .= '</div>'; 
 											$output .= '</div>'; 
@@ -79,14 +79,14 @@ else
 										}
 										else
 										{
-											if(preg_match('/[^'.$app_regex['number'].']/',$_GET['id']) == 0)
+											if(preg_match('/[^0-9]/',$_GET['id']) == 0)
 											{
 												if($_GET['category'] == $allowed_category[0])
 												{
 													$cart = $_SESSION['cart']['assets'];
 														
 													$query = "
-													SELECT lend_document_nr,lend_assets
+													SELECT lend_id,lend_assets
 													FROM lend
 													WHERE lend_archived = '0'";
 
@@ -102,22 +102,22 @@ else
 
 															if(in_array($_GET['id'],$lend_assets))
 															{
-																$document_nr = $row['lend_document_nr'];
+																$lend_id = $row['lend_id'];
 
 																break;
 															}
 														}
 													}
 													
-													if(!empty($document_nr))
+													if(!empty($lend_id))
 													{
 														$output .= '<div class="container">';
-														$output .= '<div class="content-center container white">';
+														$output .= '<div class="content-center container white-alpha">';
 														$output .= '<h1>Info</h1>';
-														$output .= '<div class="panel dark">';
-														$output .= '<p>Asset zurzeit verausgabt.</p>';
-														$output .= '<p><a class="block btn-default light-blue" href="lend.php?aktion=view&doc='.$document_nr.'">Beleg ( '.$document_nr.' ) <i class="fas fa-arrow-right"></i></a></p>';
+														$output .= '<div class="panel black-alpha">';
+														$output .= '<p>Asset ist zurzeit verausgabt.</p>';
 														$output .= '</div>';
+														$output .= '<p><a class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category=lend&id='.$lend_id.'">Leihgabe anzeigen <i class="fas fa-arrow-right"></i></a></p>';
 														$output .= '</div>';
 														$output .= '</div>';
 													}
@@ -148,24 +148,24 @@ else
 																}
 															}
 																
-															if($exit == 0)
+															if(!$exit)
 															{
 																array_push($cart,$_GET['id']);		
 																		
 																$output .= '<div class="container">';
-																$output .= '<div class="content-center container white">';
-																$output .= '<div class="panel dark">';
+																$output .= '<div class="content-center container white-alpha">';
+																$output .= '<div class="panel black-alpha">';
 																$output .= '<p><strong>'.$row['asset_serial'].'</strong> wurde in ihren Warenkorb gelegt.</p>';
 																$output .= '</div>'; 
 																$output .= '</div>'; 
 																$output .= '</div>';
 															}
-															else if($exit == 1)
+															else
 															{
 																$output .= '<div class="container">';
-																$output .= '<div class="content-center container white">';
-																$output .= '<h1>Error</h1>';
-																$output .= '<div class="panel dark">';
+																$output .= '<div class="content-center container white-alpha">';
+																$output .= '<h1>Info</h1>';
+																$output .= '<div class="panel black-alpha">';
 																$output .= '<p><strong>'.$row['asset_serial'].'</strong> befindet sich bereits in ihrem Warenkorb.</p>';
 																$output .= '</div>'; 
 																$output .= '</div>'; 
@@ -175,9 +175,9 @@ else
 														else
 														{
 															$output .= '<div class="container">';
-															$output .= '<div class="content-center container white">';
+															$output .= '<div class="content-center container white-alpha">';
 															$output .= '<h1>Error</h1>';
-															$output .= '<div class="panel dark">';
+															$output .= '<div class="panel black-alpha">';
 															$output .= '<p>Es wurde kein Asset gefunden.</p>';
 															$output .= '</div>'; 
 															$output .= '</div>'; 
@@ -185,8 +185,6 @@ else
 														}
 															
 														$_SESSION['cart']['assets'] = $cart;
-															
-														$returnto = 'http://'.$_SERVER['HTTP_HOST'].'/list.php?category=asset&site=0&site_amount=5';
 													}
 												}
 												else if($_GET['category'] == $allowed_category[1])
@@ -206,8 +204,8 @@ else
 														$cart = $_GET['id'];
 															
 														$output .= '<div class="container">';
-														$output .= '<div class="content-center container white">';
-														$output .= '<div class="panel dark">';
+														$output .= '<div class="content-center container white-alpha">';
+														$output .= '<div class="panel black-alpha">';
 														$output .= '<p><strong>'.$row['user_name'].', '.$row['user_vname'].'</strong> wurde in ihren Warenkorb gelegt.</p>';
 														$output .= '</div>'; 
 														$output .= '</div>'; 
@@ -216,9 +214,9 @@ else
 													else
 													{
 														$output .= '<div class="container">';
-														$output .= '<div class="content-center container white">';
+														$output .= '<div class="content-center container white-alpha">';
 														$output .= '<h1>Error</h1>';
-														$output .= '<div class="panel dark">';
+														$output .= '<div class="panel black-alpha">';
 														$output .= '<p>Es wurde kein User gefunden.</p>';
 														$output .= '</div>'; 
 														$output .= '</div>'; 
@@ -226,16 +224,14 @@ else
 													}
 														
 													$_SESSION['cart']['user'] = $cart;
-														
-													$returnto = 'http://'.$_SERVER['HTTP_HOST'].'/list.php?category=user&site=0&site_amount=5';
 												}
 											}
 											else
 											{
 												$output .= '<div class="container">';
-												$output .= '<div class="content-center container white">';
+												$output .= '<div class="content-center container white-alpha">';
 												$output .= '<h1>Error</h1>';
-												$output .= '<div class="panel dark">';
+												$output .= '<div class="panel black-alpha">';
 												$output .= '<p>Die ID besteht nur aus Zahlen.</p>';
 												$output .= '</div>'; 
 												$output .= '</div>'; 
@@ -252,9 +248,9 @@ else
 											if($_GET['id'] == '')
 											{
 												$output .= '<div class="container">';
-												$output .= '<div class="content-center container white">';
+												$output .= '<div class="content-center container white-alpha">';
 												$output .= '<h1>Error</h1>';
-												$output .= '<div class="panel dark">';
+												$output .= '<div class="panel black-alpha">';
 												$output .= '<p>Es wurde keine ID gesendet.</p>';
 												$output .= '</div>'; 
 												$output .= '</div>'; 
@@ -262,7 +258,7 @@ else
 											}
 											else
 											{
-												if(preg_match('/[^'.$app_regex['number'].']/',$_GET['id']) == 0)
+												if(preg_match('/[^0-9]/',$_GET['id']) == 0)
 												{
 													$assets = $_SESSION['cart']['assets'];
 														
@@ -270,53 +266,36 @@ else
 														
 													if(!empty($assets[$key]))
 													{
-														$query = sprintf("
-														SELECT asset_serial
-														FROM asset
-														WHERE asset_id = '%s';",
-														$sql->real_escape_string($assets[$key]));
-															
-														$result = $sql->query($query);
-															
-														if($row = $result->fetch_array(MYSQLI_ASSOC))
-														{
-															unset($assets[$key]);
+														unset($assets[$key]);
 																
-															if(!empty($assets))
-															{
-																$assets_new = array();
+														if(!empty($assets))
+														{
+															$assets_new = array();
 															
-																foreach($assets as $asset)
-																{
-																	array_push($assets_new,$asset);
-																}
-																	
-																$assets = $assets_new;
-																	
-																$returnto = 'http://'.$_SERVER['HTTP_HOST'].'/cart.php?aktion=view';
-															}
-															else
+															foreach($assets as $asset)
 															{
-																$returnto = 'http://'.$_SERVER['HTTP_HOST'].'/list.php?category=asset&site=0&site_amount=5';
+																array_push($assets_new,$asset);
 															}
-															
-															$_SESSION['cart']['assets'] = $assets;
+																	
+															$assets = $assets_new;	
 															
 															$output .= '<div class="container">';
 															$output .= '<div class="content-center container white">';
 															$output .= '<div class="panel dark">';
-															$output .= '<p><strong>'.$row['asset_serial'].'</strong> wurde aus ihrem Warenkorb entfernt.</p>';
+															$output .= '<p>Asset wurde aus ihrem Warenkorb entfernt.</p>';
 															$output .= '</div>'; 
 															$output .= '</div>'; 
 															$output .= '</div>';
+															
+															$_SESSION['cart']['assets'] = $assets;
 														}	
 													}
 													else
 													{
 														$output .= '<div class="container">';
-														$output .= '<div class="content-center container white">';
+														$output .= '<div class="content-center container white-alpha">';
 														$output .= '<h1>Error</h1>';
-														$output .= '<div class="panel dark">';
+														$output .= '<div class="panel black-alpha">';
 														$output .= '<p>Die gesendete ID ist nicht vorhanden.</p>';
 														$output .= '</div>'; 
 														$output .= '</div>'; 
@@ -326,9 +305,9 @@ else
 												else
 												{
 													$output .= '<div class="container">';
-													$output .= '<div class="content-center container white">';
+													$output .= '<div class="content-center container white-alpha">';
 													$output .= '<h1>Error</h1>';
-													$output .= '<div class="panel dark">';
+													$output .= '<div class="panel black-alpha">';
 													$output .= '<p>Die ID besteht nur aus Zahlen.</p>';
 													$output .= '</div>'; 
 													$output .= '</div>'; 
@@ -343,9 +322,9 @@ else
 											if(empty($user_id))
 											{
 												$output .= '<div class="container">';
-												$output .= '<div class="content-center container white">';
+												$output .= '<div class="content-center container white-alpha">';
 												$output .= '<h1>Error</h1>';
-												$output .= '<div class="panel dark">';
+												$output .= '<div class="panel black-alpha">';
 												$output .= '<p>Sie haben noch keinen User gew&auml;hlt.</p>';
 												$output .= '</div>'; 
 												$output .= '</div>'; 
@@ -353,40 +332,16 @@ else
 											}
 											else
 											{
-												$query = sprintf("
-												SELECT user_vname,user_name
-												FROM user
-												WHERE user_id = '%s';",
-												$sql->real_escape_string($user_id));
-													
-												$result = $sql->query($query);
-													
-												if($row = $result->fetch_array(MYSQLI_ASSOC))
-												{
-													$_SESSION['cart']['user'] = '';
+												$_SESSION['cart']['user'] = '';
 														
-													$output .= '<div class="container">';
-													$output .= '<div class="content-center container white">';
-													$output .= '<div class="panel dark">';
-													$output .= '<p><strong>'.$row['user_name'].', '.$row['user_vname'].'</strong> wurde aus dem Warenkorb entfernt.</p>';
-													$output .= '</div>'; 
-													$output .= '</div>'; 
-													$output .= '</div>';
-												}
-												else
-												{
-													$output .= '<div class="container">';
-													$output .= '<div class="content-center container white">';
-													$output .= '<h1>Error</h1>';
-													$output .= '<div class="panel dark">';
-													$output .= '<p>Es wurde kein User gefunden.</p>';
-													$output .= '</div>'; 
-													$output .= '</div>'; 
-													$output .= '</div>';
-												}
+												$output .= '<div class="container">';
+												$output .= '<div class="content-center container white-alpha">';
+												$output .= '<div class="panel black-alpha">';
+												$output .= '<p>Der User wurde aus Ihrem Warenkorb entfernt.</p>';
+												$output .= '</div>'; 
+												$output .= '</div>'; 
+												$output .= '</div>';
 											}
-												
-											$returnto = 'http://'.$_SERVER['HTTP_HOST'].'/list.php?category=user&site=0&site_amount=5';
 										}
 											
 										$cart_count = count($_SESSION['cart']['assets']);
@@ -395,9 +350,9 @@ else
 								else
 								{
 									$output .= '<div class="container">';
-									$output .= '<div class="content-center container white">';
+									$output .= '<div class="content-center container white-alpha">';
 									$output .= '<h1>Error</h1>';
-									$output .= '<div class="panel dark">';
+									$output .= '<div class="panel black-alpha">';
 									$output .= '<p>Die gesendete Kategorie kann nicht bearbeitet werden.</p>';
 									$output .= '</div>'; 
 									$output .= '</div>'; 
@@ -407,9 +362,9 @@ else
 							else
 							{
 								$output .= '<div class="container">';
-								$output .= '<div class="content-center container white">';
+								$output .= '<div class="content-center container white-alpha">';
 								$output .= '<h1>Error</h1>';
-								$output .= '<div class="panel dark">';
+								$output .= '<div class="panel black-alpha">';
 								$output .= '<p>Die gesendete Kategorie kann nicht bearbeitet werden.</p>';
 								$output .= '</div>'; 
 								$output .= '</div>'; 
@@ -426,13 +381,13 @@ else
 						if(empty($user_id) || empty($assets))
 						{
 							$output .= '<div class="container">';
-							$output .= '<div class="content-center container white">';
-							$output .= '<h1>Error</h1>';
-							$output .= '<div class="panel dark">';
+							$output .= '<div class="content-center container white-alpha">';
+							$output .= '<h1>Info</h1>';
+							$output .= '<div class="panel black-alpha">';
 								
 							if(empty($user_id) && empty($assets))
 							{
-								$output .= '<p>Ihr Warenkorb ist leer.</p>';
+								$output .= '<p>Ihr Warenkorb ist leer :(</p>';
 							}
 							else if(empty($user_id))
 							{
@@ -460,14 +415,14 @@ else
 							if($row = $result->fetch_array(MYSQLI_ASSOC))
 							{
 								$output .= '<div class="container">';
-								$output .= '<div class="panel white">';
+								$output .= '<div class="panel white-alpha">';
 								$output .= '<h1>Ihr Warenkorb</h1>';
 								$output .= '<h2>User</h2>';
-								$output .= '<div class="panel dark display">';
+								$output .= '<div class="panel black-alpha display-container">';
 								$output .= '<p>'.$user_id.'</p>';
 								$output .= '<p>'.$row['user_name'].', '.$row['user_vname'].'</p>';
 								$output .= '<div class="container display-middle-right">';
-								$output .= '<a class="btn-default light-blue" href="cart.php?aktion=del&category=user"><i class="fas fa-times"></i></a>';
+								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=del&category=user"><i class="fas fa-times"></i></a>';
 								$output .= '</div>';
 								$output .= '</div>';
 									
@@ -490,11 +445,11 @@ else
 											
 									if($row = $result->fetch_array(MYSQLI_ASSOC))
 									{
-										$output .= '<div class="panel dark display">';
+										$output .= '<div class="panel black-alpha display-container">';
 										$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
 										$output .= '<p>'.$row['asset_serial'].'</p>';
 										$output .= '<div class="container display-middle-right">';
-										$output .= '<a class="btn-default light-blue" href="cart.php?aktion=del&category=asset&id='.$i.'"><i class="fas fa-times"></i></a>';
+										$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=del&category=asset&id='.$i.'"><i class="fas fa-times"></i></a>';
 										$output .= '</div>';
 										$output .= '</div>';
 									}
@@ -506,15 +461,15 @@ else
 									
 								$output .= '<form action="lend.php" method="get">';
 								$output .= '<h2>Bemerkung</h2>';
-								$output .= '<p><textarea class="ipt-default" style="height:100px;" style="resize:vertical" placeholder="200 Zeichen"></textarea></p>';
+								$output .= '<p><textarea class="input-default border border-grey focus-border-light-blue" style="height:100px;resize:vertical" placeholder="Freitext eingeben (200 Zeichen)"></textarea></p>';
 								$output .= '<h2>Leihgabe bis</h2>';
 								$output .= '<input type="hidden" name="aktion" value="add"/>';
 								$output .= '<ul class="flex section">';
 								$output .= '<li class="col-s10 col-m10 col-l10">';
-								$output .= '<input class="ipt-default" name="lend_end" type="date" value="'.$date_min.'" min="'.$date_min.'" max="'.$date_max.'"/></p>';
+								$output .= '<input class="input-default border border-grey border-tbl focus-border-light-blue" style="height:53px;" name="lend_end" type="date" value="'.$date_min.'" min="'.$date_min.'" max="'.$date_max.'"/></p>';
 								$output .= '</li>';
 								$output .= '<li class="col-s2 col-m2 col-l2">';
-								$output .= '<button class="block btn-default light-blue" type="submit"><i class="fas fa-arrow-right"></i></button>';
+								$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" style="height:53px;" type="submit"><i class="fas fa-arrow-right"></i></button>';
 								$output .= '</li>';
 								$output .= '</ul>';
 								$output .= '</form>';
@@ -522,9 +477,9 @@ else
 							else
 							{
 								$output .= '<div class="container">';
-								$output .= '<div class="content-center container white">';
+								$output .= '<div class="content-center container white-alpha">';
 								$output .= '<h1>Error</h1>';
-								$output .= '<div class="panel dark">';
+								$output .= '<div class="panel black-alpha">';
 								$output .= '<p>Ihr Warenkorb kann nicht angezeigt werden.</p>';
 								$output .= '</div>'; 
 								$output .= '</div>'; 
@@ -536,9 +491,9 @@ else
 				else
 				{
 					$output .= '<div class="container">';
-					$output .= '<div class="content-center container white">';
+					$output .= '<div class="content-center container white-alpha">';
 					$output .= '<h1>Error</h1>';
-					$output .= '<div class="panel dark">';
+					$output .= '<div class="panel black-alpha">';
 					$output .= '<p>Die gesendete Aktion kann nicht bearbeitet werden.</p>';
 					$output .= '</div>'; 
 					$output .= '</div>'; 
@@ -548,9 +503,9 @@ else
 			else
 			{
 				$output .= '<div class="container">';
-				$output .= '<div class="content-center container white">';
+				$output .= '<div class="content-center container white-alpha">';
 				$output .= '<h1>Error</h1>';
-				$output .= '<div class="panel dark">';
+				$output .= '<div class="panel black-alpha">';
 				$output .= '<p>Die gesendete Aktion kann nicht bearbeitet werden.</p>';
 				$output .= '</div>'; 
 				$output .= '</div>'; 
@@ -561,9 +516,9 @@ else
 	else
 	{
 		$output .= '<div class="container">';
-		$output .= '<div class="content-center container white">';
+		$output .= '<div class="content-center container white-alpha">';
 		$output .= '<h1>Error</h1>';
-		$output .= '<div class="panel dark">';
+		$output .= '<div class="panel black-alpha">';
 		$output .= '<p>Es wurden keine Daten gesendet.</p>';
 		$output .= '</div>'; 
 		$output .= '</div>'; 

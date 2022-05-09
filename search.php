@@ -80,7 +80,7 @@ else
 										$output .= '<div class="container">';
 										$output .= '<table class="block"><tr>';
 										$output .= '<td class="col-l6"><h1>'.$category_german[$array_key].' ( '.$amount_gs.' )</h1></td>';
-										$output .= '<td class="col-l6"><div class="text-right"><a class="btn-default dark" href="add.php?category='.$_GET['category'].'"><i class="fas fa-plus"></i></a></div></td>';
+										$output .= '<td class="col-l6"><div class="text-right"><a class="btn-default border border-black-alpha black-alpha hover-white-alpha hover-text-black-alpha" href="add.php?category='.$_GET['category'].'"><i class="fas fa-plus"></i></a></div></td>';
 										$output .= '</tr></table>';
 										$output .= '</div>';
 										$output .= '<ul class="flex">';
@@ -112,9 +112,18 @@ else
 
 													$i = 0;
 												}
-
-
-
+												
+												$output .= '<li class="col-s12 col-m6 col-l6">';
+												$output .= '<div class="text-center-medium text-center-small margin container display-container black-alpha">';
+												$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
+												$output .= '<p>'.$row['asset_serial'].'</p>';
+												$output .= '<div class="container-large display-middle-right-large section-medium section-small">';
+												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&amount='.$_GET['amount']).'"><i class="fas fa-trash"></i></a> ';
+												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
+												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['asset_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
+												$output .= '</div>';
+												$output .= '</div>';
+												$output .= '</li>';
 
 												$i++;
 											}
@@ -143,37 +152,26 @@ else
 												}
 
 												$output .= '<li class="col-s12 col-m6 col-l6">';
-												$output .= '<div class="margin display container dark">';
-												$output .= '<div class="hide-medium hide-small">';
-												$output .= '<div class="container display-middle-right">';
-												$output .= '<a class="btn-default light-blue" href="del.php?category='.$_GET['category'].'&id='.$row['user_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&site_amount='.$_GET['site_amount']).'"><i class="fas fa-trash"></i></a> ';
-												$output .= '<a class="btn-default light-blue" href="view.php?category='.$_GET['category'].'&id='.$row['user_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
-												$output .= '<a class="btn-default light-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['user_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
-												$output .= '</div>';
+												$output .= '<div class="text-center-medium text-center-small margin container display-container black-alpha">';
 												$output .= '<p>'.$row['user_id'].'</p>';
 												$output .= '<p>'.$row['user_email'].'</p>';
-												$output .= '</div>';
-												$output .= '<div class="hide-large text-center">';
-												$output .= '<p>'.$row['user_id'].'</p>';
-												$output .= '<p>'.$row['user_email'].'</p>';
-												$output .= '<p>';
-												$output .= '<a class="btn-default light-blue" href="del.php?category='.$_GET['category'].'&id='.$row['user_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&site_amount='.$_GET['site_amount']).'"><i class="fas fa-trash"></i></a> ';
-												$output .= '<a class="btn-default light-blue" href="view.php?category='.$_GET['category'].'&id='.$row['user_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
-												$output .= '<a class="btn-default light-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['user_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
-												$output .= '</p>';
+												$output .= '<div class="container-large display-middle-right-large section-medium section-small">';
+												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['user_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&amount='.$_GET['amount']).'"><i class="fas fa-trash"></i></a> ';
+												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$row['user_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
+												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['user_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
 												$output .= '</div>';
 												$output .= '</div>';
 												$output .= '</li>';
-
+											
 												$i++;
 											}
 										}
 
 										$output .= '</ul>';
 
-										if($amount_gs > $_GET['site_amount'])
+										if($amount_gs > $_GET['amount'])
 										{
-											$sites = ceil($amount_gs/$_GET['site_amount']);
+											$sites = ceil($amount_gs/$_GET['amount']);
 
 											$next_site = $_GET['site']+1;
 
@@ -190,25 +188,23 @@ else
 											}
 
 											$output .= '<ul class="flex-center">';
-											$output .= '<li class="col-l1">';
+											$output .= '<li class="col-s3 col-m4 col-l2">';
 											$output .= '<div class="margin">';
-											$output .= '<form action="search.php" method="get">';
+											$output .= '<form action="list.php" method="get">';
 											$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
-											$output .= '<input type="hidden" name="search" value="'.$_GET['search'].'"/>';
 											$output .= '<input type="hidden" name="site" value="'.$previous_site.'"/>';
-											$output .= '<input type="hidden" name="site_amount" value="'.$_GET['site_amount'].'"/>';
-											$output .= '<button class="block btn-default dark" type="submit"><i class="fas fa-arrow-left"></i></button>';
+											$output .= '<input type="hidden" name="amount" value="'.$_GET['amount'].'"/>';
+											$output .= '<button class="block btn-default border border-black-alpha black-alpha hover-white-alpha hover-text-black-alpha" type="submit"><i class="fas fa-arrow-left"></i></button>';
 											$output .= '</form>';
 											$output .= '</div>';
 											$output .= '</li>';
-											$output .= '<li class="col-l3">';
+											$output .= '<li class="col-s6 col-m4 col-l4">';
 											$output .= '<div class="margin">';
-											$output .= '<form action="search.php" method="get">';
+											$output .= '<form action="list.php" method="get">';
 											$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
-											$output .= '<input type="hidden" name="search" value="'.$_GET['search'].'"/>';
 											$output .= '<input type="hidden" name="site" value="0"/>';
-											$output .= '<select onchange="document.forms[2].submit();" class="ipt-default" name="site_amount">';
-											$output .= '<option disabled selected value="">'.$_GET['site_amount'].' pro Seite</option>';
+											$output .= '<select onchange="document.forms[2].submit();" class="input-default border border-grey focus-border-black-alpha" name="amount">';
+											$output .= '<option disabled selected value="">'.$_GET['amount'].' pro Seite</option>';
 											$output .= '<option value="5">5 pro Seite</option>';
 											$output .= '<option value="10">10 pro Seite</option>';
 											$output .= '<option value="15">15 pro Seite</option>';
@@ -216,14 +212,13 @@ else
 											$output .= '</form>';
 											$output .= '</div>';
 											$output .= '</li>';
-											$output .= '<li class="col-l1">';
+											$output .= '<li class="col-s3 col-m4 col-l2">';
 											$output .= '<div class="margin">';
-											$output .= '<form action="search.php" method="get">';
+											$output .= '<form action="list.php" method="get">';
 											$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
-											$output .= '<input type="hidden" name="search" value="'.$_GET['search'].'"/>';
 											$output .= '<input type="hidden" name="site" value="'.$next_site.'"/>';
-											$output .= '<input type="hidden" name="site_amount" value="'.$_GET['site_amount'].'"/>';
-											$output .= '<button class="block btn-default dark" type="submit"><i class="fas fa-arrow-right"></i></button>';
+											$output .= '<input type="hidden" name="amount" value="'.$_GET['amount'].'"/>';
+											$output .= '<button class="block btn-default border border-black-alpha black-alpha hover-white-alpha hover-text-black-alpha" type="submit"><i class="fas fa-arrow-right"></i></button>';
 											$output .= '</form>';
 											$output .= '</div>';
 											$output .= '</li>';

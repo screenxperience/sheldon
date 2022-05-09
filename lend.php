@@ -10,9 +10,9 @@ $sql = mysqli_connect($app_sqlhost,$app_sqluser,$app_sqlpasswd,$app_sqldb);
 if(!$sql)
 {
 	$output .= '<div class="container">';
-	$output .= '<div class="content-center container white">';
+	$output .= '<div class="content-center container white-alpha">';
 	$output .= '<h1>Error</h1>';
-	$output .= '<div class="panel dark">';
+	$output .= '<div class="panel black-alpha">';
 	$output .= '<p>Es konnte keine Datenbankverbindung hergestellt werden.</p>';
 	$output .= '</div>'; 
 	$output .= '</div>'; 
@@ -25,9 +25,9 @@ else
 		if(empty($_GET['aktion']))
 		{
 			$output .= '<div class="container">';
-			$output .= '<div class="content-center container white">';
+			$output .= '<div class="content-center container white-alpha">';
 			$output .= '<h1>Error</h1>';
-			$output .= '<div class="panel dark">';
+			$output .= '<div class="panel black-alpha">';
 			$output .= '<p>Es konnte keine Aktion durchgef&uuml;hrt werden.</p>';
 			$output .= '</div>'; 
 			$output .= '</div>'; 
@@ -35,24 +35,24 @@ else
 		}
 		else
 		{
-			if(preg_match('/[^'.$app_regex['loweruml'].']/',$_GET['aktion']) == 0)
+			if(preg_match('/[^a-z]/',$_GET['aktion']) == 0)
 			{
-				$allowed_aktions = array('add','view');
+				$allowed_aktions = array('add','print');
 				
 				if(in_array($_GET['aktion'],$allowed_aktions))
 				{
 					if($_GET['aktion'] == $allowed_aktions[0])
 					{
-						$user_id = $_SESSION['cart']['user'];
+						$lend_user_id = $_SESSION['cart']['user'];
 						
-						$assets = $_SESSION['cart']['assets'];
+						$lend_assets = $_SESSION['cart']['assets'];
 						
-						if(empty($user_id) || empty($assets) || empty($_GET['lend_end']))
+						if(empty($lend_user_id) || empty($lend_assets) || empty($_GET['lend_end']))
 						{
 							$output .= '<div class="container">';
-							$output .= '<div class="content-center container white">';
+							$output .= '<div class="content-center container white-alpha">';
 							$output .= '<h1>Error</h1>';
-							$output .= '<div class="panel dark">';
+							$output .= '<div class="panel black-alpha">';
 							$output .= '<p>Es konnte keine Leihgabe erzeugt werden.</p>';
 							$output .= '</div>'; 
 							$output .= '</div>'; 
@@ -64,39 +64,24 @@ else
 							
 							if(!empty($_GET['lend_description']))
 							{
-								if(preg_match('/[^'.$app_regex['lowerupperumlnumbersz'].'\r\n]/',$_GET['lend_description']) != 0)
+								if(preg_match('/[^a-zA-Z0-9öäüÖÄÜß\s\-\.\r\n]/',$_GET['lend_description']) == 0)
+								{
+									$exit = 0;
+									
+									if(strlen($_GET['lend_description']) <= 200)
+									{
+										$exit = 0;
+										
+										$lend_description = $_GET['lend_description'];
+									}
+									else
+									{
+										$exit = 1;
+									}
+								}
+								else
 								{
 									$exit = 1;
-									
-									$regex = str_replace('\s',' Leerzeichen ',$app_regex['lowerupperumlnumbersz']);
-									
-									$regex = str_replace('\\','',$regex);
-									
-									$output .= '<div class="container">';
-									$output .= '<div class="content-center container white">';
-									$output .= '<h1>Error</h1>';
-									$output .= '<div class="panel dark">';
-									$output .= '<p>Verwenden Sie nur folgende Zeichen in ihrer Bemerkung: '.$regex.'</p>';
-									$output .= '</div>'; 
-									$output .= '</div>'; 
-									$output .= '</div>';
-								}
-								else if(strlen($_GET['lend_description'] > 200))
-								{
-									$exit = 1;
-								
-									$output .= '<div class="container">';
-									$output .= '<div class="content-center container white">';
-									$output .= '<h1>Error</h1>';
-									$output .= '<div class="panel dark">';
-									$output .= '<p>Verwenden Sie nur 200 Zeichen f&uuml;r ihre Bemerkung.</p>';
-									$output .= '</div>'; 
-									$output .= '</div>'; 
-									$output .= '</div>';
-								}
-								else 
-								{
-									$lend_description = $_GET['lend_description'];
 								}
 							}
 							else
@@ -106,88 +91,121 @@ else
 							
 							if(!$exit)
 							{				
-								preg_match('/'.$app_regex['date'].'/',$_GET['lend_end'],$date_matches);
+								preg_match('/^[0-9]{4}+\-{1}+[0-9]{2}+\-{1}+[0-9]{2}$/',$_GET['lend_end'],$date_matches);
 								
 								if(!empty($date_matches))
 								{
 									$date_parts = explode('-',$_GET['lend_end']);
 									
 									if(checkdate($date_parts[1],$date_parts[2],$date_parts[0]))
-									{	
-										$document_nr = strtotime('now');
+									{
+										$date = strtotime($_GET['lend_end']);
 										
-										$query = sprintf("
-										INSERT INTO
-										lend
-										(lend_document_nr,lend_creator_id,lend_user_id,lend_assets,lend_start,lend_end)
-										VALUES
-										('%s','%s','%s','%s','%s','%s');",
-										$sql->real_escape_string($document_nr),
-										$sql->real_escape_string($_SESSION['user']['id']),
-										$sql->real_escape_string($user_id),
-										$sql->real_escape_string(json_encode($assets)),
-										$sql->real_escape_string(date('Y-m-d',$document_nr)),
-										$sql->real_escape_string($_GET['lend_end']));
+										$date_min = strtotime('now')+60*60*24;
+									
+										$date_max = strtotime('now')+60*60*24*365;
 										
-										$sql->query($query);
-										
-										if($sql->affected_rows == 1)
+										if($date >= $date_min || $date <= $date_max)
 										{
-											for($i = 0; $i < count($assets); $i++)
+											$now = strtotime('now');
+										
+											$query = sprintf("
+											INSERT INTO
+											lend
+											(lend_creator_id,lend_user_id,lend_assets,lend_description,lend_start,lend_end)
+											VALUES
+											('%s','%s','%s','%s','%s','%s');",
+											$sql->real_escape_string($_SESSION['user']['id']),
+											$sql->real_escape_string($lend_user_id),
+											$sql->real_escape_string(json_encode($lend_assets)),
+											$sql->real_escape_string($lend_description),
+											$sql->real_escape_string(date('Y-m-d',$now)),
+											$sql->real_escape_string($_GET['lend_end']));
+										
+											$sql->query($query);
+										
+											if($sql->affected_rows == 1)
 											{
-												$query = sprintf("
-												UPDATE asset
-												SET asset_building_id = (
-												SELECT user_building_id FROM user
-												WHERE user_id = '%s'),
-												asset_floor_id = (
-												SELECT user_floor_id FROM user
-												WHERE user_id = '%s'),
-												asset_room_id = (
-												SELECT user_room_id FROM
-												user WHERE user_id = '%s')
-												WHERE asset_id = '%s';",
-												$sql->real_escape_string($user_id),
-												$sql->real_escape_string($user_id),
-												$sql->real_escape_string($user_id),
-												$sql->real_escape_string($assets[$i]));
+												for($i = 0; $i < count($lend_assets); $i++)
+												{
+													$query = sprintf("
+													UPDATE asset
+													SET asset_building_id = (
+													SELECT user_building_id FROM user
+													WHERE user_id = '%s'),
+													asset_floor_id = (
+													SELECT user_floor_id FROM user
+													WHERE user_id = '%s'),
+													asset_room_id = (
+													SELECT user_room_id FROM
+													user WHERE user_id = '%s')
+													WHERE asset_id = '%s';",
+													$sql->real_escape_string($lend_user_id),
+													$sql->real_escape_string($lend_user_id),
+													$sql->real_escape_string($lend_user_id),
+													$sql->real_escape_string($lend_assets[$i]));
 												
-												$sql->query($query);
+													$sql->query($query);
+												}
+											
+												$_SESSION['cart']['user'] = '';
+											
+												$_SESSION['cart']['assets'] = array();
+											
+												$cart_count = 0;
+											
+												$query = sprintf("
+												SELECT lend_id
+												FROM lend
+												WHERE lend_creator_id = '%s'
+												ORDER BY lend_id DESC
+												LIMIT 1;",
+												$sql->real_escape_string($_SESSION['user']['id']));
+												
+												$result = $sql->query($query);
+												
+												if($row = $result->fetch_array(MYSQLI_ASSOC))
+												{
+													$output .= '<div class="container">';
+													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Leihgabe wurde im System erfasst.</p>';
+													$output .= '</div>';
+													$output .= '<p><a class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" href="lend.php?aktion=print&id='.$row['lend_id'].'">Dokument erzeugen <i class="fas fa-print"></i></a></p>';
+													$output .= '</div>'; 
+													$output .= '</div>';
+												}
 											}
-											
-											$_SESSION['cart']['user'] = '';
-											
-											$_SESSION['cart']['assets'] = array();
-											
-											$cart_count = 0;
-											
-											$output .= '<div class="container">';
-											$output .= '<div class="content-center container white">';
-											$output .= '<div class="panel dark">';
-											$output .= '<p>Leihgabe wurde mit der Nummer <strong>'.$document_nr.'</strong> im System erfasst.</p>';
-											$output .= '</div>';
-											$output .= '<p><a class="block btn-default light-blue" href="lend.php?aktion=print&doc='.$document_nr.'">Dokument erzeugen <i class="fas fa-print"></i></a></p>';
-											$output .= '</div>'; 
-											$output .= '</div>'; 
+											else
+											{
+												$output .= '<div class="container">';
+												$output .= '<div class="content-center container white-alpha">';
+												$output .= '<h1>Error</h1>';
+												$output .= '<div class="panel black-alpha">';
+												$output .= '<p>Es konnte kein Eintrag erzeugt werden.</p>';
+												$output .= '</div>'; 
+												$output .= '</div>'; 
+												$output .= '</div>'; 
+											}
 										}
 										else
 										{
 											$output .= '<div class="container">';
-											$output .= '<div class="content-center container white">';
+											$output .= '<div class="content-center container white-alpha">';
 											$output .= '<h1>Error</h1>';
-											$output .= '<div class="panel dark">';
-											$output .= '<p>Es konnte kein Eintrag erzeugt werden.</p>';
+											$output .= '<div class="panel black-alpha">';
+											$output .= '<p>Das Datum liegt nicht in der vorgegebenen Zeitspanne.</p>';
 											$output .= '</div>'; 
 											$output .= '</div>'; 
-											$output .= '</div>'; 
+											$output .= '</div>';
 										}
 									}
 									else
 									{
 										$output .= '<div class="container">';
-										$output .= '<div class="content-center container white">';
+										$output .= '<div class="content-center container white-alpha">';
 										$output .= '<h1>Error</h1>';
-										$output .= '<div class="panel dark">';
+										$output .= '<div class="panel black-alpha">';
 										$output .= '<p>Das eingegebene Datum existiert nicht.</p>';
 										$output .= '</div>'; 
 										$output .= '</div>'; 
@@ -197,14 +215,25 @@ else
 								else
 								{
 									$output .= '<div class="container">';
-									$output .= '<div class="content-center container white">';
+									$output .= '<div class="content-center container white-alpha">';
 									$output .= '<h1>Error</h1>';
-									$output .= '<div class="panel dark">';
-									$output .= '<p>Geben Sie ein g&uml;tiges Datum mit der Form YYYY-MM-DD ein.</p>';
+									$output .= '<div class="panel black-alpha">';
+									$output .= '<p>W&auml;hlen Sie ein Datum aus dem Date-Picker.</p>';
 									$output .= '</div>'; 
 									$output .= '</div>'; 
 									$output .= '</div>';
 								}
+							}
+							else
+							{
+								$output .= '<div class="container">';
+								$output .= '<div class="content-center container white-alpha">';
+								$output .= '<h1>Error</h1>';
+								$output .= '<div class="panel black-alpha">';
+								$output .= '<p>Die Beschreibung darf nur 200 Zeichen lang sein und nur folgende Zeichen enthalten: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
+								$output .= '</div>'; 
+								$output .= '</div>'; 
+								$output .= '</div>';
 							}
 						}
 					}
@@ -216,9 +245,9 @@ else
 				else
 				{
 					$output .= '<div class="container">';
-					$output .= '<div class="content-center container white">';
+					$output .= '<div class="content-center container white-alpha">';
 					$output .= '<h1>Error</h1>';
-					$output .= '<div class="panel dark">';
+					$output .= '<div class="panel black-alpha">';
 					$output .= '<p>Es konnte keine Aktion durchgef&uuml;hrt werden.</p>';
 					$output .= '</div>'; 
 					$output .= '</div>'; 
@@ -228,9 +257,9 @@ else
 			else
 			{
 				$output .= '<div class="container">';
-				$output .= '<div class="content-center container white">';
+				$output .= '<div class="content-center container white-alpha">';
 				$output .= '<h1>Error</h1>';
-				$output .= '<div class="panel dark">';
+				$output .= '<div class="panel black-alpha">';
 				$output .= '<p>Es konnte keine Aktion durchgef&uuml;hrt werden.</p>';
 				$output .= '</div>'; 
 				$output .= '</div>'; 
@@ -241,9 +270,9 @@ else
 	else
 	{
 		$output .= '<div class="container">';
-		$output .= '<div class="content-center container white">';
+		$output .= '<div class="content-center container white-alpha">';
 		$output .= '<h1>Error</h1>';
-		$output .= '<div class="panel dark">';
+		$output .= '<div class="panel black-alpha">';
 		$output .= '<p>Es wurden keine Daten gesendet.</p>';
 		$output .= '</div>'; 
 		$output .= '</div>'; 
@@ -265,12 +294,3 @@ else
 	?>
 	</body>
 </html>
-
-										
-									
-									
-									
-									
-							
-				
-			
