@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 29. Apr 2022 um 10:26
+-- Erstellungszeit: 09. Mai 2022 um 14:50
 -- Server Version: 5.6.13
 -- PHP-Version: 5.4.17
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `asset` (
 --
 
 INSERT INTO `asset` (`asset_id`, `asset_type_id`, `asset_vendor_id`, `asset_model_id`, `asset_building_id`, `asset_floor_id`, `asset_room_id`, `asset_serial`, `asset_cis`, `asset_keywords`) VALUES
-(44, 14, 20, 22, 1, 1, 1, '5CG204326B', '[["28","DEUKEL1AMEF01I0"],["29","C0:18:03:CD:C3:53"],["30",["2x USB-A","2x USB-C","1x HDMI","1x Klinke 3.5mm","1x SC"]]]', 'Laptop HP EliteBook 840 G7 5CG204326B'),
+(44, 14, 20, 22, 1, 1, 1, '5CG204326B', '[["28","DEUKEL1AMEF01I0"],["29","C0:18:03:CD:C3:53"]]', 'Laptop HP EliteBook 840 G7 5CG204326B'),
 (45, 14, 20, 22, 1, 1, 1, '5CG2043PN3', '[]', 'Laptop HP EliteBook 840 G7 5CG2043PN3'),
 (46, 14, 20, 22, 1, 1, 1, '5CG2043PB4', '[]', 'Laptop HP EliteBook 840 G7 5CG2043PB4'),
 (47, 14, 20, 22, 1, 1, 1, '5CG2043PS8', '[]', 'Laptop HP EliteBook 840 G7 5CG2043PS8'),
@@ -145,7 +145,6 @@ INSERT INTO `floor` (`floor_id`, `floor_name`) VALUES
 
 CREATE TABLE IF NOT EXISTS `lend` (
   `lend_id` int(255) NOT NULL AUTO_INCREMENT,
-  `lend_document_nr` int(255) NOT NULL,
   `lend_creator_id` int(255) NOT NULL,
   `lend_user_id` int(255) NOT NULL,
   `lend_assets` longtext NOT NULL,
@@ -156,7 +155,15 @@ CREATE TABLE IF NOT EXISTS `lend` (
   PRIMARY KEY (`lend_id`),
   KEY `lend_creator_id` (`lend_creator_id`),
   KEY `lend_user_id` (`lend_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+
+--
+-- Daten für Tabelle `lend`
+--
+
+INSERT INTO `lend` (`lend_id`, `lend_creator_id`, `lend_user_id`, `lend_assets`, `lend_description`, `lend_start`, `lend_end`, `lend_archived`) VALUES
+(5, 99999999, 11549851, '["44"]', '-', '2022-05-09', '2022-05-10', '0'),
+(6, 99999999, 11549851, '["46","48"]', '-', '2022-05-09', '2022-05-19', '0');
 
 -- --------------------------------------------------------
 
@@ -344,6 +351,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_rank_id`, `user_vname`, `user_name`, `user_email`, `user_building_id`, `user_floor_id`, `user_room_id`, `user_password`, `user_salt`, `user_active`, `user_admin`, `user_failed_login`, `user_keywords`) VALUES
+(11549851, 12, 'Alexander', 'Brosch', 'alexanderbrosch@bundeswehr.org', 1, 1, 1, 'df2fa127750b5cae8144fc20b359bcee9644659af891c6e12dc0e964ad299566', '3&!M615oDb', '0', '0', '0', '11549851 Obermaat Alexander Brosch alexanderbrosch@bundeswehr.org'),
 (99999999, 48, 'EF1', 'Admin', 'einsfltl1itmanagement@bundeswehr.org', 1, 1, 1, '78be7d99d95e79e9807476f6964f97c8560ee703c9aff44d8d94f1f8e8b81b56', 'j2GVy94PPP', '1', '1', '0', '');
 
 -- --------------------------------------------------------
