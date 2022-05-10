@@ -66,7 +66,7 @@ else
 							{
 								if(preg_match('/[^a-z]/',$_GET['tab']) == 0)
 								{
-									$allowed_tabs = array('general','location','cis','lend');
+									$allowed_tabs = array('general','location','cis');
 
 									if(in_array($_GET['tab'],$allowed_tabs))
 									{
@@ -605,7 +605,7 @@ else
 							{
 								if(preg_match('/[^a-z]/',$_GET['tab']) == 0)
 								{
-									$allowed_tabs = array('general','location','lend');
+									$allowed_tabs = array('general','location');
 
 									if(in_array($_GET['tab'],$allowed_tabs))
 									{
@@ -1060,7 +1060,7 @@ else
 						else if($_GET['category'] == $allowed_category[3])
 						{
 							$query = sprintf("
-							SELECT user_vname,user_name,lend_user_id,lend_assets,lend_description,lend_start,lend_end
+							SELECT user_vname,user_name,lend_user_id,lend_assets,lend_archived_assets,lend_description,lend_end,lend_archived
 							FROM lend
 							INNER JOIN user ON user_id = lend_user_id
 							WHERE lend_id = '%s';",
@@ -1070,18 +1070,163 @@ else
 							
 							if($row = $result->fetch_array(MYSQLI_ASSOC))
 							{
+								$archived = $row['lend_archived'];
+								
+								$lend_description = $row['lend_description'];
+								
+								$lend_end = $row['lend_end'];
+								
+								$date_min = date('Y-m-d',strtotime('now')+60*60*24);
+									
+								$date_max = date('Y-m-d',strtotime('now')+60*60*24*365);
+								
 								$lend_assets = json_decode($row['lend_assets']);
 								
-								$output .= '<div class="panel">';
-								$output .= '<div class="container white-alpha">';
+								$lend_archived_assets = json_decode($row['lend_archived_assets']);
+								
+								$output .= '<div class="container">';
+								$output .= '<div class="panel white-alpha display-container">';
+								
+								if($archived)
+								{
+									$output .= '<div class="display-top-right-large section-medium section-small text-center container light-blue"><h3>Archiviert</h3></div>';
+								}
+								
 								$output .= '<h1>Leihgabe anzeigen</h1>';
 								$output .= '<h2>User</h2>';
-								$output .= '<div class="panel black-alpha">';
+								$output .= '<div class="text-center-small panel black-alpha">';
 								$output .= '<p>'.$row['lend_user_id'].'</p>';
 								$output .= '<p>'.$row['user_name'].', '.$row['user_vname'].'</p>';
 								$output .= '</div>';
+								$output .= '<h2>Assets</h2>';
+								
+								for($i = 0; $i < count($lend_assets); $i++)
+								{
+									$query = sprintf("
+									SELECT type_name,vendor_name,model_name,asset_serial
+									FROM asset
+									INNER JOIN type ON type_id = asset_type_id
+									INNER JOIN vendor ON vendor_id = asset_vendor_id
+									INNER JOIN model ON model_id = asset_model_id
+									WHERE asset_id = '%s';",
+									$sql->real_escape_string($lend_assets[$i]));
+									
+									$result = $sql->query($query);
+									
+									if($row = $result->fetch_array(MYSQLI_ASSOC))
+									{
+										$output .= '<div class="text-center-small panel black-alpha display-container">';
+										$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
+										$output .= '<p>'.$row['asset_serial'].'</p>';
+										$output .= '<div class="display-middle-right-large display-middle-right-medium container-large container-medium section-small">';
+										$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category=lendasset&id='.$_GET['id'].'&asset_id='.$i.'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/view.php?category=lend&id='.$_GET['id']).'"><i class="fas fa-arrow-left"></i> Abgabe</a>';
+										$output .= '</div>';
+										$output .= '</div>';
+									}
+								}
 								
 								
+								for($i = 0; $i < count($lend_archived_assets); $i++)
+								{
+									$lend_archived_asset = $lend_archived_assets[$i];
+										
+									$archived_asset_id = $lend_archived_asset[0];
+										
+									$archived_date = $lend_archived_asset[1];
+										
+									$query = sprintf("
+									SELECT type_name,vendor_name,model_name,asset_serial
+									FROM asset
+									INNER JOIN type ON type_id = asset_type_id
+									INNER JOIN vendor ON vendor_id = asset_vendor_id
+									INNER JOIN model ON model_id = asset_model_id
+									WHERE asset_id = '%s';",
+									$sql->real_escape_string($archived_asset_id));
+									
+									$result = $sql->query($query);
+									
+									if($row = $result->fetch_array(MYSQLI_ASSOC))
+									{
+										$output .= '<div class="text-center-small panel black-alpha display-container">';
+										$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
+										$output .= '<p>'.$row['asset_serial'].'</p>';
+										$output .= '<div class="display-middle-right-large display-middle-right-medium container-large container-medium section-small">';
+										$output .= '<div class="container inline light-blue"><p>Abgabe '.$archived_date.' <i class="fas fa-clock"></i></p></div>';
+										$output .= '</div>';
+										$output .= '</div>';
+									}
+								}
+								
+								if($archived)
+								{
+									$lend_end = date('d.m.Y',strtotime($lend_end));
+									
+									$output .= '<h2>Bemerkung</h2>';
+									$output .= '<div class="section input-default border border-grey" style="height:100px;overflow-y:auto;">'.$lend_description.'</div>';
+									$output .= '<h2>Leihgabe bis</h2>';
+									$output .= '<div class="section input-default border border-grey">'.$lend_end.'</div>';
+								}
+								else
+								{
+									$output .= '<form action="change.php" method="get">';
+									$output .= '<h2>Bemerkung</h2>';
+									$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
+									$output .= '<input type="hidden" name="id" value="'.$_GET['id'].'"/>';
+									$output .= '<input type="hidden" name="attr" value="description">';
+									$output .= '<p><textarea class="input-default border border-grey focus-border-light-blue" name="attr_value">'.$lend_description.'</textarea></p>';
+									$output .= '<p><button class="btn-default border border-light-blue light-blue hover-white hover-text-blue">Bemerkung speichern <i class="fas fa-save"></i></button></p>';
+									$output .= '</form>';
+									$output .= '<form action="change.php" method="get">';
+									$output .= '<h2>Leihgabe bis</h2>';
+									$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
+									$output .= '<input type="hidden" name="id" value="'.$_GET['id'].'"/>';
+									$output .= '<input type="hidden" name="attr" value="date">';
+									$output .= '<ul class="flex section">';
+									$output .= '<li class="col-s10 col-m10 col-l10">';
+									$output .= '<input class="input-default border border-grey border-tbl focus-border-light-blue" style="height:53px;" type="date" name="attr_value" min="'.$date_min.'" max="'.$date_max.'" value="'.$lend_end.'"/>';
+									$output .= '</li>';
+									$output .= '<li class="col-s2 col-m2 col-l2">';
+									$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" style="height:53px;" type="submit"><i class="fas fa-save"></i></button>';
+									$output .= '</li>';
+									$output .= '</ul>';
+									$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category=lend&id='.$_GET['id'].'"/>';
+									$output .= '</form>';
+								}
+								
+								$query = sprintf("
+								SELECT lend_creator_id,lend_last_seen,user_name,user_vname
+								FROM lend
+								INNER JOIN user ON user_id = lend_creator_id
+								WHERE lend_id = '%s';",
+								$sql->real_escape_string($_GET['id']));
+								
+								$result = $sql->query($query);
+								
+								if($row = $result->fetch_array(MYSQLI_ASSOC))
+								{
+									$last_seen = date('d.m.y H:i',strtotime($row['lend_last_seen']));
+									
+									$output .= '<h2>Bearbeiter</h2>';
+									$output .= '<div class="text-center-small panel black-alpha display-container">';
+									$output .= '<p>'.$row['lend_creator_id'].'</p>';
+									$output .= '<p>'.$row['user_name'].', '.$row['user_vname'].'</p>';
+									$output .= '<div class="display-middle-right-large display-middle-right-medium container-large container-medium section-small">';
+									$output .= '<div class="container inline light-blue"><p>zuletzt bearbeitet '.$last_seen.' <i class="fas fa-clock"></p></i></div>';
+									$output .= '</div>';
+									$output .= '</div>';
+								}
+								
+								$output .= '</div>';
+								$output .= '</div>';
+							}
+							else
+							{
+								$output .= '<div class="container">';
+								$output .= '<div class="content-center container white-alpha">';
+								$output .= '<h1>Error</h1>';
+								$output .= '<div class="panel black-alpha">';
+								$output .= '<p>Es wurde keine Leihgabe gefunden.</p>';
+								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';
 							}

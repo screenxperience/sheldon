@@ -107,19 +107,17 @@ else
 										
 										if($date >= $date_min || $date <= $date_max)
 										{
-											$now = strtotime('now');
-										
 											$query = sprintf("
 											INSERT INTO
 											lend
-											(lend_creator_id,lend_user_id,lend_assets,lend_description,lend_start,lend_end)
+											(lend_creator_id,lend_user_id,lend_assets,lend_archived_assets,lend_description,lend_end)
 											VALUES
 											('%s','%s','%s','%s','%s','%s');",
 											$sql->real_escape_string($_SESSION['user']['id']),
 											$sql->real_escape_string($lend_user_id),
 											$sql->real_escape_string(json_encode($lend_assets)),
+											$sql->real_escape_string(json_encode(array())),
 											$sql->real_escape_string($lend_description),
-											$sql->real_escape_string(date('Y-m-d',$now)),
 											$sql->real_escape_string($_GET['lend_end']));
 										
 											$sql->query($query);

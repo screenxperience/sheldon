@@ -1,4 +1,6 @@
 <?php
+require($_SERVER['DOCUMENT_ROOT'].'/include/auth.inc.php');
+
 require($_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php');
 
 $output = '';
@@ -62,7 +64,7 @@ else
 		{
 			if(preg_match('/[^a-z]/',$_GET['category']) == 0)
 			{
-				$allowed_category = array('asset','user','ci','vendor','model','type','building','floor','room','cis');
+				$allowed_category = array('asset','user','ci','vendor','model','type','building','floor','room','cis','lendasset');
 
 				if(in_array($_GET['category'],$allowed_category))
 				{
@@ -323,48 +325,73 @@ else
 						}
 						else if($_GET['category'] == $allowed_category[9])
 						{
-							if(preg_match('/[^0-9]/',$_GET['ci_id']) == 0)
+							if($_GET['ci_id'] == "")
 							{
-								$query = sprintf("
-								SELECT asset_cis
-								FROM asset
-								WHERE asset_id = '%s';",
-								$sql->real_escape_string($_GET['id']));
-
-								$result = $sql->query($query);
-
-								if($row = $result->fetch_array(MYSQLI_ASSOC))
+								$output .= '<div class="container">';
+								$output .= '<div class="content-center container white-alpha">';
+								$output .= '<h1>Error</h1>';
+								$output .= '<div class="panel black-alpha">';
+								$output .= '<p>Es wurde keine CI-ID gesendet.</p>';
+								$output .= '</div>';
+								$output .= '</div>';
+								$output .= '</div>';
+							}
+							else
+							{
+								if(preg_match('/[^0-9]/',$_GET['ci_id']) == 0)
 								{
-									$asset_cis = json_decode($row['asset_cis']);
+									$query = sprintf("
+									SELECT asset_cis
+									FROM asset
+									WHERE asset_id = '%s';",
+									$sql->real_escape_string($_GET['id']));
 
-									if(array_key_exists($_GET['ci_id'],$asset_cis))
+									$result = $sql->query($query);
+
+									if($row = $result->fetch_array(MYSQLI_ASSOC))
 									{
-										$asset_cis_new = array();
+										$asset_cis = json_decode($row['asset_cis']);
 
-										unset($asset_cis[$_GET['ci_id']]);
-
-										foreach($asset_cis as $asset_ci)
+										if(array_key_exists($_GET['ci_id'],$asset_cis))
 										{
-											array_push($asset_cis_new,$asset_ci);
+											$asset_cis_new = array();
+
+											unset($asset_cis[$_GET['ci_id']]);
+
+											foreach($asset_cis as $asset_ci)
+											{
+												array_push($asset_cis_new,$asset_ci);
+											}
+
+											$asset_cis = $asset_cis_new;
+
+											$query = sprintf("
+											UPDATE asset
+											SET asset_cis = '%s'
+											WHERE asset_id = '%s';",
+											$sql->real_escape_string(json_encode($asset_cis)),
+											$sql->real_escape_string($_GET['id']));
+
+											$sql->query($query);
+
+											if($sql->affected_rows == 1)
+											{
+												$output .= '<div class="container">';
+												$output .= '<div class="content-center container white-alpha">';
+												$output .= '<div class="panel black-alpha">';
+												$output .= '<p>CI wurde entfernt.</p>';
+												$output .= '</div>';
+												$output .= '</div>';
+												$output .= '</div>';
+											}
 										}
-
-										$asset_cis = $asset_cis_new;
-
-										$query = sprintf("
-										UPDATE asset
-										SET asset_cis = '%s'
-										WHERE asset_id = '%s';",
-										$sql->real_escape_string(json_encode($asset_cis)),
-										$sql->real_escape_string($_GET['id']));
-
-										$sql->query($query);
-
-										if($sql->affected_rows == 1)
+										else
 										{
 											$output .= '<div class="container">';
 											$output .= '<div class="content-center container white-alpha">';
+											$output .= '<h1>Error</h1>';
 											$output .= '<div class="panel black-alpha">';
-											$output .= '<p>CI wurde entfernt.</p>';
+											$output .= '<p>CI-Index ist nicht vorhanden.</p>';
 											$output .= '</div>';
 											$output .= '</div>';
 											$output .= '</div>';
@@ -376,7 +403,7 @@ else
 										$output .= '<div class="content-center container white-alpha">';
 										$output .= '<h1>Error</h1>';
 										$output .= '<div class="panel black-alpha">';
-										$output .= '<p>CI-Index ist nicht vorhanden.</p>';
+										$output .= '<p>Es wurde kein Asset gefunden.</p>';
 										$output .= '</div>';
 										$output .= '</div>';
 										$output .= '</div>';
@@ -388,24 +415,179 @@ else
 									$output .= '<div class="content-center container white-alpha">';
 									$output .= '<h1>Error</h1>';
 									$output .= '<div class="panel black-alpha">';
-									$output .= '<p>Es wurde kein Asset gefunden.</p>';
+									$output .= '<p>Die CI-ID besteht nur aus Zahlen.</p>';
 									$output .= '</div>';
 									$output .= '</div>';
 									$output .= '</div>';
 								}
 							}
-							else
+						}
+						else if($_GET['category'] == $allowed_category[10])
+						{
+							if($_GET['asset_id'] == "")
 							{
 								$output .= '<div class="container">';
 								$output .= '<div class="content-center container white-alpha">';
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel black-alpha">';
-								$output .= '<p>Die CI-ID besteht nur aus Zahlen.</p>';
+								$output .= '<p>Es wurde keine AssetID gesendet.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';
 							}
-						}
+							else
+							{
+								if(preg_match('/[^0-9]/',$_GET['asset_id']) == 0)
+								{
+									$query = sprintf("
+									SELECT lend_assets,lend_archived_assets
+									FROM lend
+									WHERE lend_id = '%s';",
+									$sql->real_escape_string($_GET['id']));
+									
+									$result = $sql->query($query);
+									
+									if($row = $result->fetch_array(MYSQLI_ASSOC))
+									{
+										$key = $_GET['asset_id'];
+										
+										$lend_assets = json_decode($row['lend_assets']);
+										
+										$lend_archived_assets = json_decode($row['lend_archived_assets']);
+										
+										if(!empty($lend_assets[$key]))
+										{
+											$exit = 0;
+											
+											if(!empty($lend_archived_assets))
+											{
+												for($i = 0; $i < count($lend_archived_assets); $i++)
+												{
+													$lend_archived_asset = $lend_archived_assets[$i];
+													
+													$archived_asset_id = $lend_archived_asset[0];
+													
+													if($lend_assets[$key] == $archived_asset_id)
+													{
+														$exit = 1;
+														
+														break;
+													}
+												}
+											}
+										
+											if(!$exit)
+											{
+												$archived_date = date('d.m.Y',strtotime('now'));
+												
+												$archived_asset = array($lend_assets[$key],$archived_date);
+													
+												array_push($lend_archived_assets,$archived_asset);
+											}
+											
+											$lend_assets_new = array();
+											
+											unset($lend_assets[$key]);
+											
+											foreach($lend_assets as $lend_asset)
+											{
+												array_push($lend_assets_new,$lend_asset);
+											}
+												
+											$lend_assets = $lend_assets_new;
+												
+											if(!empty($lend_assets))
+											{
+												$query = sprintf("
+												UPDATE lend
+												SET lend_assets = '%s',
+												lend_archived_assets = '%s',
+												lend_creator_id = '%s'
+												WHERE lend_id = '%s';",
+												$sql->real_escape_string(json_encode($lend_assets)),
+												$sql->real_escape_string(json_encode($lend_archived_assets)),
+												$sql->real_escape_string($_SESSION['user']['id']),
+												$sql->real_escape_string($_GET['id']));
+											
+												$sql->query($query);
+											
+												if($sql->affected_rows == 1)
+												{
+													$output .= '<div class="container">';
+													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Datensatz wurde erfolgreich gespeichert.</p>';
+													$output .= '</div>';
+													$output .= '</div>';
+													$output .= '</div>';
+												}
+											}
+											else
+											{
+												$query = sprintf("
+												UPDATE lend
+												SET lend_assets = '%s',
+												lend_archived_assets = '%s',
+												lend_archived = '%s',
+												lend_creator_id = '%s'
+												WHERE lend_id = '%s';",
+												$sql->real_escape_string(json_encode($lend_assets)),
+												$sql->real_escape_string(json_encode($lend_archived_assets)),
+												$sql->real_escape_string(1),
+												$sql->real_escape_string($_SESSION['user']['id']),
+												$sql->real_escape_string($_GET['id']));
+												
+												$sql->query($query);
+												
+												if($sql->affected_rows == 1)
+												{
+													$output .= '<div class="container">';
+													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Leihgabe wurde archiviert.</p>';
+													$output .= '</div>';
+													$output .= '</div>';
+													$output .= '</div>';
+												}
+											}
+										}
+										else
+										{
+											$output .= '<div class="container">';
+											$output .= '<div class="content-center container white-alpha">';
+											$output .= '<h1>Error</h1>';
+											$output .= '<div class="panel black-alpha">';
+											$output .= '<p>Die gesendete ID ist nicht vorhanden.</p>';
+											$output .= '</div>';
+											$output .= '</div>';
+											$output .= '</div>';
+										}
+									}
+									else
+									{
+										$output .= '<div class="container">';
+										$output .= '<div class="content-center container white-alpha">';
+										$output .= '<h1>Error</h1>';
+										$output .= '<div class="panel black-alpha">';
+										$output .= '<p>Es wurde keine Leihgabe gefunden.</p>';
+										$output .= '</div>';
+										$output .= '</div>';
+										$output .= '</div>';
+									}
+								}
+								else
+								{
+									$output .= '<div class="container">';
+									$output .= '<div class="content-center container white-alpha">';
+									$output .= '<h1>Error</h1>';
+									$output .= '<div class="panel black-alpha">';
+									$output .= '<p>Die AssetID besteht nur aus Zahlen.</p>';
+									$output .= '</div>';
+									$output .= '</div>';
+									$output .= '</div>';
+								}
+							}
+						}			
 					}
 					else
 					{

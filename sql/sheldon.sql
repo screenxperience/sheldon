@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 09. Mai 2022 um 14:50
+-- Erstellungszeit: 10. Mai 2022 um 14:46
 -- Server Version: 5.6.13
 -- PHP-Version: 5.4.17
 
@@ -148,22 +148,22 @@ CREATE TABLE IF NOT EXISTS `lend` (
   `lend_creator_id` int(255) NOT NULL,
   `lend_user_id` int(255) NOT NULL,
   `lend_assets` longtext NOT NULL,
+  `lend_archived_assets` longtext NOT NULL,
   `lend_description` varchar(200) NOT NULL,
-  `lend_start` date NOT NULL,
+  `lend_last_seen` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `lend_end` date NOT NULL,
   `lend_archived` enum('0','1') NOT NULL DEFAULT '0',
   PRIMARY KEY (`lend_id`),
   KEY `lend_creator_id` (`lend_creator_id`),
   KEY `lend_user_id` (`lend_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 --
 -- Daten für Tabelle `lend`
 --
 
-INSERT INTO `lend` (`lend_id`, `lend_creator_id`, `lend_user_id`, `lend_assets`, `lend_description`, `lend_start`, `lend_end`, `lend_archived`) VALUES
-(5, 99999999, 11549851, '["44"]', '-', '2022-05-09', '2022-05-10', '0'),
-(6, 99999999, 11549851, '["46","48"]', '-', '2022-05-09', '2022-05-19', '0');
+INSERT INTO `lend` (`lend_id`, `lend_creator_id`, `lend_user_id`, `lend_assets`, `lend_archived_assets`, `lend_description`, `lend_last_seen`, `lend_end`, `lend_archived`) VALUES
+(8, 11549851, 11549851, '[]', '[["46","10.05.2022"],["44","10.05.2022"]]', '-', '2022-05-10 14:44:24', '2022-05-20', '1');
 
 -- --------------------------------------------------------
 
@@ -351,7 +351,7 @@ CREATE TABLE IF NOT EXISTS `user` (
 --
 
 INSERT INTO `user` (`user_id`, `user_rank_id`, `user_vname`, `user_name`, `user_email`, `user_building_id`, `user_floor_id`, `user_room_id`, `user_password`, `user_salt`, `user_active`, `user_admin`, `user_failed_login`, `user_keywords`) VALUES
-(11549851, 12, 'Alexander', 'Brosch', 'alexanderbrosch@bundeswehr.org', 1, 1, 1, 'df2fa127750b5cae8144fc20b359bcee9644659af891c6e12dc0e964ad299566', '3&!M615oDb', '0', '0', '0', '11549851 Obermaat Alexander Brosch alexanderbrosch@bundeswehr.org'),
+(11549851, 12, 'Alexander', 'Brosch', 'alexanderbrosch@bundeswehr.org', 1, 1, 1, '78be7d99d95e79e9807476f6964f97c8560ee703c9aff44d8d94f1f8e8b81b56', 'j2GVy94PPP', '1', '1', '0', '11549851 Obermaat Alexander Brosch alexanderbrosch@bundeswehr.org'),
 (99999999, 48, 'EF1', 'Admin', 'einsfltl1itmanagement@bundeswehr.org', 1, 1, 1, '78be7d99d95e79e9807476f6964f97c8560ee703c9aff44d8d94f1f8e8b81b56', 'j2GVy94PPP', '1', '1', '0', '');
 
 -- --------------------------------------------------------

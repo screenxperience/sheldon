@@ -73,7 +73,7 @@
 									<a href="index.php">
 										<h1>Sheldon 
 											<span class="hide-small">
-												| MatDB
+												| IT-Pool
 												<?php
 												if(!empty($app_org))
 												{

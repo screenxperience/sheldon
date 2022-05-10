@@ -461,7 +461,7 @@ else
 									
 								$output .= '<form action="lend.php" method="get">';
 								$output .= '<h2>Bemerkung</h2>';
-								$output .= '<p><textarea class="input-default border border-grey focus-border-light-blue" style="height:100px;resize:vertical" placeholder="Freitext eingeben (200 Zeichen)"></textarea></p>';
+								$output .= '<p><textarea class="input-default border border-grey focus-border-light-blue" placeholder="Bemerkung eingeben (200 Zeichen)"></textarea></p>';
 								$output .= '<h2>Leihgabe bis</h2>';
 								$output .= '<input type="hidden" name="aktion" value="add"/>';
 								$output .= '<ul class="flex section">';
