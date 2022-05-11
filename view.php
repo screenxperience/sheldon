@@ -1086,13 +1086,23 @@ else
 								
 								$output .= '<div class="container">';
 								$output .= '<div class="panel white-alpha display-container">';
+								$output .= '<h1>Leihgabe anzeigen</h1>';
 								
 								if($archived)
 								{
-									$output .= '<div class="display-top-right-large section-medium section-small text-center container light-blue"><h3>Archiviert</h3></div>';
+									$output .= '<div class="display-top-right-large display-top-right-medium section-small text-center">';
+									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue" href"#">Archiviert <i class="fas fa-check"></i></a>';
+									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="lend.php?aktion=print&id='.$_GET['id'].'">Drucken <i class="fas fa-print"></i></a>';
+									$output .= '</div>';
+								}
+								else
+								{
+									$output .= '<div class="display-top-right-large display-top-right-medium section-small text-center">';
+									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href"del.php?category=lend&id='.$_GET['id'].'">Archivieren <i class="fa-solid fa-file-zipper"></i></a>';
+									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="print.php?category=lend&id='.$_GET['id'].'">Drucken <i class="fas fa-print"></i></a>';
+									$output .= '</div>';
 								}
 								
-								$output .= '<h1>Leihgabe anzeigen</h1>';
 								$output .= '<h2>User</h2>';
 								$output .= '<div class="text-center-small panel black-alpha">';
 								$output .= '<p>'.$row['lend_user_id'].'</p>';

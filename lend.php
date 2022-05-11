@@ -165,11 +165,19 @@ else
 												if($row = $result->fetch_array(MYSQLI_ASSOC))
 												{
 													$output .= '<div class="container">';
-													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<div class="content-center container white-alpha" style="max-width:600px;">';
+													$output .= '<table>';
+													$output .= '<tr>';
+													$output .= '<td><h2>Auftrag erfolgreich</h2></td>';
+													$output .= '<td>';
+													$output .= '&nbsp;&nbsp;&nbsp;<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="lend.php?aktion=print&id='.$row['lend_id'].'"><i class="fas fa-print"></i></a> ';
+													$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category=lend&id='.$row['lend_id'].'"><i class="fas fa-eye"></i></a>';
+													$output .= '</td>';
+													$output .= '</tr>';
+													$output .= '</table>';
 													$output .= '<div class="panel black-alpha">';
-													$output .= '<p>Leihgabe wurde im System erfasst.</p>';
-													$output .= '</div>';
-													$output .= '<p><a class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" href="lend.php?aktion=print&id='.$row['lend_id'].'">Dokument erzeugen <i class="fas fa-print"></i></a></p>';
+													$output .= '<p>Leihgabe wurde mit der Nummer '.$row['lend_id'].' im System erfasst.</p>';
+													$output .= '</div>'; 
 													$output .= '</div>'; 
 													$output .= '</div>';
 												}

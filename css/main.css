@@ -399,6 +399,11 @@ ul.flex-center {
 		top:50%;
 		transform:translate(0,-50%);
 	}
+	.display-top-right-medium {
+		position:absolute;
+		right:0;
+		top:0;
+	}
 	.container-medium {
 		padding:.1px 16px;
 	}
