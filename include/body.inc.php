@@ -5,9 +5,9 @@
 		</p>
 		<ul>
 			<li>
-				<p>
-					<a href="list.php?category=lend&site=0&amount=5&archived=0" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">Leihgaben</a>
-				</p>
+				<div class="section text-center">
+					<a href="list.php?category=lend&site=0&amount=5&archived=0" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Leihgaben</p></a>
+				</div>
 			</li>
 			<li>
 				<div class="section display-container text-center hover-text-left">

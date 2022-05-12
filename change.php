@@ -857,7 +857,7 @@ else
 										{
 											$output .= '<div class="container">';
 											$output .= '<div class="content-center container white-alpha">';
-											$output .= '<h2>Info</h2>';
+											$output .= '<h1>Info</h1>';
 											$output .= '<div class="panel black-alpha">';
 											$output .= '<p>CI-Typ kann aufgrund bestehender Verkn&uuml;pfungen nicht ge&auml;ndert werden.</p>';
 											$output .= '</div>';
