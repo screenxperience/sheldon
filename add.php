@@ -1,4 +1,6 @@
 <?php
+require($_SERVER['DOCUMENT_ROOT'].'/include/auth.inc.php');
+
 require($_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php');
 
 $output = '';
@@ -37,11 +39,11 @@ else
 		{
 			if(preg_match('/[^a-z]/',$_GET['category']) == 0)
 			{
-				$allowed_category = array('asset','user','ci','cis','vendor','model','type','building','floor','room');
+				$allowed_category = array('asset','user','ci','cis','lend','vendor','model','type','building','floor','room');
 
 				if(in_array($_GET['category'],$allowed_category))
 				{
-					$category_german = array('Asset','User','CI','CIs','Hersteller','Modell','Typ','Geb&auml;ude','Stockwerk','Raum');
+					$category_german = array('Asset','User','CI','CIs','Leihgabe','Hersteller','Modell','Typ','Geb&auml;ude','Stockwerk','Raum');
 
 					$array_key = array_search($_GET['category'],$allowed_category);
 
@@ -1133,6 +1135,204 @@ else
 							$output .= '<div class="panel black-alpha">';
 							$output .= '<p>Es wurde keine AssetID gesendet.</p>';
 							$output .= '</div>';
+						}
+					}
+					else if($_GET['category'] == $allowed_category[4])
+					{
+						$lend_user_id = $_SESSION['cart']['user'];
+						
+						$lend_assets = $_SESSION['cart']['assets'];
+						
+						if(empty($lend_user_id) || empty($lend_assets) || empty($_GET['lend_end']))
+						{
+							$output  = '<div class="container">';
+							$output .= '<div class="content-center container white-alpha">';
+							$output .= '<h1>Error</h1>';
+							$output .= '<div class="panel black-alpha">';
+							$output .= '<p>Es konnte keine Leihgabe erzeugt werden.</p>';
+							$output .= '</div>'; 
+							$output .= '</div>'; 
+							$output .= '</div>';
+						}
+						else
+						{
+							$exit = 0;
+							
+							if(!empty($_GET['lend_description']))
+							{
+								if(preg_match('/[^a-zA-Z0-9öäüÖÄÜß\s\-\.\r\n]/',$_GET['lend_description']) == 0)
+								{
+									$exit = 0;
+									
+									if(strlen($_GET['lend_description']) <= 200)
+									{
+										$exit = 0;
+										
+										$lend_description = $_GET['lend_description'];
+									}
+									else
+									{
+										$exit = 1;
+									}
+								}
+								else
+								{
+									$exit = 1;
+								}
+							}
+							else
+							{
+								$lend_description = '-';
+							}
+							
+							if(!$exit)
+							{				
+								preg_match('/^[0-9]{4}+\-{1}+[0-9]{2}+\-{1}+[0-9]{2}$/',$_GET['lend_end'],$date_matches);
+								
+								if(!empty($date_matches))
+								{
+									$date_parts = explode('-',$_GET['lend_end']);
+									
+									if(checkdate($date_parts[1],$date_parts[2],$date_parts[0]))
+									{
+										$date = strtotime($_GET['lend_end']);
+										
+										$date_min = strtotime('now')+60*60*24;
+									
+										$date_max = strtotime('now')+60*60*24*365;
+										
+										if($date >= $date_min || $date <= $date_max)
+										{
+											$query = sprintf("
+											INSERT INTO
+											lend
+											(lend_creator_id,lend_user_id,lend_assets,lend_archived_assets,lend_description,lend_end)
+											VALUES
+											('%s','%s','%s','%s','%s','%s');",
+											$sql->real_escape_string($_SESSION['user']['id']),
+											$sql->real_escape_string($lend_user_id),
+											$sql->real_escape_string(json_encode($lend_assets)),
+											$sql->real_escape_string(json_encode(array())),
+											$sql->real_escape_string($lend_description),
+											$sql->real_escape_string($_GET['lend_end']));
+										
+											$sql->query($query);
+										
+											if($sql->affected_rows == 1)
+											{
+												for($i = 0; $i < count($lend_assets); $i++)
+												{
+													$query = sprintf("
+													UPDATE asset
+													SET asset_building_id = (
+													SELECT user_building_id FROM user
+													WHERE user_id = '%s'),
+													asset_floor_id = (
+													SELECT user_floor_id FROM user
+													WHERE user_id = '%s'),
+													asset_room_id = (
+													SELECT user_room_id FROM
+													user WHERE user_id = '%s')
+													WHERE asset_id = '%s';",
+													$sql->real_escape_string($lend_user_id),
+													$sql->real_escape_string($lend_user_id),
+													$sql->real_escape_string($lend_user_id),
+													$sql->real_escape_string($lend_assets[$i]));
+												
+													$sql->query($query);
+												}
+											
+												$_SESSION['cart']['user'] = '';
+											
+												$_SESSION['cart']['assets'] = array();
+											
+												$cart_count = 0;
+											
+												$query = sprintf("
+												SELECT lend_id
+												FROM lend
+												WHERE lend_creator_id = '%s'
+												ORDER BY lend_id DESC
+												LIMIT 1;",
+												$sql->real_escape_string($_SESSION['user']['id']));
+												
+												$result = $sql->query($query);
+												
+												if($row = $result->fetch_array(MYSQLI_ASSOC))
+												{
+													$output  = '<div class="container">';
+													$output .= '<div class="content-center container white-alpha display-container" style="max-width:600px;">';
+													$output .= '<h1>Auftrag erfolgreich</h1>';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Leihgabe wurde mit der Nummer '.$row['lend_id'].' im System erfasst.</p>';
+													$output .= '</div>'; 
+													$output .= '<div class="display-top-right">';
+													$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="print.php?category=lend&id='.$row['lend_id'].'"><i class="fas fa-print"></i></a>';
+													$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category=lend&id='.$row['lend_id'].'"><i class="fas fa-eye"></i></a>';
+													$output .= '</div>';
+													$output .= '</div>'; 
+													$output .= '</div>';
+												}
+											}
+											else
+											{
+												$output  = '<div class="container">';
+												$output .= '<div class="content-center container white-alpha">';
+												$output .= '<h1>Error</h1>';
+												$output .= '<div class="panel black-alpha">';
+												$output .= '<p>Es konnte kein Eintrag erzeugt werden.</p>';
+												$output .= '</div>'; 
+												$output .= '</div>'; 
+												$output .= '</div>'; 
+											}
+										}
+										else
+										{
+											$output  = '<div class="container">';
+											$output .= '<div class="content-center container white-alpha">';
+											$output .= '<h1>Error</h1>';
+											$output .= '<div class="panel black-alpha">';
+											$output .= '<p>Das Datum liegt nicht in der vorgegebenen Zeitspanne.</p>';
+											$output .= '</div>'; 
+											$output .= '</div>'; 
+											$output .= '</div>';
+										}
+									}
+									else
+									{
+										$output  = '<div class="container">';
+										$output .= '<div class="content-center container white-alpha">';
+										$output .= '<h1>Error</h1>';
+										$output .= '<div class="panel black-alpha">';
+										$output .= '<p>Das eingegebene Datum existiert nicht.</p>';
+										$output .= '</div>'; 
+										$output .= '</div>'; 
+										$output .= '</div>'; 
+									}
+								}
+								else
+								{
+									$output  = '<div class="container">';
+									$output .= '<div class="content-center container white-alpha">';
+									$output .= '<h1>Error</h1>';
+									$output .= '<div class="panel black-alpha">';
+									$output .= '<p>W&auml;hlen Sie ein Datum aus dem Date-Picker.</p>';
+									$output .= '</div>'; 
+									$output .= '</div>'; 
+									$output .= '</div>';
+								}
+							}
+							else
+							{
+								$output  = '<div class="container">';
+								$output .= '<div class="content-center container white-alpha">';
+								$output .= '<h1>Error</h1>';
+								$output .= '<div class="panel black-alpha">';
+								$output .= '<p>Die Beschreibung darf nur 200 Zeichen lang sein und nur folgende Zeichen enthalten: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
+								$output .= '</div>'; 
+								$output .= '</div>'; 
+								$output .= '</div>';
+							}
 						}
 					}
 					else

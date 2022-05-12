@@ -1098,13 +1098,13 @@ else
 								else
 								{
 									$output .= '<div class="display-top-right-large display-top-right-medium section-small text-center">';
-									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href"del.php?category=lend&id='.$_GET['id'].'">Archivieren <i class="fa-solid fa-file-zipper"></i></a>';
+									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category=lend&id='.$_GET['id'].'">Archivieren <i class="fa-solid fa-file-zipper"></i></a>';
 									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="print.php?category=lend&id='.$_GET['id'].'">Drucken <i class="fas fa-print"></i></a>';
 									$output .= '</div>';
 								}
 								
 								$output .= '<h2>User</h2>';
-								$output .= '<div class="text-center-small panel black-alpha">';
+								$output .= '<div class="panel black-alpha">';
 								$output .= '<p>'.$row['lend_user_id'].'</p>';
 								$output .= '<p>'.$row['user_name'].', '.$row['user_vname'].'</p>';
 								$output .= '</div>';
@@ -1157,11 +1157,11 @@ else
 									
 									if($row = $result->fetch_array(MYSQLI_ASSOC))
 									{
-										$output .= '<div class="text-center-small panel black-alpha display-container">';
+										$output .= '<div class="panel black-alpha display-container">';
 										$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
 										$output .= '<p>'.$row['asset_serial'].'</p>';
 										$output .= '<div class="display-middle-right-large display-middle-right-medium container-large container-medium section-small">';
-										$output .= '<div class="container inline light-blue"><p>Abgabe '.$archived_date.' <i class="fas fa-clock"></i></p></div>';
+										$output .= '<div class="text-center container light-blue"><p>Abgabe '.$archived_date.' <i class="fas fa-clock"></i></p></div>';
 										$output .= '</div>';
 										$output .= '</div>';
 									}
@@ -1217,11 +1217,11 @@ else
 									$last_seen = date('d.m.y H:i',strtotime($row['lend_last_seen']));
 									
 									$output .= '<h2>Bearbeiter</h2>';
-									$output .= '<div class="text-center-small panel black-alpha display-container">';
+									$output .= '<div class="panel black-alpha display-container">';
 									$output .= '<p>'.$row['lend_creator_id'].'</p>';
 									$output .= '<p>'.$row['user_name'].', '.$row['user_vname'].'</p>';
 									$output .= '<div class="display-middle-right-large display-middle-right-medium container-large container-medium section-small">';
-									$output .= '<div class="container inline light-blue"><p>zuletzt bearbeitet '.$last_seen.' <i class="fas fa-clock"></p></i></div>';
+									$output .= '<div class="container text-center light-blue"><p>zuletzt bearbeitet '.$last_seen.' <i class="fas fa-clock"></p></i></div>';
 									$output .= '</div>';
 									$output .= '</div>';
 								}

@@ -459,11 +459,11 @@ else
 									
 								$date_max = date('Y-m-d',strtotime('now')+60*60*24*365);
 									
-								$output .= '<form action="lend.php" method="get">';
+								$output .= '<form action="add.php" method="get">';
+								$output .= '<input type="hidden" name="category" value="lend"/>';
 								$output .= '<h2>Bemerkung</h2>';
-								$output .= '<p><textarea class="input-default border border-grey focus-border-light-blue" placeholder="Bemerkung eingeben (200 Zeichen)"></textarea></p>';
+								$output .= '<p><textarea class="input-default border border-grey focus-border-light-blue" name="lend_description" placeholder="Bemerkung eingeben (200 Zeichen)"></textarea></p>';
 								$output .= '<h2>Leihgabe bis</h2>';
-								$output .= '<input type="hidden" name="aktion" value="add"/>';
 								$output .= '<ul class="flex section">';
 								$output .= '<li class="col-s10 col-m10 col-l10">';
 								$output .= '<input class="input-default border border-grey border-tbl focus-border-light-blue" style="height:53px;" name="lend_end" type="date" value="'.$date_min.'" min="'.$date_min.'" max="'.$date_max.'"/></p>';

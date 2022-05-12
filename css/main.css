@@ -86,6 +86,7 @@ ul.flex-center {
 }
 .container {
 	padding:.1px 16px;
+	display:block;
 }
 .section {
 	margin:16px 0;
@@ -95,6 +96,12 @@ ul.flex-center {
 }
 .display-container {
 	position:relative;
+}
+.hover-display {
+	display:none;
+}
+.display-container:hover .hover-display {
+	display:block;
 }
 .display-top-right {
 	position:absolute;
@@ -132,6 +139,9 @@ ul.flex-center {
 	border:none;
 	background-color:#ffffff;
 	color:#000000;
+}
+input.input-default, select.input-default {
+	cursor:pointer;
 }
 .circle {
 	border-radius:50%;
@@ -256,6 +266,12 @@ ul.flex-center {
 
 
 /* text transformation */
+.text-left {
+	text-align:left;
+}
+.hover-text-left:hover {
+	text-align:left;
+}
 .text-right {
 	text-align:right;
 }
