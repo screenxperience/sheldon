@@ -675,7 +675,7 @@ else
 											
 											if(!$exit)
 											{
-												$asset_to_archived = array($lend_assets[$i],$archived_date);
+												$asset_to_archived = array($lend_asset_id,$archived_date);
 												
 												array_push($lend_archived_assets,$asset_to_archived);
 											}
@@ -689,16 +689,16 @@ else
 											$sql->real_escape_string(1),
 											$sql->real_escape_string(1),
 											$sql->real_escape_string(1),
-											$sql->real_escape_string($lend_assets[$i]));
+											$sql->real_escape_string($lend_asset_id));
 											
 											$sql->query($query);
 										}
 										
 										$query = sprintf("
 										UPDATE lend
-										set lend_assets = '%s',
-										lend_archived_assets = '%s'
-										lend_archived = '%s'
+										SET lend_assets = '%s',
+										lend_archived_assets = '%s',
+										lend_archived = '%s',
 										lend_creator_id = '%s'
 										WHERE lend_id = '%s';",
 										$sql->real_escape_string(json_encode(array())),

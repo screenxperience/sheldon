@@ -10,9 +10,9 @@ $sql = mysqli_connect($app_sqlhost,$app_sqluser,$app_sqlpasswd,$app_sqldb);
 if(!$sql)
 {
 	$output .= '<div class="container">';
-	$output .= '<div class="content-center container white">';
+	$output .= '<div class="content-center container white-alpha">';
 	$output .= '<h1>Error</h1>';
-	$output .= '<div class="panel dark">';
+	$output .= '<div class="panel black-alpha">';
 	$output .= '<p>Es konnte keine Datenbankverbindung hergestellt werden.</p>';
 	$output .= '</div>';
 	$output .= '</div>';
@@ -27,9 +27,9 @@ else
 		if(empty($_GET['category']) || empty($_GET['id']))
 		{
 			$output .= '<div class="container">';
-			$output .= '<div class="content-center container white">';
+			$output .= '<div class="content-center container white-alpha">';
 			$output .= '<h1>Error</h1>';
-			$output .= '<div class="panel dark">';
+			$output .= '<div class="panel black-alpha">';
 			$output .= '<p>Es wurden nicht alle Daten gesendet.</p>';
 			$output .= '</div>';
 			$output .= '</div>';
@@ -1184,6 +1184,7 @@ else
 									$output .= '<input type="hidden" name="id" value="'.$_GET['id'].'"/>';
 									$output .= '<input type="hidden" name="attr" value="description">';
 									$output .= '<p><textarea class="input-default border border-grey focus-border-light-blue" name="attr_value">'.$lend_description.'</textarea></p>';
+									$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'"/>';
 									$output .= '<p><button class="btn-default border border-light-blue light-blue hover-white hover-text-blue">Bemerkung speichern <i class="fas fa-save"></i></button></p>';
 									$output .= '</form>';
 									$output .= '<form action="change.php" method="get">';
@@ -1199,7 +1200,7 @@ else
 									$output .= '<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" style="height:53px;" type="submit"><i class="fas fa-save"></i></button>';
 									$output .= '</li>';
 									$output .= '</ul>';
-									$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category=lend&id='.$_GET['id'].'"/>';
+									$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'"/>';
 									$output .= '</form>';
 								}
 								

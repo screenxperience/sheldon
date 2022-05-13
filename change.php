@@ -1,4 +1,6 @@
 <?php
+require($_SERVER['DOCUMENT_ROOT'].'/include/auth.inc.php');
+
 require($_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php');
 
 $output = '';
@@ -62,7 +64,7 @@ else
 		{
 			if(preg_match('/[^a-z]/',$_GET['category']) == 0)
 			{
-				$allowed_category = array('asset','user','ci','vendor','model','type','building','floor','room');
+				$allowed_category = array('asset','user','ci','lend','vendor','model','type','building','floor','room');
 
 				if(in_array($_GET['category'],$allowed_category))
 				{
@@ -1159,6 +1161,226 @@ else
 								$output .= '<p>Es k&ouml;nnen nur folgende Attribute ge&auml;ndert werden: Name, Typ und Regex.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
+								$output .= '</div>';
+							}
+						}
+						else if($_GET['category'] == $allowed_category[3])
+						{
+							$query = sprintf("
+							SELECT lend_archived
+							FROM lend
+							WHERE lend_id = '%s';",
+							$sql->real_escape_string($_GET['id']));
+							
+							$result = $sql->query($query);
+							
+							if($row = $result->fetch_array(MYSQLI_ASSOC))
+							{
+								if(!$row['lend_archived'])
+								{
+									if(preg_match('/[^a-z]/',$_GET['attr']) == 0)
+									{
+										$allowed_attr = array('description','date');
+
+										if(in_array($_GET['attr'],$allowed_attr))
+										{
+											if($_GET['attr'] == $allowed_attr[0])
+											{
+												if(preg_match('/[^a-zA-Z0-9öäüÖÄÜß\-\.\s\r\n]/',$_GET['attr_value']) == 0)
+												{
+													if(strlen($_GET['attr_value']) <= 200)
+													{
+														$query = sprintf("
+														UPDATE lend
+														SET lend_description = '%s',
+														lend_creator_id = '%s'
+														WHERE lend_id = '%s';",
+														$sql->real_escape_string($_GET['attr_value']),
+														$sql->real_escape_string($_SESSION['user']['id']),
+														$sql->real_escape_string($_GET['id']));
+														
+														$sql->query($query);
+														
+														if($sql->affected_rows == 1)
+														{
+															$output .= '<div class="container">';
+															$output .= '<div class="content-center container white-alpha">';
+															$output .= '<div class="panel black-alpha">';
+															$output .= '<p>Datensatz wurde erfolgreich gespeichert.</p>';
+															$output .= '</div>';
+															$output .= '</div>';
+															$output .= '</div>';
+														}
+														else
+														{
+															$output .= '<div class="container">';
+															$output .= '<div class="content-center container white-alpha">';
+															$output .= '<h1>Error</h1>';
+															$output .= '<div class="panel black-alpha">';
+															$output .= '<p>Datensatz konnte nicht gespeichert werden.</p>';
+															$output .= '</div>';
+															$output .= '</div>';
+															$output .= '</div>';
+														}
+													}
+													else
+													{
+														$output .= '<div class="container">';
+														$output .= '<div class="content-center container white-alpha">';
+														$output .= '<h1>Error</h1>';
+														$output .= '<div class="panel black-alpha">';
+														$output .= '<p>Verwenden Sie nur 200 Zeichen für die Beschreibung.</p>';
+														$output .= '</div>';
+														$output .= '</div>';
+														$output .= '</div>';
+													}
+												}
+												else
+												{
+													$output .= '<div class="container">';
+													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<h1>Error</h1>';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Verwenden Sie nur folgenden Zeichen f&uuml;r ihre Bemerkung: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
+													$output .= '</div>';
+													$output .= '</div>';
+													$output .= '</div>';
+												}
+											}
+											else if($_GET['attr'] == $allowed_attr[1])
+											{
+												preg_match('/^[0-9]{4}+\-{1}+[0-9]{2}+\-{1}+[0-9]{2}$/',$_GET['attr_value'],$date_matches);
+										
+												if(!empty($date_matches))
+												{
+													$date_parts = explode('-',$_GET['attr_value']);
+													
+													if(checkdate($date_parts[1],$date_parts[2],$date_parts[0]))
+													{
+														$date = strtotime($_GET['attr_value']);
+														
+														$date_min = strtotime('now')+60*60*24;
+													
+														$date_max = strtotime('now')+60*60*24*365;
+														
+														if($date >= $date_min || $date <= $date_max)
+														{
+															$query = sprintf("
+															UPDATE lend
+															SET lend_end = '%s',
+															lend_creator_id = '%s'
+															WHERE lend_id = '%s';",
+															$sql->real_escape_string($_GET['attr_value']),
+															$sql->real_escape_string($_SESSION['user']['id']),
+															$sql->real_escape_string($_GET['id']));
+														
+															$sql->query($query);
+														
+															if($sql->affected_rows == 1)
+															{
+																$output .= '<div class="container">';
+																$output .= '<div class="content-center container white-alpha">';
+																$output .= '<div class="panel black-alpha">';
+																$output .= '<p>Datensatz wurde erfolgreich gespeichert.</p>';
+																$output .= '</div>';
+																$output .= '</div>';
+																$output .= '</div>';
+															}
+															else
+															{
+																$output .= '<div class="container">';
+																$output .= '<div class="content-center container white-alpha">';
+																$output .= '<h1>Error</h1>';
+																$output .= '<div class="panel black-alpha">';
+																$output .= '<p>Datensatz konnte nicht gespeichert werden.</p>';
+																$output .= '</div>';
+																$output .= '</div>';
+																$output .= '</div>';
+															}
+														}
+														else
+														{
+															$output  = '<div class="container">';
+															$output .= '<div class="content-center container white-alpha">';
+															$output .= '<h1>Error</h1>';
+															$output .= '<div class="panel black-alpha">';
+															$output .= '<p>Das Datum liegt nicht in der vorgegebenen Zeitspanne.</p>';
+															$output .= '</div>'; 
+															$output .= '</div>'; 
+															$output .= '</div>';
+														}
+													}
+													else
+													{
+														$output .= '<div class="container">';
+														$output .= '<div class="content-center container white-alpha">';
+														$output .= '<h1>Error</h1>';
+														$output .= '<div class="panel black-alpha">';
+														$output .= '<p>Datum existiert nicht.</p>';
+														$output .= '</div>';
+														$output .= '</div>';
+														$output .= '</div>';
+													}
+												}
+												else
+												{
+													$output  = '<div class="container">';
+													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<h1>Error</h1>';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>W&auml;hlen Sie ein Datum aus dem Date-Picker.</p>';
+													$output .= '</div>'; 
+													$output .= '</div>'; 
+													$output .= '</div>';
+												}
+											}
+										}
+										else
+										{
+											$output  = '<div class="container">';
+											$output .= '<div class="content-center container white-alpha">';
+											$output .= '<h1>Error</h1>';
+											$output .= '<div class="panel black-alpha">';
+											$output .= '<p>Das gew&auml;hlte Attribut konnte nicht bearbeitet werden.</p>';
+											$output .= '</div>'; 
+											$output .= '</div>'; 
+											$output .= '</div>';
+										}
+									}
+									else
+									{
+										$output  = '<div class="container">';
+										$output .= '<div class="content-center container white-alpha">';
+										$output .= '<h1>Error</h1>';
+										$output .= '<div class="panel black-alpha">';
+										$output .= '<p>Das gew&auml;hlte Attribut konnte nicht bearbeitet werden.</p>';
+										$output .= '</div>'; 
+										$output .= '</div>'; 
+										$output .= '</div>';
+									}
+								}
+								else
+								{
+									$output  = '<div class="container">';
+									$output .= '<div class="content-center container white-alpha">';
+									$output .= '<h1>Error</h1>';
+									$output .= '<div class="panel black-alpha">';
+									$output .= '<p>Datensatz konnte nicht bearbeitet werden.</p>';
+									$output .= '<p>Leihgabe wurde bereits archiviert.</p>';
+									$output .= '</div>'; 
+									$output .= '</div>'; 
+									$output .= '</div>';
+								}
+							}
+							else
+							{
+								$output  = '<div class="container">';
+								$output .= '<div class="content-center container white-alpha">';
+								$output .= '<h1>Error</h1>';
+								$output .= '<div class="panel black-alpha">';
+								$output .= '<p>Es wurde keine Leihgabe gefunden.</p>';
+								$output .= '</div>'; 
+								$output .= '</div>'; 
 								$output .= '</div>';
 							}
 						}

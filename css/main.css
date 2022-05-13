@@ -74,6 +74,12 @@ ul.flex-center {
 .center {
 	margin:0 auto;
 }
+.pdf-a4 {
+	width:1000px;
+	background-color:#ffffff;
+	margin:16px auto;
+	padding:32px;
+}
 .block {
 	width:100%;
 }
@@ -169,6 +175,10 @@ input.input-default, select.input-default {
 	background-color:#eeeeee;
 	color:#000000;
 }
+.dark-grey {
+	background-color:#666666;
+	color:#000000;
+}
 .white {
 	background-color:#ffffff;
 	color:#000000;
@@ -223,6 +233,15 @@ input.input-default, select.input-default {
 .border {
 	border-width:2px;
 	border-style:solid;
+}
+.border-bl {
+	border-top:none;
+	border-right:none;
+}
+.border-l {
+	border-right:none;
+	border-top:none;
+	border-bottom:none;
 }
 .border-tb {
 	border-left:none;
