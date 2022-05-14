@@ -39,7 +39,7 @@ else
 		{
 			if(preg_match('/[^a-z]/',$_GET['category']) == 0)
 			{
-				$allowed_category = array('asset','user','vendor','model','type','building','floor','room','ci');
+				$allowed_category = array('asset','user','lend','vendor','model','type','building','floor','room','ci');
 
 				if(in_array($_GET['category'],$allowed_category))
 				{
