@@ -1,7 +1,7 @@
 <div class="bg-default">
-	<div id="category-nav" class="nav container black-alpha">
+	<div id="sidebar-category" class="sidebar-left container black-alpha">
 		<p class="hide-large">
-			<i onclick="ch_style('category-nav','display','none');" class="fas fa-times fa-2x"></i>
+			<i onclick="ch_style('sidebar-category','display','none');" class="fas fa-times fa-2x"></i>
 		</p>
 		<ul>
 			<li>
@@ -83,6 +83,19 @@
 			</li>
 		</ul>
 	</div>
+	<div id="sidebar-filter" class="sidebar-right container black-alpha" style="width:500px;display:none;">
+		<h2>Filter f&uuml;r</h2>
+		<p>
+			<select onchange="loadfilter();" class="input-default border border-light-blue light-blue hover-white hover-text-blue" id="filterinput">
+			<option value="lend">Leihgaben</option>
+			<option value="asset">Assets</option>
+			<option value="user">User</option>
+			</select>
+		</p>
+		<div id="filterdiv">
+
+		</div>
+	</div>
 	<div class="content-default">
 		<div class="container black-alpha">
 			<table class="block">
@@ -91,7 +104,7 @@
 						<table>
 							<tr>
 								<td class="hide-large">
-									<i onclick="ch_style('category-nav','display','block');" class="fas fa-bars fa-2x"></i>&nbsp;&nbsp;&nbsp;
+									<i onclick="ch_style('sidebar-category','display','block');" class="fas fa-bars fa-2x"></i>&nbsp;&nbsp;&nbsp;
 								</td>
 								<td>
 									<img src="/images/logo.svg" style="width:50px;"/>&nbsp;&nbsp;&nbsp;
@@ -145,26 +158,7 @@
 			</table>
 		</div>
 		<div class="container white-alpha">
-			<form action="search.php" method="get">
-				<ul class="flex section">
-					<li clasS="col-s4 col-m2 col-l2">
-						<select class="input-default border border-light-blue light-blue hover-white hover-text-blue" style="height:53px;" name="category">
-							<option value="asset">Assets</option>
-							<option value="user">User</option>
-							<option value="lend">Leihgaben</option>
-						</select>
-					</li>
-					<li class="col-s6 col-m8 col-l9">
-						<input class="input-default border border-tb border-grey focus-border-light-blue" style="height:53px;" type="text" name="search" value="" placeholder="Suchbegriff"/>
-						<input type="hidden" name="site" value="0"/><input type="hidden" name="amount" value="5"/>
-					</li>
-					<li clasS="col-s2 col-m2 col-l1">
-						<button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" style="height:53px;" type="submit">
-							<i class="fas fa-search"></i>
-						</button>
-					</li>
-				</ul>
-			</form>
+			<div onclick="ch_style('sidebar-filter','display','block'); loadfilter();" class="section input-default border border-grey">Suchen in ...</div>
 		</div>
 		<?php
 		if(!empty($output))

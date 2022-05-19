@@ -1,12 +1,12 @@
 function ch_location(url,sek) {
 
-	var time = sek*1000;
+	var millsek = sek*1000;
 	
 	window.setTimeout(function() {
 	
 		window.location = url;
 		
-	},time);
+	},millsek);
 	
 }
 
@@ -65,18 +65,39 @@ function cedit(ID) {
 	ch_style('attr-save-'+ID,'display','none');
 }
 
+function loadfilter() {
+
+	var filtercategory = document.getElementById('filterinput').value;
+
+	var filterdiv = document.getElementById('filterdiv');
+
+	filterdiv.innerHTML = '';
+
+	var filterframe = document.createElement('iframe');
+
+	filterframe.setAttribute('frameborder','0');
+
+	filterframe.setAttribute('class','block');
+
+	filterframe.style.height = '100vh';
+
+	filterframe.setAttribute('src','/include/filter.inc.php?category='+filtercategory);
+
+	filterdiv.appendChild(filterframe);
+}
+
 window.onresize = function() {
 	
 	var windowWidth = window.innerWidth;
 	
 	if(windowWidth < 993)
 	{
-		ch_style('category-nav','display','none');
+		ch_style('sidebar-category','display','none');
 	}
 	
 	if(windowWidth > 992)
 	{	
-		ch_style('category-nav','display','block');
+		ch_style('sidebar-category','display','block');
 	}
 }
 		

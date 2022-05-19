@@ -59,13 +59,23 @@ ul.flex-center {
 .bg-air {
 	background-image:url('/images/bg_air.jpg');
 }
-.nav {
+.sidebar-left {
 	position:fixed;
 	left:0;
 	top:0;
 	width:200px;
 	height:100%;
 	overflow-y:auto;
+	z-index:99;
+}
+.sidebar-right {
+	position:fixed;
+	right:0;
+	top:0;
+	width:200px;
+	height:100%;
+	overflow-y:auto;
+	z-index:99;
 }
 .content-center {
 	margin:10vh auto;
@@ -145,8 +155,6 @@ ul.flex-center {
 	border:none;
 	background-color:#ffffff;
 	color:#000000;
-}
-input.input-default, select.input-default {
 	cursor:pointer;
 }
 .circle {
@@ -218,6 +226,9 @@ input.input-default, select.input-default {
 }
 .text-red {
 	color:#f44336;
+}
+.text-white {
+	color:#ffffff;
 }
 .hover-text-blue:hover {
 	color:#62a7d2;

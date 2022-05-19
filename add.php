@@ -1161,13 +1161,9 @@ else
 							if(!empty($_GET['lend_description']))
 							{
 								if(preg_match('/[^a-zA-Z0-9öäüÖÄÜß\s\-\.\r\n]/',$_GET['lend_description']) == 0)
-								{
-									$exit = 0;
-									
+								{	
 									if(strlen($_GET['lend_description']) <= 200)
-									{
-										$exit = 0;
-										
+									{	
 										$lend_description = $_GET['lend_description'];
 									}
 									else
@@ -1203,17 +1199,20 @@ else
 										
 										if($date >= $date_min || $date <= $date_max)
 										{
+											$lend_start = date('Y-m-d',strtotime('now'));
+
 											$query = sprintf("
 											INSERT INTO
 											lend
-											(lend_creator_id,lend_user_id,lend_assets,lend_archived_assets,lend_description,lend_end)
+											(lend_creator_id,lend_user_id,lend_assets,lend_archived_assets,lend_description,lend_start,lend_end)
 											VALUES
-											('%s','%s','%s','%s','%s','%s');",
+											('%s','%s','%s','%s','%s','%s','%s');",
 											$sql->real_escape_string($_SESSION['user']['id']),
 											$sql->real_escape_string($lend_user_id),
 											$sql->real_escape_string(json_encode($lend_assets)),
 											$sql->real_escape_string(json_encode(array())),
 											$sql->real_escape_string($lend_description),
+											$sql->real_escape_string($lend_start),
 											$sql->real_escape_string($_GET['lend_end']));
 										
 											$sql->query($query);
@@ -1328,7 +1327,7 @@ else
 								$output .= '<div class="content-center container white-alpha">';
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel black-alpha">';
-								$output .= '<p>Die Beschreibung darf nur 200 Zeichen lang sein und nur folgende Zeichen enthalten: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
+								$output .= '<p>Die Bemerkung darf nur 200 Zeichen lang sein und nur folgende Zeichen enthalten: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
 								$output .= '</div>'; 
 								$output .= '</div>'; 
 								$output .= '</div>';
