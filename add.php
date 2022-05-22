@@ -65,119 +65,59 @@ else
 							{
 								if(preg_match('/[^0-9]/',$_GET['type_id']) == 0)
 								{
-									$query = sprintf("
-									SELECT type_name
-									FROM type
-									WHERE type_id = '%s';",
-									$sql->real_escape_string($_GET['type_id']));
-
-									$result = $sql->query($query);
-
-									if($row = $result->fetch_array(MYSQLI_ASSOC))
+									if(preg_match('/[^0-9]/',$_GET['vendor_id']) == 0)
 									{
-										$type_name = $row['type_name'];
-
-										if(preg_match('/[^0-9]/',$_GET['vendor_id']) == 0)
+										if(preg_match('/[^0-9]/',$_GET['model_id']) == 0)
 										{
-											$query = sprintf("
-											SELECT vendor_name
-											FROM vendor
-											WHERE vendor_id = '%s';",
-											$sql->real_escape_string($_GET['vendor_id']));
-
-											$result = $sql->query($query);
-
-											if($row = $result->fetch_array(MYSQLI_ASSOC))
+											if(preg_match('/[^A-Z0-9\-\.]/',$_GET['asset_serial']) == 0)
 											{
-												$vendor_name = $row['vendor_name'];
+												$asset_cis = array();
 
-												if(preg_match('/[^0-9]/',$_GET['model_id']) == 0)
+												$query = sprintf("
+												INSERT INTO
+												asset
+												(asset_type_id,asset_vendor_id,asset_model_id,asset_serial,asset_cis)
+												VALUES
+												('%s','%s','%s','%s','%s');",
+												$sql->real_escape_string($_GET['type_id']),
+												$sql->real_escape_string($_GET['vendor_id']),
+												$sql->real_escape_string($_GET['model_id']),
+												$sql->real_escape_string($_GET['asset_serial']),
+												$sql->real_escape_string(json_encode($asset_cis)));
+
+												$sql->query($query);
+
+												if($sql->affected_rows == 1)
 												{
-													$query = sprintf("
-													SELECT model_name
-													FROM model
-													WHERE model_id = '%s';",
-													$sql->real_escape_string($_GET['model_id']));
-
-													$result = $sql->query($query);
-
-													if($row = $result->fetch_array(MYSQLI_ASSOC))
-													{
-														$model_name = $row['model_name'];
-
-														if(preg_match('/[^A-Z0-9\-\.]/',$_GET['asset_serial']) == 0)
-														{
-															$asset_cis = array();
-
-															$asset_keywords = $type_name.' '.$vendor_name.' '.$model_name.' '.$_GET['asset_serial'];
-
-															$query = sprintf("
-															INSERT INTO
-															asset
-															(asset_type_id,asset_vendor_id,asset_model_id,asset_serial,asset_cis,asset_keywords)
-															VALUES
-															('%s','%s','%s','%s','%s','%s');",
-															$sql->real_escape_string($_GET['type_id']),
-															$sql->real_escape_string($_GET['vendor_id']),
-															$sql->real_escape_string($_GET['model_id']),
-															$sql->real_escape_string($_GET['asset_serial']),
-															$sql->real_escape_string(json_encode($asset_cis)),
-															$sql->real_escape_string($asset_keywords));
-
-															$sql->query($query);
-
-															if($sql->affected_rows == 1)
-															{
-																$output .= '<div class="panel black-alpha">';
-																$output .= '<p><strong>'.$_GET['asset_serial'].'</strong> wurde hinzugef&uuml;gt.</p>';
-																$output .= '</div>';
-															}
-															else
-															{
-																$output .= '<div class="panel black-alpha">';
-																$output .= '<p>Es konnte kein Asset hinzugef&uuml;gt werden.</p>';
-																$output .= '</div>';
-															}
-														}
-														else
-														{
-															$output .= '<div class="panel black-alpha">';
-															$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r die Seriennummer: A-Z, 0-9, -.</p>';
-															$output .= '</div>';
-														}
-													}
-													else
-													{
-														$output .= '<div class="panel black-alpha">';
-														$output .= '<p>Es ist kein Modell mit der gesendeten ID vorhanden.</p>';
-														$output .= '</div>';
-													}
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p><strong>'.$_GET['asset_serial'].'</strong> wurde hinzugef&uuml;gt.</p>';
+													$output .= '</div>';
 												}
 												else
 												{
 													$output .= '<div class="panel black-alpha">';
-													$output .= '<p>Die ModellID besteht nur aus Zahlen.</p>';
+													$output .= '<p>Es konnte kein Asset hinzugef&uuml;gt werden.</p>';
 													$output .= '</div>';
 												}
 											}
 											else
 											{
 												$output .= '<div class="panel black-alpha">';
-												$output .= '<p>Es ist kein Hersteller mit der gesendeten ID vorhanden.</p>';
+												$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r die Seriennummer: A-Z, 0-9, -.</p>';
 												$output .= '</div>';
 											}
 										}
 										else
 										{
 											$output .= '<div class="panel black-alpha">';
-											$output .= '<p>Die HerstellerID besteht nur aus Zahlen.</p>';
+											$output .= '<p>Die ModellID besteht nur aus Zahlen.</p>';
 											$output .= '</div>';
 										}
 									}
 									else
 									{
 										$output .= '<div class="panel black-alpha">';
-										$output .= '<p>Es ist kein Typ mit der gesendeten ID vorhanden.</p>';
+										$output .= '<p>Die HerstellerID besteht nur aus Zahlen.</p>';
 										$output .= '</div>';
 									}
 								}
@@ -262,111 +202,91 @@ else
 								{
 									if(preg_match('/[^0-9]/',$_GET['user_rank_id']) == 0)
 									{
-										$query = sprintf("
-										SELECT rank_name_long
-										FROM rank
-										WHERE rank_id = '%s';",
-										$sql->real_escape_string($_GET['user_rank_id']));
-
-										$result = $sql->query($query);
-
-										if($row = $result->fetch_array(MYSQLI_ASSOC))
+										if(preg_match('/[^a-zA-ZöäüÖÄÜß\-\s]/',$_GET['user_vname']) == 0)
 										{
-											if(preg_match('/[^a-zA-ZöäüÖÄÜß\-\s]/',$_GET['user_vname']) == 0)
+											if(preg_match('/[^a-zA-ZöäüÖÄÜß\-\s]/',$_GET['user_name']) == 0)
 											{
-												if(preg_match('/[^a-zA-ZöäüÖÄÜß\-\s]/',$_GET['user_name']) == 0)
+												preg_match('/^[a-zA-Z0-9]{1,}+\@{1}+[a-zA-Z]{1,}+\.{1}+[a-zA-Z]{1,}$/',$_GET['user_email'],$matches);
+
+												if(!empty($matches))
 												{
-													preg_match('/^[a-zA-Z0-9]{1,}+\@{1}+[a-zA-Z]{1,}+\.{1}+[a-zA-Z]{1,}$/',$_GET['user_email'],$matches);
+													$pos = strpos($_GET['user_email'],'@');
 
-													if(!empty($matches))
+													if($pos)
 													{
-														$pos = strpos($_GET['user_email'],'@');
+														$allowed_provider = array('bundeswehr.org');
 
-														if($pos)
+														$provider = substr($_GET['user_email'],$pos+1);
+
+														if(in_array($provider,$allowed_provider))
 														{
-															$allowed_provider = array('bundeswehr.org');
+															$salt = randomstr(10);
 
-															$provider = substr($_GET['user_email'],$pos+1);
+															$password = randomstr(10);
 
-															if(in_array($provider,$allowed_provider))
+															$user_password = strhash($salt.$password);
+
+															$query = sprintf("
+															INSERT INTO user
+															(user_id,user_rank_id,user_vname,user_name,user_email,user_password,user_salt)
+															VALUES
+															('%s','%s','%s','%s','%s','%s','%s');",
+															$sql->real_escape_string($_GET['user_id']),
+															$sql->real_escape_string($_GET['user_rank_id']),
+															$sql->real_escape_string($_GET['user_vname']),
+															$sql->real_escape_string($_GET['user_name']),
+															$sql->real_escape_string($_GET['user_email']),
+															$sql->real_escape_string($user_password),
+															$sql->real_escape_string($salt));
+
+															$sql->query($query);
+
+															if($sql->affected_rows == 1)
 															{
-																$salt = randomstr(10);
-
-																$password = randomstr(10);
-
-																$user_password = strhash($salt.$password);
-
-																$user_keywords = $_GET['user_id'].' '.$row['rank_name_long'].' '.$_GET['user_vname'].' '.$_GET['user_name'].' '.$_GET['user_email'];
-
-																$query = sprintf("
-																INSERT INTO user
-																(user_id,user_rank_id,user_vname,user_name,user_email,user_password,user_salt,user_keywords)
-																VALUES
-																('%s','%s','%s','%s','%s','%s','%s','%s');",
-																$sql->real_escape_string($_GET['user_id']),
-																$sql->real_escape_string($_GET['user_rank_id']),
-																$sql->real_escape_string($_GET['user_vname']),
-																$sql->real_escape_string($_GET['user_name']),
-																$sql->real_escape_string($_GET['user_email']),
-																$sql->real_escape_string($user_password),
-																$sql->real_escape_string($salt),
-																$sql->real_escape_string($user_keywords));
-
-																$sql->query($query);
-
-																if($sql->affected_rows == 1)
-																{
-																	$output .= '<div class="panel black-alpha">';
-																	$output .= '<p><strong>'.$_GET['user_id'].'</strong> wurde hinzugef&uuml;gt.</p>';
-																	$output .= '</div>';
-																}
-																else
-																{
-																	$output .= '<div class="panel black-alpha">';
-																	$output .= '<p>Es konnte kein User hinzugef&uuml;gt werden.</p>';
-																	$output .= '<p>Personalnummer oder E-Mail-Adresse bereits vorhanden.</p>';
-																	$output .= '</div>';
-																}
+																$output .= '<div class="panel black-alpha">';
+																$output .= '<p><strong>'.$_GET['user_id'].'</strong> wurde hinzugef&uuml;gt.</p>';
+																$output .= '</div>';
 															}
 															else
 															{
 																$output .= '<div class="panel black-alpha">';
-																$output .= '<p>Verwenden Sie eine @bundeswehr.org E-Mail-Adresse.</p>';
+																$output .= '<p>Es konnte kein User hinzugef&uuml;gt werden.</p>';
+																$output .= '<p>Personalnummer oder E-Mail-Adresse bereits vorhanden.</p>';
 																$output .= '</div>';
 															}
 														}
 														else
 														{
 															$output .= '<div class="panel black-alpha">';
-															$output .= '<p>In der E-Mail-Adresse fehlt das @-Zeichen.</p>';
+															$output .= '<p>Verwenden Sie eine @bundeswehr.org E-Mail-Adresse.</p>';
 															$output .= '</div>';
 														}
 													}
 													else
 													{
 														$output .= '<div class="panel black-alpha">';
-														$output .= '<p>Geben Sie eine valide E-Mail-Adresse ein.</p>';
+														$output .= '<p>In der E-Mail-Adresse fehlt das @-Zeichen.</p>';
 														$output .= '</div>';
 													}
 												}
 												else
 												{
 													$output .= '<div class="panel black-alpha">';
-													$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den Nachname: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
+													$output .= '<p>Geben Sie eine valide E-Mail-Adresse ein.</p>';
 													$output .= '</div>';
 												}
 											}
 											else
 											{
 												$output .= '<div class="panel black-alpha">';
-												$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den Vorname: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
+												$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den Nachname: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
 												$output .= '</div>';
 											}
 										}
 										else
 										{
 											$output .= '<div class="panel black-alpha">';
-											$output .= '<p>Es ist kein Dienstgrad mit der gesendeten ID vorhanden.</p>';
+											$output .= '<p>Verwenden Sie nur folgende Zeichen f&uuml;r den Vorname: a-z, A-Z, 0-9, öäüÖÄÜß-.</p>';
 											$output .= '</div>';
 										}
 									}
@@ -388,6 +308,7 @@ else
 
 						$output .= '<form action="add.php" method="get">';
 						$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
+						$output .= '<p><button onclick="'."ch_style('sidebar-iambw','display','block')".';" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="button">IAMBw</button></p>';
 						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="number" name="user_id" placeholder="Personalnummer"/></p>';
 						$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="user_rank_id">';
 						$output .= '<option value="">Dienstgrad w&auml;hlen</option>';

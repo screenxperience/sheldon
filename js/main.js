@@ -50,6 +50,7 @@ function edit(ID) {
 	ch_style('attr-save-'+ID,'display','block');
 	
 }
+
 function cedit(ID) {
 	
 	ch_style('attr-show-'+ID,'display','block');
@@ -84,6 +85,22 @@ function loadfilter() {
 	filterframe.setAttribute('src','/include/filter.inc.php?category='+filtercategory);
 
 	filterdiv.appendChild(filterframe);
+}
+
+function loadiambw() {
+	var iambw = document.getElementById('sidebar-iambw');
+	
+	var iambwframe = document.createElement('iframe');
+
+	iambwframe.setAttribute('frameborder','0');
+
+	iambwframe.setAttribute('class','block');
+
+	iambwframe.style.height = '100vh';
+
+	iambwframe.setAttribute('src','/include/filter.inc.php?category='+filtercategory);
+
+	iambw.appendChild(iambwframe);
 }
 
 window.onresize = function() {

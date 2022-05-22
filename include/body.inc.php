@@ -84,6 +84,7 @@
 		</ul>
 	</div>
 	<div id="sidebar-filter" class="sidebar-right container black-alpha" style="width:500px;display:none;">
+		<p><i onclick="ch_style('sidebar-filter','display','none');" class="fas fa-times fa-2x"></i></p>
 		<h2>Filter f&uuml;r</h2>
 		<p>
 			<select onchange="loadfilter();" class="input-default border border-light-blue light-blue hover-white hover-text-blue" id="filterinput">
@@ -95,6 +96,9 @@
 		<div id="filterdiv">
 
 		</div>
+	</div>
+	<div id="sidebar-iambw" class="sidebar-right container black-alpha" style="width:500px;display:none;">
+
 	</div>
 	<div class="content-default">
 		<div class="container black-alpha">

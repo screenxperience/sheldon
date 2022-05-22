@@ -80,27 +80,51 @@ else
 							FROM lend
 							INNER JOIN user ON user_id = lend_user_id
 							WHERE lend_id = '".$documentnr."'
-							OR lend_user_id = '".$personalnr."'
-							OR lend_user_id = (
-							SELECT user_id
-							FROM user
-							WHERE user_vname = '".$vname."')
-							OR lend_user_id = (
-							SELECT user_id
-							FROM user
-							WHERE user_name = '".$name."')";
+							OR lend_user_id = '".$personalnr."'";
+							
+							if(!empty($vname))
+							{
+								$subquery = sprintf("
+								SELECT user_id
+								FROM user
+								WHERE user_vname LIKE '%s';",
+								$sql->real_escape_string('%'.$vname.'%'));
+
+								$result = $sql->query($subquery);
+
+								while($row = $result->fetch_array(MYSQLI_ASSOC))
+								{
+									$query .= " OR lend_user_id = '".$row['user_id']."'";
+								}
+							}
+							
+							if(!empty($name))
+							{
+								$subquery = sprintf("
+								SELECT user_id
+								FROM user
+								WHERE user_name LIKE '%s';",
+								$sql->real_escape_string('%'.$name.'%'));
+
+								$result = $sql->query($subquery);
+
+								while($row = $result->fetch_array(MYSQLI_ASSOC))
+								{
+									$query .= " OR lend_user_id = '".$row['user_id']."'";
+								}
+							}
 							
 							if(!empty($serialnr))
 							{
 								$subquery = sprintf("
 								SELECT asset_id
 								FROM asset
-								WHERE asset_serial = '%s';",
-								$sql->real_escape_string($serialnr));
+								WHERE asset_serial LIKE '%s';",
+								$sql->real_escape_string('%'.$serialnr.'%'));
 									
 								$result = $sql->query($subquery);
 									
-								if($row = $result->fetch_array(MYSQLI_ASSOC))
+								while($row = $result->fetch_array(MYSQLI_ASSOC))
 								{
 									$query .= " OR lend_assets LIKE '".'%"'.$row['asset_id'].'"%'."' OR lend_archived_assets LIKE '".'%"'.$row['asset_id'].'"%'."'";
 								}
@@ -115,7 +139,7 @@ else
 								if($i == 0)
 								{
 									$output .= '<div class="container">';
-									$output .= '<h1>Leihgaben suchen ( '.$amount_gs.' )</h1>';
+									$output .= '<h1>Leihgaben ( '.$amount_gs.' )</h1>';
 									$output .= '</div>';
 									$output .= '<ul class="flex block">';
 								}
@@ -154,27 +178,39 @@ else
 								
 							$model_id = $filter[2];  
 								
-							$serialnr = $filter[4];
+							$serialnr = $filter[3];
 
-							$query = sprintf("
+							$i = 0;
+							
+							$query = "
 							SELECT asset_id,type_name,vendor_name,model_name,asset_serial
 							FROM asset
 							INNER JOIN type ON type_id = asset_type_id
 							INNER JOIN vendor ON vendor_id = asset_vendor_id
 							INNER JOIN model ON model_id = asset_model_id
-							WHERE asset_type_id = '%s'
-							OR asset_vendor_id = '%s'
-							OR asset_model_id = '%s'
-							OR asset_serial LIKE '%s';",
-							$sql->real_escape_string($type_id),
-							$sql->real_escape_string($vendor_id),
-							$sql->real_escape_string($model_id),
-							$sql->real_escape_string('%'.$serialnr.'%'));
+							WHERE asset_type_id = '".$type_id."'
+							OR asset_vendor_id = '".$vendor_id."'
+							OR asset_model_id = '".$model_id."'";
+
+							if(!empty($serialnr))
+							{
+								$query .= " OR asset_serial LIKE '%".$serialnr."%'";
+							}
 
 							$result = $sql->query($query);
 
+							$amount_gs = mysqli_num_rows($result);
+
 							while($row = $result->fetch_array(MYSQLI_ASSOC))
 							{
+								if($i == 0)
+								{
+									$output .= '<div class="container">';
+									$output .= '<h1>Assets ( '.$amount_gs.' )</h1>';
+									$output .= '</div>';
+									$output .= '<ul class="flex block">';
+								}
+
 								if($i == 2)
 								{
 									$output .= '</ul>';
@@ -188,9 +224,83 @@ else
 								$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
 								$output .= '<p>'.$row['asset_serial'].'</p>';
 								$output .= '<div class="container-large display-middle-right-large section-medium section-small">';
-								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&amount='.$_GET['amount']).'"><i class="fas fa-trash"></i></a> ';
+								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/search.php?category='.$_GET['category'].'&filter[]='.$filter[0].'&filter[]='.$filter[1].'&filter[]='.$filter[2].'&filter[]='.$filter[3]).'"><i class="fas fa-trash"></i></a> ';
 								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
 								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['asset_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
+								$output .= '</div>';
+								$output .= '</div>';
+								$output .= '</li>';
+
+								$i++;
+							}
+
+							$output .= '</ul>';
+						}
+						else if($_GET['category'] == $allowed_category[2])
+						{
+							$personalnr = $filter[0];
+
+							$rank_id = $filter[1];
+
+							$vname = $filter[2];
+
+							$name = $filter[3];
+
+							$email = $filter[4];
+
+							$i = 0;
+							
+							$query = "
+							SELECT user_id,user_email
+							FROM user
+							WHERE user_id = '".$personalnr."'
+							OR user_rank_id = '".$rank_id."'";
+
+							if(!empty($vname))
+							{
+								$query .= " OR user_vname LIKE '%".$vname."%'";
+							}
+
+							if(!empty($name))
+							{
+								$query .= " OR user_name LIKE '%".$name."%'";
+							}
+
+							if(!empty($email))
+							{
+								$query .= " OR user_email LIKE '%".$email."%'";
+							}
+
+							$result = $sql->query($query);
+
+							$amount_gs = mysqli_num_rows($result);
+
+							while($row = $result->fetch_array(MYSQLI_ASSOC))
+							{
+								if($i == 0)
+								{
+									$output .= '<div class="container">';
+									$output .= '<h1>User ( '.$amount_gs.' )</h1>';
+									$output .= '</div>';
+									$output .= '<ul class="flex block">';
+								}
+
+								if($i == 2)
+								{
+									$output .= '</ul>';
+									$output .= '<ul class="flex block">';
+									
+									$i = 0;
+								}
+
+								$output .= '<li class="col-s12 col-m6 col-l6">';
+								$output .= '<div class="text-center-medium text-center-small margin container display-container black-alpha">';
+								$output .= '<p>'.$row['user_id'].'</p>';
+								$output .= '<p>'.$row['user_email'].'</p>';
+								$output .= '<div class="container-large display-middle-right-large section-medium section-small">';
+								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['user_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/search.php?category='.$_GET['category'].'&filter[]='.$filter[0].'&filter[]='.$filter[1].'&filter[]='.$filter[2].'&filter[]='.$filter[3].'&filter[]='.$filter[4]).'"><i class="fas fa-trash"></i></a> ';
+								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$row['user_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
+								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['user_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</li>';

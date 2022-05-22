@@ -99,6 +99,21 @@ else
                         $output .= '<form action="../search.php" method="get" target="_top">';
                         $output .= '<input type="hidden" name="category" value="user"/>';
                         $output .= '<input class="input-default border border-grey focus-border-light-blue" type="number" name="filter[]" placeholder="Personalnummer"/>';
+                        $output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="filter[]">';
+                        $output .= '<option value="">Dienstgrad</option>';
+
+                        $query = "
+                        SELECT rank_id,rank_name_long
+                        FROM rank";
+
+                        $result = $sql->query($query);
+
+                        while($row = $result->fetch_array(MYSQLI_ASSOC))
+                        {
+                            $output .= '<option value="'.$row['rank_id'].'">'.$row['rank_name_long'].'</option>';
+                        }
+
+                        $output .= '</select></p>';
                         $output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="filter[]" placeholder="Vorname"/></p>';
                         $output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="filter[]" placeholder="Nachname"/></p>';
                         $output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="email" name="filter[]" placeholder="E-Mail-Adresse"/></p>';
