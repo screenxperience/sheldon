@@ -3,7 +3,7 @@ require($_SERVER['DOCUMENT_ROOT'].'/include/auth.inc.php');
 
 require($_SERVER['DOCUMENT_ROOT'].'/include/config.inc.php');
 
-$app_dst = 'Einsfltl1';
+$app_dst = 'Stab EinsFltl1 / A3-Bereich / IT-Management';
 $app_plz = '24106';
 $app_location = 'Kiel';
 
@@ -64,21 +64,33 @@ else
 							{
 								$date = date('d.m.Y',strtotime('now'));
 								
+								
 								$output .= '<div class="pdf-a4">';
-								$output .= '<table>';
+								$output .= '<table class="block">';
 								$output .= '<tr>';
 								$output .= '<td class="border border-bl">';
-								$output .= '&nbsp;Dienststelle<br>&nbsp;'.$app_dst;
-								$output .= '</td>';
-								$output .= '<td class="border border-bl">';
-								$output .= '&nbsp;Ort, Datum<br>&nbsp;'.$app_plz.' '.$app_location.', '.$date;
+								$output .= '&nbsp;<strong>Belegnummer</strong><br/><br/>&nbsp;#'.$_GET['id'];
 								$output .= '</td>';
 								$output .= '</tr>';
 								$output .= '</table>';
-								$output .= '<table>';
+								$output .= '<table class="block">';
+								$output .= '<colgroup>';
+								$output .= '<col width="70%">';
+								$output .= '<col width="30%">';
+								$output .= '</colgroup>';
 								$output .= '<tr>';
 								$output .= '<td class="border border-bl">';
-								$output .= '&nbsp;Bearbeiter<br>&nbsp;'.$row['rank_name_short'].' '.$row['user_name'];
+								$output .= '&nbsp;<strong>Dienststelle</strong><br/><br/>&nbsp;'.$app_dst;
+								$output .= '</td>';
+								$output .= '<td class="border border-bl">';
+								$output .= '&nbsp;<strong>Ort, Datum</strong><br/><br/>&nbsp;'.$app_plz.' '.$app_location.', '.$date;
+								$output .= '</td>';
+								$output .= '</tr>';
+								$output .= '</table>';
+								$output .= '<table class="block">';
+								$output .= '<tr>';
+								$output .= '<td class="border border-bl">';
+								$output .= '&nbsp;<strong>Bearbeiter</strong><br/><br/>&nbsp;'.$row['rank_name_short'].' '.$row['user_name'];
 								$output .= '</td>';
 								$output .= '</tr>';
 								$output .= '</table>';
@@ -103,19 +115,23 @@ else
 								
 								if($row = $result->fetch_array(MYSQLI_ASSOC))
 								{
-									$output .= '<table>';
+									$output .= '<table class="block">';
+									$output .= '<colgroup>';
+									$output .= '<col width="70%">';
+									$output .= '<col width="30%">';
+									$output .= '</colgroup>';
 									$output .= '<tr>';
 									$output .= '<td class="border border-bl">';
-									$output .= '&nbsp;&Uuml;bernehmender<br>&nbsp;'.$row['rank_name_short'].' '.$row['user_name'];
+									$output .= '&nbsp;<strong>&Uuml;bernehmender</strong><br/><br/>&nbsp;'.$row['rank_name_short'].' '.$row['user_name'];
 									$output .= '</td>';
 									$output .= '<td class="border border-bl">';
-									$output .= '&nbsp;Lokation<br>&nbsp;'.$row['building_name'].' / '.$row['floor_name'].' / '.$row['room_name'];
+									$output .= '&nbsp;<strong>Lokation</strong><br/><br/>&nbsp;'.$row['building_name'].' / '.$row['floor_name'].' / '.$row['room_name'];
 									$output .= '</td>';
 									$output .= '</tr>';
 									$output .= '</table>';
 									
 									$query = sprintf("
-									SELECT lend_assets,lend_archived_assets
+									SELECT lend_description,lend_end,lend_assets,lend_archived_assets
 									FROM lend
 									WHERE lend_id = '%s';",
 									$sql->real_escape_string($_GET['id']));
@@ -124,17 +140,27 @@ else
 									
 									if($row = $result->fetch_array(MYSQLI_ASSOC))
 									{
-										$output .= '<table>';
+										$i = 0;
+
+										$output .= '<table class="block">';
+										$output .= '<colgroup>';
+										$output .= '<col width="70%">';
+										$output .= '<col width="30%">';
+										$output .= '</colgroup>';
 										$output .= '<tr>';
 										$output .= '<td class="border border-l">';
-										$output .= '&nbsp;Beschreibung<br/><br/>';
+										$output .= '&nbsp;<strong>Beschreibung</strong><br/><br/>';
 										$output .= '</td>';
 										$output .= '<td class="border border-l">';
-										$output .= '&nbsp;Seriennummer<br/><br/>';
+										$output .= '&nbsp;<strong>Seriennummer</strong><br/><br/>';
 										$output .= '</td>';
 										$output .= '</tr>';
 										$output .= '</table>';
 										
+										$lend_description = $row['lend_description'];
+
+										$lend_end = date('d.m.Y',strtotime($row['lend_end']));
+
 										$lend_assets = json_decode($row['lend_assets']);
 										
 										$lend_archived_assets = json_decode($row['lend_archived_assets']);
@@ -156,7 +182,11 @@ else
 											
 											if($row = $result->fetch_array(MYSQLI_ASSOC))
 											{
-												$output .= '<table>';
+												$output .= '<table class="block">';
+												$output .= '<colgroup>';
+												$output .= '<col width="70%">';
+												$output .= '<col width="30%">';
+												$output .= '</colgroup>';
 												$output .= '<tr>';
 												$output .= '<td class="border border-l">';
 												$output .= '&nbsp;'.$row['type_name'].' '.$row['vendor_name'].' '.$row['model_name'];
@@ -167,6 +197,8 @@ else
 												$output .= '</tr>';
 												$output .= '</table>';
 											}
+
+											$i++;
 										}
 										
 										for($i = 0; $i < count($lend_archived_assets); $i++)
@@ -174,6 +206,8 @@ else
 											$lend_archived_asset = $lend_archived_assets[$i];
 											
 											$lend_archived_asset_id = $lend_archived_asset[0];
+
+											$lend_archived_asset_date = $lend_archived_asset[1];
 											
 											$query = sprintf("
 											SELECT type_name,vendor_name,model_name,asset_serial
@@ -188,18 +222,93 @@ else
 											
 											if($row = $result->fetch_array(MYSQLI_ASSOC))
 											{
-												$output .= '<tabl>';
+												$output .= '<table class="block">';
+												$output .= '<colgroup>';
+												$output .= '<col width="70%">';
+												$output .= '<col width="30%">';
+												$output .= '</colgroup>';
 												$output .= '<tr>';
 												$output .= '<td class="border border-l">';
-												$output .= '&nbsp;'.$row['type_name'].' '.$row['vendor_name'].' '.$row['model_name'];
+												$output .= '&nbsp;<del>'.$row['type_name'].' '.$row['vendor_name'].' '.$row['model_name'].'</del> ( Abgabe am '.$lend_archived_asset_date.' )';
 												$output .= '</td>';
 												$output .= '<td class="border border-l">';
-												$output .= '&nbsp;'.$row['asset_serial'];
+												$output .= '&nbsp;<del>'.$row['asset_serial'].'</del>';
 												$output .= '</td>';
 												$output .= '</tr>';
 												$output .= '</table>';
 											}
-										}		
+
+											$i++;
+										}
+										
+										$lines = 20;
+
+										if($i < $lines)
+										{
+											$linebreaks = $lines-$i;
+
+											for($i = 0; $i < $linebreaks; $i++)
+											{
+												$output .= '<table class="block">';
+												$output .= '<colgroup>';
+												$output .= '<col width="70%">';
+												$output .= '<col width="30%">';
+												$output .= '</colgroup>';
+												$output .= '<tr>';
+												$output .= '<td class="border border-l">';
+												$output .= '<br/><br/>';
+												$output .= '</td>';
+												$output .= '<td class="border border-l">';
+												$output .= '<br/><br/>';
+												$output .= '</td>';
+												$output .= '</tr>';
+												$output .= '</table>';
+											}
+										}
+
+										$output .= '<div class="border border-tbl"><strong>&nbsp;Bemerkung</strong><div class="container"><p>'.$lend_description.'</p></div></div>';
+										$output .= '<table class="block">';
+										$output .= '<colgroup>';
+										$output .= '<col width="70%">';
+										$output .= '<col width="30%">';
+										$output .= '</colgroup>';
+										$output .= '<tr>';
+										$output .= '<td class="border border-bl">';
+										$output .= '<strong>&nbsp;&Uumlbergeben</strong><br/><br/><br/><br/>';
+										$output .= '</td>';
+										$output .= '<td class="border border-bl">';
+										$output .= '<strong>&nbsp;&Uuml;bergabedatum</strong><br/><br/><br/><br/>';
+										$output .= '</td>';
+										$output .= '</tr>';
+										$output .= '</table>';
+										$output .= '<table class="block">';
+										$output .= '<colgroup>';
+										$output .= '<col width="70%">';
+										$output .= '<col width="30%">';
+										$output .= '</colgroup>';
+										$output .= '<tr>';
+										$output .= '<td class="border border-bl">';
+										$output .= '<strong>&nbsp;&Uumlbernommen</strong><br/><br/><br/><br/>';
+										$output .= '</td>';
+										$output .= '<td class="border border-bl">';
+										$output .= '<strong>&nbsp;Leihgabe bis</strong><br/><br/><br/>&nbsp;'.$lend_end;
+										$output .= '</td>';
+										$output .= '</tr>';
+										$output .= '</table>';
+										$output .= '<table class="block">';
+										$output .= '<colgroup>';
+										$output .= '<col width="70%">';
+										$output .= '<col width="30%">';
+										$output .= '</colgroup>';
+										$output .= '<tr>';
+										$output .= '<td class="border border-bl">';
+										$output .= '<strong>&nbsp;R&uuml;cknahme</strong><br/><br/><br/><br/>';
+										$output .= '</td>';
+										$output .= '<td class="border border-bl">';
+										$output .= '<strong>&nbsp;R&uuml;cknahmedatum</strong><br/><br/><br/><br/>';
+										$output .= '</td>';
+										$output .= '</tr>';
+										$output .= '</table>';
 									}
 								}
 								

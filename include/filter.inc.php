@@ -90,6 +90,51 @@ else
                         }
 
                         $output .= '</select></p>';
+                        $output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="filter[]">';
+                        $output .= '<option value="">Geb&auml;ude</option>';
+                        
+                        $query = "
+                        SELECT building_id,building_name
+                        FROM building";
+
+                        $result = $sql->query($query);
+
+                        while($row = $result->fetch_array(MYSQLI_ASSOC))
+                        {
+                            $output .= '<option value="'.$row['building_id'].'">'.$row['building_name'].'</option>';
+                        }
+
+                        $output .= '</select></p>';
+                        $output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="filter[]">';
+                        $output .= '<option value="">Stockwerk</option>';
+                        
+                        $query = "
+                        SELECT floor_id,floor_name
+                        FROM floor";
+
+                        $result = $sql->query($query);
+
+                        while($row = $result->fetch_array(MYSQLI_ASSOC))
+                        {
+                            $output .= '<option value="'.$row['floor_id'].'">'.$row['floor_name'].'</option>';
+                        }
+
+                        $output .= '</select></p>';
+                        $output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="filter[]">';
+                        $output .= '<option value="">Raum</option>';
+                        
+                        $query = "
+                        SELECT room_id,room_name
+                        FROM room";
+
+                        $result = $sql->query($query);
+
+                        while($row = $result->fetch_array(MYSQLI_ASSOC))
+                        {
+                            $output .= '<option value="'.$row['room_id'].'">'.$row['room_name'].'</option>';
+                        }
+
+                        $output .= '</select></p>';
                         $output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="filter[]" placeholder="Seriennummer"/></p>';
                         $output .= '<p><button class="btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit">suchen <i class="fas fa-search"></i></button></p>';
                         $output .= '</form>';
@@ -117,6 +162,51 @@ else
                         $output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="filter[]" placeholder="Vorname"/></p>';
                         $output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="filter[]" placeholder="Nachname"/></p>';
                         $output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="email" name="filter[]" placeholder="E-Mail-Adresse"/></p>';
+                        $output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="filter[]">';
+                        $output .= '<option value="">Geb&auml;ude</option>';
+                        
+                        $query = "
+                        SELECT building_id,building_name
+                        FROM building";
+
+                        $result = $sql->query($query);
+
+                        while($row = $result->fetch_array(MYSQLI_ASSOC))
+                        {
+                            $output .= '<option value="'.$row['building_id'].'">'.$row['building_name'].'</option>';
+                        }
+
+                        $output .= '</select></p>';
+                        $output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="filter[]">';
+                        $output .= '<option value="">Stockwerk</option>';
+                        
+                        $query = "
+                        SELECT floor_id,floor_name
+                        FROM floor";
+
+                        $result = $sql->query($query);
+
+                        while($row = $result->fetch_array(MYSQLI_ASSOC))
+                        {
+                            $output .= '<option value="'.$row['floor_id'].'">'.$row['floor_name'].'</option>';
+                        }
+
+                        $output .= '</select></p>';
+                        $output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="filter[]">';
+                        $output .= '<option value="">Raum</option>';
+                        
+                        $query = "
+                        SELECT room_id,room_name
+                        FROM room";
+
+                        $result = $sql->query($query);
+
+                        while($row = $result->fetch_array(MYSQLI_ASSOC))
+                        {
+                            $output .= '<option value="'.$row['room_id'].'">'.$row['room_name'].'</option>';
+                        }
+
+                        $output .= '</select></p>';
                         $output .= '<p><button class="btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit">suchen <i class="fas fa-search"></i></button></p>';
                         $output .= '</form>';
                     }

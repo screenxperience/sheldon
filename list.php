@@ -378,7 +378,7 @@ else
 									$output .= '<form action="list.php" method="get">';
 									$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
 									$output .= '<input type="hidden" name="site" value="0"/>';
-									$output .= '<select onchange="document.forms[2].submit();" class="input-default border border-grey focus-border-black-alpha" name="amount">';
+									$output .= '<select onchange="document.forms[1].submit();" class="input-default border border-grey focus-border-black-alpha" name="amount">';
 									$output .= '<option disabled selected value="">'.$_GET['amount'].' pro Seite</option>';
 									$output .= '<option value="5">5 pro Seite</option>';
 									$output .= '<option value="10">10 pro Seite</option>';

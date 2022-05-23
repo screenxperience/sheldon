@@ -1,7 +1,7 @@
 <div class="bg-default">
 	<div id="sidebar-category" class="sidebar-left container black-alpha">
 		<p class="hide-large">
-			<i onclick="ch_style('sidebar-category','display','none');" class="fas fa-times fa-2x"></i>
+			<button onclick="ch_style('sidebar-category','display','none');" class="btn-default border border-light-blue light-blue hover-white hover-text-blue"><i class="fas fa-times"></i></button>
 		</p>
 		<ul>
 			<li>
@@ -83,8 +83,8 @@
 			</li>
 		</ul>
 	</div>
-	<div id="sidebar-filter" class="sidebar-right container black-alpha" style="width:500px;display:none;">
-		<p><i onclick="ch_style('sidebar-filter','display','none');" class="fas fa-times fa-2x"></i></p>
+	<div id="sidebar-filter" class="sidebar-right container black-alpha col-l4 col-m6 col-s12" style="display:none;">
+		<p><button onclick="ch_style('sidebar-filter','display','none');" class="btn-default border border-light-blue light-blue hover-white hover-text-blue"><i class="fas fa-times"></i></button></p>
 		<h2>Filter f&uuml;r</h2>
 		<p>
 			<select onchange="loadfilter();" class="input-default border border-light-blue light-blue hover-white hover-text-blue" id="filterinput">
@@ -96,9 +96,6 @@
 		<div id="filterdiv">
 
 		</div>
-	</div>
-	<div id="sidebar-iambw" class="sidebar-right container black-alpha" style="width:500px;display:none;">
-
 	</div>
 	<div class="content-default">
 		<div class="container black-alpha">

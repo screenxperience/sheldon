@@ -74,7 +74,7 @@ else
 						{
 							if(preg_match('/[^a-z]/',$_GET['attr']) == 0)
 							{
-								$allowed_attr = array('serial','cis','type','vendor','model','building','floor','room');
+								$allowed_attr = array('serial','cis','description','type','vendor','model','building','floor','room');
 
 								if(in_array($_GET['attr'],$allowed_attr))
 								{
@@ -283,7 +283,7 @@ else
 														{
 															if(preg_match('/[^'.$row['ci_regex'].']/',$_GET['attr_value']) == 0)
 															{
-																$pos = strpos(',',$_GET['attr_value']);
+																$pos = strpos($_GET['attr_value'],',');
 
 																if($pos)
 																{
@@ -397,6 +397,67 @@ else
 											$output .= '</div>';
 										}
 									}
+									else if($_GET['attr'] == $allowed_attr[2])
+									{
+										if(preg_match('/[^a-zA-ZöäüÖÄÜß0-9\-\.\r\n]/',$_GET['attr_value']) == 0)
+										{
+											if(strlen($_GET['attr_value']) <= 200)
+											{
+												$query = sprintf("
+												UPDATE asset
+												SET asset_description = '%s'
+												WHERE asset_id = '%s';",
+												$sql->real_escape_string($_GET['attr_value']),
+												$sql->real_escape_string($_GET['id']));
+
+												$sql->query($query);
+
+												if($sql->affected_rows == 1)
+												{
+													$output .= '<div class="container">';
+													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Der Datensatz wurde erfolgreich gespeichert.</p>';
+													$output .= '</div>';
+													$output .= '</div>';
+													$output .= '</div>';
+												}
+												else
+												{
+													$output .= '<div class="container">';
+													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<h1>Error</h1>';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Der Datensatz konnte nicht gespeichert.</p>';
+													$output .= '</div>';
+													$output .= '</div>';
+													$output .= '</div>';
+												}
+											}
+											else
+											{
+												$output .= '<div class="container">';
+												$output .= '<div class="content-center container white-alpha">';
+												$output .= '<h1>Error</h1>';
+												$output .= '<div class="panel black-alpha">';
+												$output .= '<p>Die Bemerkung darf nur 200 Zeichen lang sein.</p>';
+												$output .= '</div>';
+												$output .= '</div>';
+												$output .= '</div>';
+											}
+										}
+										else
+										{
+											$output .= '<div class="container">';
+											$output .= '<div class="content-center container white-alpha">';
+											$output .= '<h1>Error</h1>';
+											$output .= '<div class="panel black-alpha">';
+											$output .= '<p>Verwenden Sie nur folgende Zeichen: a-z, A-Z, öäüÖÄÜß, 0-9, -.</p>';
+											$output .= '</div>';
+											$output .= '</div>';
+											$output .= '</div>';
+										}
+									}
 									else
 									{
 										if(preg_match('/[^0-9]/',$_GET['attr_value']) == 0)
@@ -455,7 +516,7 @@ else
 									$output .= '<div class="content-center container white-alpha">';
 									$output .= '<h1>Error</h1>';
 									$output .= '<div class="panel black-alpha">';
-									$output .= '<p>Es k&ouml;nnen nur folgende Attribute ge&auml;ndert werden: Seriennummer, CIs, Typ, Hersteller, Modell, Geb&auml;ude, Stockwerk und Raum.</p>';
+									$output .= '<p>Es k&ouml;nnen nur folgende Attribute ge&auml;ndert werden: Seriennummer, CIs, Bemerkung, Typ, Hersteller, Modell, Geb&auml;ude, Stockwerk und Raum.</p>';
 									$output .= '</div>';
 									$output .= '</div>';
 									$output .= '</div>';
@@ -467,7 +528,7 @@ else
 								$output .= '<div class="content-center container white-alpha">';
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel black-alpha">';
-								$output .= '<p>Es k&ouml;nnen nur folgende Attribute ge&auml;ndert werden: Seriennummer, CIs, Typ, Hersteller, Modell, Geb&auml;ude, Stockwerk, Raum.</p>';
+								$output .= '<p>Es k&ouml;nnen nur folgende Attribute ge&auml;ndert werden: Seriennummer, CIs, Bemerkung, Typ, Hersteller, Modell, Geb&auml;ude, Stockwer und Raum.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';

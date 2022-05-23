@@ -87,20 +87,16 @@ function loadfilter() {
 	filterdiv.appendChild(filterframe);
 }
 
-function loadiambw() {
-	var iambw = document.getElementById('sidebar-iambw');
-	
-	var iambwframe = document.createElement('iframe');
+function chk_inputlength(inputid,inputlength) {
 
-	iambwframe.setAttribute('frameborder','0');
+	var input = document.getElementById(inputid);
 
-	iambwframe.setAttribute('class','block');
+	if(input.value.length >= inputlength)
+	{
+		newvalue = input.value.slice(0,inputlength);
 
-	iambwframe.style.height = '100vh';
-
-	iambwframe.setAttribute('src','/include/filter.inc.php?category='+filtercategory);
-
-	iambw.appendChild(iambwframe);
+		input.value = newvalue; 
+	}
 }
 
 window.onresize = function() {

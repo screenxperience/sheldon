@@ -308,7 +308,6 @@ else
 
 						$output .= '<form action="add.php" method="get">';
 						$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
-						$output .= '<p><button onclick="'."ch_style('sidebar-iambw','display','block')".';" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="button">IAMBw</button></p>';
 						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="number" name="user_id" placeholder="Personalnummer"/></p>';
 						$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="user_rank_id">';
 						$output .= '<option value="">Dienstgrad w&auml;hlen</option>';
@@ -328,7 +327,7 @@ else
 						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="user_vname" placeholder="Vorname"/></p>';
 						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="user_name" placeholder="Nachname"/></p>';
 						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" type="text" name="user_email" placeholder="E-Mail-Adresse"/></p>';
-						$output .= '<p><button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit">weiter <i class="fas fa-arrow-right"></i></button></p>';
+						$output .= '<p><button class="col-s6 col-m6 col-l6 btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit">weiter <i class="fas fa-arrow-right"></i></button><a href="https://iam.bundeswehr.org/" target="_blank" class="col-s6 col-m6 col-l6 btn-default border border-light-blue light-blue hover-white hover-text-blue" type="button">IAMBw</a></p>';
 						$output .= '<input type="hidden" name="send" value="1"/>';
 						$output .= '</form>';
 					}
@@ -891,7 +890,7 @@ else
 																}
 																else
 																{
-																	$pos = strpos(',',$_GET['ci_value']);
+																	$pos = strpos($_GET['ci_value'],',');
 
 																	if(!$pos)
 																	{

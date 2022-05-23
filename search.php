@@ -176,9 +176,15 @@ else
 								
 							$vendor_id = $filter[1]; 
 								
-							$model_id = $filter[2];  
+							$model_id = $filter[2];
+							
+							$building_id = $filter[3];
+
+							$floor_id = $filter[4];
+
+							$room_id = $filter[5];
 								
-							$serialnr = $filter[3];
+							$serialnr = $filter[6];
 
 							$i = 0;
 							
@@ -190,7 +196,10 @@ else
 							INNER JOIN model ON model_id = asset_model_id
 							WHERE asset_type_id = '".$type_id."'
 							OR asset_vendor_id = '".$vendor_id."'
-							OR asset_model_id = '".$model_id."'";
+							OR asset_model_id = '".$model_id."'
+							OR asset_building_id = '".$building_id."'
+							OR asset_floor_id = '".$floor_id."'
+							OR asset_room_id = '".$room_id."'";
 
 							if(!empty($serialnr))
 							{
@@ -224,7 +233,7 @@ else
 								$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
 								$output .= '<p>'.$row['asset_serial'].'</p>';
 								$output .= '<div class="container-large display-middle-right-large section-medium section-small">';
-								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/search.php?category='.$_GET['category'].'&filter[]='.$filter[0].'&filter[]='.$filter[1].'&filter[]='.$filter[2].'&filter[]='.$filter[3]).'"><i class="fas fa-trash"></i></a> ';
+								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/search.php?category='.$_GET['category'].'&filter[]='.$filter[0].'&filter[]='.$filter[1].'&filter[]='.$filter[2].'&filter[]='.$filter[3].'&filter[]='.$filter[4].'&filter[]='.$filter[5].'&filter[]='.$filter[6]).'"><i class="fas fa-trash"></i></a> ';
 								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
 								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['asset_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
 								$output .= '</div>';
@@ -248,6 +257,12 @@ else
 
 							$email = $filter[4];
 
+							$building_id = $filter[5];
+
+							$floor_id = $filter[6];
+
+							$room_id = $filter[7];
+
 							$i = 0;
 							
 							$query = "
@@ -270,6 +285,10 @@ else
 							{
 								$query .= " OR user_email LIKE '%".$email."%'";
 							}
+
+							$query .= " OR user_building_id = '".$building_id."'
+							OR user_floor_id = '".$floor_id."'
+							OR user_room_id = '".$room_id."'";
 
 							$result = $sql->query($query);
 
@@ -298,7 +317,7 @@ else
 								$output .= '<p>'.$row['user_id'].'</p>';
 								$output .= '<p>'.$row['user_email'].'</p>';
 								$output .= '<div class="container-large display-middle-right-large section-medium section-small">';
-								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['user_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/search.php?category='.$_GET['category'].'&filter[]='.$filter[0].'&filter[]='.$filter[1].'&filter[]='.$filter[2].'&filter[]='.$filter[3].'&filter[]='.$filter[4]).'"><i class="fas fa-trash"></i></a> ';
+								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['user_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/search.php?category='.$_GET['category'].'&filter[]='.$filter[0].'&filter[]='.$filter[1].'&filter[]='.$filter[2].'&filter[]='.$filter[3].'&filter[]='.$filter[4].'&filter[]='.$filter[5].'&filter[]='.$filter[6].'&filter[]='.$filter[7]).'"><i class="fas fa-trash"></i></a> ';
 								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$row['user_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
 								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['user_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
 								$output .= '</div>';

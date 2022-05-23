@@ -110,6 +110,9 @@ ul.flex-center {
 .margin {
 	margin:16px;
 }
+.margint {
+	margin-top:16px;
+}
 .display-container {
 	position:relative;
 }

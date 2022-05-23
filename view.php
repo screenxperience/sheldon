@@ -53,14 +53,7 @@ else
 						{
 							if(empty($_GET['tab']))
 							{
-								$output .= '<div class="container">';
-								$output .= '<div class="content-center container white">';
-								$output .= '<h1>Error</h1>';
-								$output .= '<div class="panel dark">';
-								$output .= '<p>Es wurde kein Tab gew&auml;hlt.</p>';
-								$output .= '</div>';
-								$output .= '</div>';
-								$output .= '</div>';
+								header('location:http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'&tab=general');
 							}
 							else
 							{
@@ -519,13 +512,13 @@ else
 
 																for($J = 0; $J < count($ci_value); $J++)
 																{
-																	$output .= '<div class="margint inline container border border-light-blue light-blue"><p>'.$ci_value[$J].'</p></div> ';
+																	$output .= '<div class="panel inline border border-light-blue light-blue" style="margin-bottom:0px;"><p>'.$ci_value[$J].'</p></div> ';
 																}
 
 																$output .= '&nbsp;&nbsp;&nbsp;<i onclick="edit('.$i.');" class="fas fa-edit medium"></i>';
 																$output .= '</div>';
 																$output .= '<div id="attr-input-'.$i.'" style="display:none;">';
-																$output .= '<ul class="flex">';
+																$output .= '<ul class="flex margint">';
 																$output .= '<li class="col-s2 col-m2 col-l1">';
 																$output .= '<button onclick="cedit('.$i.');" class="block btn-default border border-red red hover-white hover-text-red" type="button"><i class="fas fa-times"></i></button>';
 																$output .= '</li>';
@@ -561,6 +554,27 @@ else
 
 												$output .= '</div>';
 											}
+										}
+
+										$query = sprintf("
+										SELECT asset_description
+										FROM asset
+										WHERE asset_id = '%s';",
+										$sql->real_escape_string($_GET['id']));
+
+										$result = $sql->query($query);
+
+										if($row = $result->fetch_array(MYSQLI_ASSOC))
+										{
+											$output .= '<div class="panel black-alpha">';
+											$output .= '<form action="change.php" method="get">';
+											$output .= '<h2>Bemerkung</h2>';
+											$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
+											$output .= '<input type="hidden" name="id" value="'.$_GET['id'].'"/>';
+											$output .= '<input type="hidden" name="attr" value="description"/>';
+											$output .= '<p><textarea id="assetdescription" onkeyup="'."chk_inputlength('assetdescription',200)".';" class="input-default border border-grey focus-border-light-blue" name="attr_value">'.$row['asset_description'].'</textarea></p>';
+											$output .= '<p><button class="btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit">Bemerkung speichern <i class="fas fa-save"></i></button></p>';
+											$output .= '</div>';
 										}
 									}
 									else
@@ -1092,14 +1106,14 @@ else
 								{
 									$output .= '<div class="display-top-right-large display-top-right-medium section-small text-center">';
 									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue" href"#">Archiviert <i class="fas fa-check"></i></a>';
-									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="lend.php?aktion=print&id='.$_GET['id'].'">Drucken <i class="fas fa-print"></i></a>';
+									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="print.php?category=lend&id='.$_GET['id'].'" target="_blank">Drucken <i class="fas fa-print"></i></a>';
 									$output .= '</div>';
 								}
 								else
 								{
 									$output .= '<div class="display-top-right-large display-top-right-medium section-small text-center">';
 									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category=lend&id='.$_GET['id'].'">Archivieren <i class="fa-solid fa-file-zipper"></i></a>';
-									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="print.php?category=lend&id='.$_GET['id'].'">Drucken <i class="fas fa-print"></i></a>';
+									$output .= '<a class="col-s6 btn-default border border-light-blue light-blue hover-white hover-text-blue" href="print.php?category=lend&id='.$_GET['id'].'" target="_blank">Drucken <i class="fas fa-print"></i></a>';
 									$output .= '</div>';
 								}
 								
@@ -1183,7 +1197,7 @@ else
 									$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
 									$output .= '<input type="hidden" name="id" value="'.$_GET['id'].'"/>';
 									$output .= '<input type="hidden" name="attr" value="description">';
-									$output .= '<p><textarea class="input-default border border-grey focus-border-light-blue" name="attr_value">'.$lend_description.'</textarea></p>';
+									$output .= '<p><textarea id="lenddescription" onkeyup="'."chk_inputlength('lenddescription',200)".';" class="input-default border border-grey focus-border-light-blue" name="attr_value">'.$lend_description.'</textarea></p>';
 									$output .= '<input type="hidden" name="returnto" value="http://'.$_SERVER['HTTP_HOST'].'/view.php?category='.$_GET['category'].'&id='.$_GET['id'].'"/>';
 									$output .= '<p><button class="btn-default border border-light-blue light-blue hover-white hover-text-blue">Bemerkung speichern <i class="fas fa-save"></i></button></p>';
 									$output .= '</form>';

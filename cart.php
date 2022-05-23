@@ -462,7 +462,7 @@ else
 								$output .= '<form action="add.php" method="get">';
 								$output .= '<input type="hidden" name="category" value="lend"/>';
 								$output .= '<h2>Bemerkung</h2>';
-								$output .= '<p><textarea class="input-default border border-grey focus-border-light-blue" name="lend_description" placeholder="Bemerkung eingeben (200 Zeichen)"></textarea></p>';
+								$output .= '<p><textarea id="lenddescription" onkeyup="'."chk_inputlength('lenddescription',200)".';" class="input-default border border-grey focus-border-light-blue" name="lend_description" placeholder="Bemerkung eingeben (200 Zeichen)"></textarea></p>';
 								$output .= '<h2>Leihgabe bis</h2>';
 								$output .= '<ul class="flex section">';
 								$output .= '<li class="col-s10 col-m10 col-l10">';
