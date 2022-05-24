@@ -210,7 +210,7 @@ else
 										if($_GET['category'] == $allowed_category[1])
 										{
 											$query = sprintf("
-											SELECT asset_id,type_name,vendor_name,model_name,asset_serial
+											SELECT asset_id,type_name,vendor_name,model_name,asset_serial,asset_locked
 											FROM asset
 											INNER JOIN type ON type_id = asset_type_id
 											INNER JOIN vendor ON vendor_id = asset_vendor_id
@@ -236,9 +236,14 @@ else
 												$output .= '<p>'.$row['type_name'].' / '.$row['vendor_name'].' / '.$row['model_name'].'</p>';
 												$output .= '<p>'.$row['asset_serial'].'</p>';
 												$output .= '<div class="container-large display-middle-right-large section-medium section-small">';
-												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&amount='.$_GET['amount']).'"><i class="fas fa-trash"></i></a> ';
+												$output .= '<a class="btn-default border border-red red hover-white hover-text-red" href="del.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&amount='.$_GET['amount']).'"><i class="fas fa-trash"></i></a> ';
 												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
-												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['asset_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
+
+												if(!$row['asset_locked'])
+												{
+													$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['asset_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
+												}
+
 												$output .= '</div>';
 												$output .= '</div>';
 												$output .= '</li>';
@@ -272,7 +277,7 @@ else
 												$output .= '<p>'.$row['user_id'].'</p>';
 												$output .= '<p>'.$row['user_email'].'</p>';
 												$output .= '<div class="container-large display-middle-right-large section-medium section-small">';
-												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row['user_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&amount='.$_GET['amount']).'"><i class="fas fa-trash"></i></a> ';
+												$output .= '<a class="btn-default border border-red red hover-white hover-text-red" href="del.php?category='.$_GET['category'].'&id='.$row['user_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&amount='.$_GET['amount']).'"><i class="fas fa-trash"></i></a> ';
 												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$row['user_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
 												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['user_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
 												$output .= '</div>';
@@ -315,7 +320,7 @@ else
 												$output .= '</td>';
 												$output .= '<td>';
 												$output .= '<p class="text-right">';
-												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="del.php?category='.$_GET['category'].'&id='.$row[0].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&amount='.$_GET['amount']).'"><i class="fas fa-trash"></i></a> ';
+												$output .= '<a class="btn-default border border-red red hover-white hover-text-red" href="del.php?category='.$_GET['category'].'&id='.$row[0].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/list.php?category='.$_GET['category'].'&site='.$_GET['site'].'&amount='.$_GET['amount']).'"><i class="fas fa-trash"></i></a> ';
 												$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$row[0].'"><i class="fas fa-eye"></i></a>';
 												$output .= '</p>';
 												$output .= '</td>';

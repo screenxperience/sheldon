@@ -85,31 +85,16 @@ else
 												{
 													$cart = $_SESSION['cart']['assets'];
 														
-													$query = "
-													SELECT lend_id,lend_assets
+													$query = sprintf("
+													SELECT lend_id
 													FROM lend
-													WHERE lend_archived = '0'";
+													WHERE lend_archived = '0'
+													AND lend_assets LIKE '%s';",
+													$sql->real_escape_string('%"'.$_GET['id'].'"%'));
 
 													$result = $sql->query($query);
-
-													$amount_gs = mysqli_num_rows($result);
-
-													if($amount_gs > 0)
-													{
-														while($row = $result->fetch_array(MYSQLI_ASSOC))
-														{
-															$lend_assets = json_decode($row['lend_assets']);
-
-															if(in_array($_GET['id'],$lend_assets))
-															{
-																$lend_id = $row['lend_id'];
-
-																break;
-															}
-														}
-													}
 													
-													if(!empty($lend_id))
+													if($row = $result->fetch_array(MYSQLI_ASSOC))
 													{
 														$output .= '<div class="container">';
 														$output .= '<div class="content-center container white-alpha">';
@@ -117,14 +102,14 @@ else
 														$output .= '<div class="panel black-alpha">';
 														$output .= '<p>Asset ist zurzeit verausgabt.</p>';
 														$output .= '</div>';
-														$output .= '<p><a class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category=lend&id='.$lend_id.'">Leihgabe anzeigen <i class="fas fa-arrow-right"></i></a></p>';
+														$output .= '<p><a class="block btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category=lend&id='.$row['lend_id'].'">Leihgabe anzeigen <i class="fas fa-arrow-right"></i></a></p>';
 														$output .= '</div>';
 														$output .= '</div>';
 													}
 													else
 													{
 														$query = sprintf("
-														SELECT asset_serial
+														SELECT asset_serial,asset_locked
 														FROM asset
 														WHERE asset_id = '%s';",
 														$sql->real_escape_string($_GET['id']));
@@ -133,32 +118,44 @@ else
 															
 														if($row = $result->fetch_array(MYSQLI_ASSOC))
 														{
-															$exit = 0;
-																
-															if(!empty($cart))
+															if(!$row['asset_locked'])
 															{
+																$exit = 0;
+																	
 																for($i = 0; $i < count($cart); $i++)
 																{
 																	$asset_id = $cart[$i];
-																		
+																			
 																	if($asset_id == $_GET['id'])
 																	{
 																		$exit = 1;
 																	}
 																}
-															}
-																
-															if(!$exit)
-															{
-																array_push($cart,$_GET['id']);		
-																		
-																$output .= '<div class="container">';
-																$output .= '<div class="content-center container white-alpha">';
-																$output .= '<div class="panel black-alpha">';
-																$output .= '<p><strong>'.$row['asset_serial'].'</strong> wurde in ihren Warenkorb gelegt.</p>';
-																$output .= '</div>'; 
-																$output .= '</div>'; 
-																$output .= '</div>';
+																	
+																if(!$exit)
+																{
+																	array_push($cart,$_GET['id']);		
+																			
+																	$output .= '<div class="container">';
+																	$output .= '<div class="content-center container white-alpha">';
+																	$output .= '<div class="panel black-alpha">';
+																	$output .= '<p><strong>'.$row['asset_serial'].'</strong> wurde in ihren Warenkorb gelegt.</p>';
+																	$output .= '<p><a href="list.php?category=user&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">User ausw&auml;hlen <i class="fas fa-arrow-right"></i></a></p>';
+																	$output .= '</div>'; 
+																	$output .= '</div>'; 
+																	$output .= '</div>';
+																}
+																else
+																{
+																	$output .= '<div class="container">';
+																	$output .= '<div class="content-center container white-alpha">';
+																	$output .= '<h1>Info</h1>';
+																	$output .= '<div class="panel black-alpha">';
+																	$output .= '<p><strong>'.$row['asset_serial'].'</strong> befindet sich bereits in ihrem Warenkorb.</p>';
+																	$output .= '</div>'; 
+																	$output .= '</div>'; 
+																	$output .= '</div>';
+																}
 															}
 															else
 															{
@@ -166,7 +163,7 @@ else
 																$output .= '<div class="content-center container white-alpha">';
 																$output .= '<h1>Info</h1>';
 																$output .= '<div class="panel black-alpha">';
-																$output .= '<p><strong>'.$row['asset_serial'].'</strong> befindet sich bereits in ihrem Warenkorb.</p>';
+																$output .= '<p><strong>'.$row['asset_serial'].'</strong> ist zurzeit gesperrt.</p>';
 																$output .= '</div>'; 
 																$output .= '</div>'; 
 																$output .= '</div>';
@@ -207,6 +204,7 @@ else
 														$output .= '<div class="content-center container white-alpha">';
 														$output .= '<div class="panel black-alpha">';
 														$output .= '<p><strong>'.$row['user_name'].', '.$row['user_vname'].'</strong> wurde in ihren Warenkorb gelegt.</p>';
+														$output .= '<p><a href="list.php?category=asset&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">Assets ausw&auml;hlen <i class="fas fa-arrow-right"></i></a></p>';
 														$output .= '</div>'; 
 														$output .= '</div>'; 
 														$output .= '</div>';
@@ -268,27 +266,24 @@ else
 													{
 														unset($assets[$key]);
 																
-														if(!empty($assets))
+														$assets_new = array();
+															
+														foreach($assets as $asset)
 														{
-															$assets_new = array();
-															
-															foreach($assets as $asset)
-															{
-																array_push($assets_new,$asset);
-															}
+															array_push($assets_new,$asset);
+														}
 																	
-															$assets = $assets_new;	
+														$assets = $assets_new;	
 															
-															$output .= '<div class="container">';
-															$output .= '<div class="content-center container white">';
-															$output .= '<div class="panel dark">';
-															$output .= '<p>Asset wurde aus ihrem Warenkorb entfernt.</p>';
-															$output .= '</div>'; 
-															$output .= '</div>'; 
-															$output .= '</div>';
+														$output .= '<div class="container">';
+														$output .= '<div class="content-center container white-alpha">';
+														$output .= '<div class="panel black-alpha">';
+														$output .= '<p>Asset wurde aus ihrem Warenkorb entfernt.</p>';
+														$output .= '</div>'; 
+														$output .= '</div>'; 
+														$output .= '</div>';
 															
-															$_SESSION['cart']['assets'] = $assets;
-														}	
+														$_SESSION['cart']['assets'] = $assets;	
 													}
 													else
 													{
@@ -317,31 +312,15 @@ else
 										}
 										else if($_GET['category'] == $allowed_category[1])
 										{
-											$user_id = $_SESSION['cart']['user'];
-												
-											if(empty($user_id))
-											{
-												$output .= '<div class="container">';
-												$output .= '<div class="content-center container white-alpha">';
-												$output .= '<h1>Error</h1>';
-												$output .= '<div class="panel black-alpha">';
-												$output .= '<p>Sie haben noch keinen User gew&auml;hlt.</p>';
-												$output .= '</div>'; 
-												$output .= '</div>'; 
-												$output .= '</div>';
-											}
-											else
-											{
-												$_SESSION['cart']['user'] = '';
+											$_SESSION['cart']['user'] = '';
 														
-												$output .= '<div class="container">';
-												$output .= '<div class="content-center container white-alpha">';
-												$output .= '<div class="panel black-alpha">';
-												$output .= '<p>Der User wurde aus Ihrem Warenkorb entfernt.</p>';
-												$output .= '</div>'; 
-												$output .= '</div>'; 
-												$output .= '</div>';
-											}
+											$output .= '<div class="container">';
+											$output .= '<div class="content-center container white-alpha">';
+											$output .= '<div class="panel black-alpha">';
+											$output .= '<p>Der User wurde aus Ihrem Warenkorb entfernt.</p>';
+											$output .= '</div>'; 
+											$output .= '</div>'; 
+											$output .= '</div>';
 										}
 											
 										$cart_count = count($_SESSION['cart']['assets']);
@@ -392,10 +371,12 @@ else
 							else if(empty($user_id))
 							{
 								$output .= '<p>Sie haben noch keinen User gew&auml;hlt.</p>';
+								$output .= '<p><a href="list.php?category=user&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">User anzeigen <i class="fas fa-arrow-right"></i></a></p>';
 							}
 							else if(empty($assets))
 							{
 								$output .= '<p>Sie haben noch keine Assets gew&auml;hlt.</p>';
+								$output .= '<p><a href="list.php?category=asset&site=0&amount=5" class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">Assets anzeigen <i class="fas fa-arrow-right"></i></a></p>';
 							}
 								
 							$output .= '</div>';
@@ -473,6 +454,11 @@ else
 								$output .= '</li>';
 								$output .= '</ul>';
 								$output .= '</form>';
+								$output .= '<h2>Info</h2>';
+								$output .= '<div class="panel black-alpha">';
+								$output .= '<p>Beim Klick auf weiter wird eine Leihgabe erzeugt. Die Lokationsdaten werden vom System automatisch gesetzt.</p>';
+								$output .= '</div>';
+								$output .= '</div>';
 							}
 							else
 							{

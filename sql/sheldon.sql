@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 23. Mai 2022 um 15:28
+-- Erstellungszeit: 24. Mai 2022 um 16:26
 -- Server Version: 5.6.13
 -- PHP-Version: 5.4.17
 
@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS `asset` (
   `asset_serial` varchar(200) NOT NULL,
   `asset_cis` varchar(200) NOT NULL,
   `asset_description` varchar(200) NOT NULL DEFAULT '-',
+  `asset_locked` enum('1','0') DEFAULT '0',
   PRIMARY KEY (`asset_id`),
   UNIQUE KEY `asset_serial` (`asset_serial`),
   KEY `asset_type_id` (`asset_type_id`),
@@ -47,19 +48,16 @@ CREATE TABLE IF NOT EXISTS `asset` (
   KEY `asset_building_id` (`asset_building_id`),
   KEY `asset_floor_id` (`asset_floor_id`),
   KEY `asset_room_id` (`asset_room_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=69 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
 --
 -- Daten für Tabelle `asset`
 --
 
-INSERT INTO `asset` (`asset_id`, `asset_type_id`, `asset_vendor_id`, `asset_model_id`, `asset_building_id`, `asset_floor_id`, `asset_room_id`, `asset_serial`, `asset_cis`, `asset_description`) VALUES
-(62, 15, 21, 24, 1, 1, 1, '2049LZ54GQ79', '[]', '-'),
-(63, 15, 21, 24, 1, 1, 1, '2049LZ54GPJ9', '[]', '-'),
-(64, 16, 20, 25, 1, 2, 2, '3CQ5293BHB', '[]', '-'),
-(65, 16, 20, 25, 1, 1, 3, '3CQ5330J43', '[]', '-'),
-(67, 14, 20, 23, 1, 1, 1, '5CG812560Z', '[]', '-'),
-(68, 14, 20, 23, 1, 1, 1, '5CG81251PD', '[["31",["Z1340289","10100651","11549851","10312830"]],["28","P0120AYYNC"]]', '-');
+INSERT INTO `asset` (`asset_id`, `asset_type_id`, `asset_vendor_id`, `asset_model_id`, `asset_building_id`, `asset_floor_id`, `asset_room_id`, `asset_serial`, `asset_cis`, `asset_description`, `asset_locked`) VALUES
+(1, 14, 20, 23, 1, 1, 1, '5CG812560Z', '[]', '-', '0'),
+(3, 14, 20, 23, 1, 1, 1, '5CG8125KY7', '[]', '-', '0'),
+(4, 14, 20, 23, 1, 1, 1, '5CG8125KLP', '[]', '-', '0');
 
 -- --------------------------------------------------------
 
@@ -148,15 +146,7 @@ CREATE TABLE IF NOT EXISTS `lend` (
   PRIMARY KEY (`lend_id`),
   KEY `lend_creator_id` (`lend_creator_id`),
   KEY `lend_user_id` (`lend_user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
-
---
--- Daten für Tabelle `lend`
---
-
-INSERT INTO `lend` (`lend_id`, `lend_creator_id`, `lend_user_id`, `lend_assets`, `lend_archived_assets`, `lend_description`, `lend_start`, `lend_end`, `lend_last_seen`, `lend_archived`) VALUES
-(9, 11549851, 11506084, '["62"]', '[]', 'KIT Lehrgang', '2022-05-18', '2022-05-30', '2022-05-19 14:27:16', '0'),
-(11, 11549851, 10096136, '["64"]', '[]', 'Austausch gegen Altgerät.', '2022-05-19', '2023-05-23', '2022-05-23 09:52:29', '0');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -285,13 +275,15 @@ CREATE TABLE IF NOT EXISTS `room` (
   `room_name` varchar(200) NOT NULL,
   PRIMARY KEY (`room_id`),
   UNIQUE KEY `room_name` (`room_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Daten für Tabelle `room`
 --
 
 INSERT INTO `room` (`room_id`, `room_name`) VALUES
+(6, 'R. 0.45a'),
+(5, 'R. 1.22'),
 (1, 'R. 1.33'),
 (2, 'R. 2.39'),
 (4, 'R. 2.51'),
@@ -355,10 +347,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`user_id`, `user_rank_id`, `user_vname`, `user_name`, `user_email`, `user_building_id`, `user_floor_id`, `user_room_id`, `user_password`, `user_salt`, `user_active`, `user_admin`, `user_failed_login`) VALUES
 (10096136, 34, 'Ralf', 'Gröbel', 'RalfGroebel@bundeswehr.org', 1, 2, 2, '5ebfd6ccd35767b28d927f95a0e16570e975587ecbe8d2d7ad1a493c2a4e5cd4', '1zsE%$ilJY', '0', '0', '0'),
-(10097606, 32, 'Jörg', 'Kriegel', 'JoergKriegel@bundeswehr.org', 1, 1, 1, '540f1b9e7aa6127e57105cf6b5bd39b79863edae77df8e7953342d3312b7055a', '!wJTNQsj&&', '0', '0', '0'),
-(10101969, 32, 'Lutz', 'Wundrack', 'LutzWundrack@bundeswehr.org', 1, 1, 1, '9d95f2ab95305cb7027d87322249c3bbe5105bfabca09d92fab2390e16574963', 'bBQ0o70wZe', '0', '0', '0'),
-(10105851, 38, 'Thorsten', 'Klinger', 'ThorstenKlinger@bundeswehr.org', 1, 1, 1, 'aeb7542c85b80e74cb51a7b8406e80cdce554c78005bbabda79ae9ce243df798', '?Ba6dXc7XN', '0', '0', '0'),
-(11506084, 20, 'Pascal', 'Schümann', 'PascalSchuemann@bundeswehr.org', 1, 1, 1, 'eec3077aa717e200254515158e30c8b0bc9a292452fc3a459125763826bbaa03', '0iytpEMcsv', '0', '0', '0'),
+(10097606, 32, 'Jörg', 'Kriegel', 'JoergKriegel@bundeswehr.org', 1, 4, 6, '540f1b9e7aa6127e57105cf6b5bd39b79863edae77df8e7953342d3312b7055a', '!wJTNQsj&&', '0', '0', '0'),
+(10101969, 32, 'Lutz', 'Wundrack', 'LutzWundrack@bundeswehr.org', 1, 2, 4, '9d95f2ab95305cb7027d87322249c3bbe5105bfabca09d92fab2390e16574963', 'bBQ0o70wZe', '0', '0', '0'),
+(11506084, 20, 'Pascal', 'Schümann', 'PascalSchuemann@bundeswehr.org', 1, 1, 5, 'eec3077aa717e200254515158e30c8b0bc9a292452fc3a459125763826bbaa03', '0iytpEMcsv', '0', '0', '0'),
 (11549851, 12, 'Alexander', 'Brosch', 'alexanderbrosch@bundeswehr.org', 1, 1, 1, '78be7d99d95e79e9807476f6964f97c8560ee703c9aff44d8d94f1f8e8b81b56', 'j2GVy94PPP', '1', '1', '0');
 
 -- --------------------------------------------------------

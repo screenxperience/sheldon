@@ -5,79 +5,82 @@
 		</p>
 		<ul>
 			<li>
-				<div class="section text-center">
-					<a href="list.php?category=lend&site=0&amount=5&archived=0" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Leihgaben</p></a>
-				</div>
-			</li>
-			<li>
 				<div class="section display-container text-center hover-text-left">
-					<a href="list.php?category=asset&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Assets</p></a>
+					<a title="aktive Leihgaben anzeigen" href="list.php?category=lend&site=0&amount=5&archived=0" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Leihgaben</p></a>
 					<div class="hover-display display-top-right">
-						<a href="add.php?category=asset" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
+						<a title="archivierte Leihgaben anzeigen" href="list.php?category=lend&site=0&amount=5&archived=1" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fa-solid fa-file-zipper"></i></p></a>
 					</div>
 				</div>
 			</li>
 			<li>
 				<div class="section display-container text-center hover-text-left">
-					<a href="list.php?category=user&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>User</p></a>
+					<a title="Assets anzeigen" href="list.php?category=asset&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Assets</p></a>
 					<div class="hover-display display-top-right">
-						<a href="add.php?category=user" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
+						<a title="Asset erstellen" href="add.php?category=asset" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
 					</div>
 				</div>
 			</li>
 			<li>
 				<div class="section display-container text-center hover-text-left">
-					<a href="list.php?category=ci&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>CIs</p></a>
+					<a title="User anzeigen" href="list.php?category=user&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>User</p></a>
 					<div class="hover-display display-top-right">
-						<a href="add.php?category=ci" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
+						<a title="User erstellen" href="add.php?category=user" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
 					</div>
 				</div>
 			</li>
 			<li>
 				<div class="section display-container text-center hover-text-left">
-					<a href="list.php?category=type&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Typen</p></a>
+					<a title="CIs anzeigen" href="list.php?category=ci&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>CIs</p></a>
 					<div class="hover-display display-top-right">
-						<a href="add.php?category=type" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
+						<a title="CI erstellen" href="add.php?category=ci" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
 					</div>
 				</div>
 			</li>
 			<li>
 				<div class="section display-container text-center hover-text-left">
-					<a href="list.php?category=vendor&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Hersteller</p></a>
+					<a title="Typen anzeigen" href="list.php?category=type&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Typen</p></a>
 					<div class="hover-display display-top-right">
-						<a href="add.php?category=vendor" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
+						<a title="Typ erstellen" href="add.php?category=type" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
 					</div>
 				</div>
 			</li>
 			<li>
 				<div class="section display-container text-center hover-text-left">
-					<a href="list.php?category=model&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Modelle</p></a>
+					<a title="Hersteller anzeigen" href="list.php?category=vendor&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Hersteller</p></a>
 					<div class="hover-display display-top-right">
-						<a href="add.php?category=model" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
+						<a title="Hersteller erstellen" href="add.php?category=vendor" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
 					</div>
 				</div>
 			</li>
 			<li>
 				<div class="section display-container text-center hover-text-left">
-					<a href="list.php?category=building&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Geb&auml;ude</p></a>
+					<a title="Modelle anzeigen" href="list.php?category=model&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Modelle</p></a>
 					<div class="hover-display display-top-right">
-						<a href="add.php?category=building" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
+						<a title="Modell erstellen" href="add.php?category=model" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
 					</div>
 				</div>
 			</li>
 			<li>
 				<div class="section display-container text-center hover-text-left">
-					<a href="list.php?category=floor&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Stockwerke</p></a>
+					<a title="Geb&auml;de anzeigen" href="list.php?category=building&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Geb&auml;ude</p></a>
 					<div class="hover-display display-top-right">
-						<a href="add.php?category=floor" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
+						<a title="Geb&auml;de erstellen" href="add.php?category=building" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
 					</div>
 				</div>
 			</li>
 			<li>
 				<div class="section display-container text-center hover-text-left">
-					<a href="list.php?category=room&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>R&auml;ume</p></a>
+					<a title="Stockwerke anzeigen" href="list.php?category=floor&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>Stockwerke</p></a>
 					<div class="hover-display display-top-right">
-						<a href="add.php?category=room" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
+						<a title="Stockwerk erstellen" href="add.php?category=floor" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
+					</div>
+				</div>
+			</li>
+			<li>
+				<div class="section display-container text-center hover-text-left">
+					<a title="R&auml;ume anzeigen" href="list.php?category=room&site=0&amount=5" class="container border border-light-blue light-blue hover-white hover-text-blue"><p>R&auml;ume</p></a>
+					<div class="hover-display display-top-right">
+						<a title="Raum erstellen" href="add.php?category=room" class="container border border-light-blue light-blue hover-white hover-text-blue"><p><i class="fas fa-plus"></i></p></a>
 					</div>
 				</div>
 			</li>

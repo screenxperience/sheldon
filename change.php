@@ -74,7 +74,7 @@ else
 						{
 							if(preg_match('/[^a-z]/',$_GET['attr']) == 0)
 							{
-								$allowed_attr = array('serial','cis','description','type','vendor','model','building','floor','room');
+								$allowed_attr = array('serial','cis','description','locked','type','vendor','model','building','floor','room');
 
 								if(in_array($_GET['attr'],$allowed_attr))
 								{
@@ -458,6 +458,82 @@ else
 											$output .= '</div>';
 										}
 									}
+									else if($_GET['attr'] == $allowed_attr[3])
+									{
+										if(preg_match('/[^0-9]/',$_GET['attr_value']) == 0)
+										{
+											$allowed_locked = array(0,1);
+
+											if(in_array($_GET['attr_value'],$allowed_locked))
+											{
+												$query = sprintf("
+												UPDATE asset
+												SET asset_locked = '%s'
+												WHERE asset_id = '%s';",
+												$sql->real_escape_string($_GET['attr_value']),
+												$sql->real_escape_string($_GET['id']));
+
+												$sql->query($query);
+
+												if($sql->affected_rows == 1)
+												{
+													if($_GET['attr_value'] == $allowed_locked[0])
+													{
+														$output .= '<div class="container">';
+														$output .= '<div class="content-center container white-alpha">';
+														$output .= '<div class="panel black-alpha">';
+														$output .= '<p>Asset wurde enstperrt.</p>';
+														$output .= '</div>';
+														$output .= '</div>';
+														$output .= '</div>';
+													}
+													else if($_GET['attr_value'] == $allowed_locked[1])
+													{
+														$output .= '<div class="container">';
+														$output .= '<div class="content-center container white-alpha">';
+														$output .= '<div class="panel black-alpha">';
+														$output .= '<p>Asset wurde gesperrt.</p>';
+														$output .= '</div>';
+														$output .= '</div>';
+														$output .= '</div>';
+													}
+												}
+												else
+												{
+													$output .= '<div class="container">';
+													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<h1>Error</h1>';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Datensatz konnte nicht ge&auml;ndert werden.</p>';
+													$output .= '</div>';
+													$output .= '</div>';
+													$output .= '</div>';
+												}
+											}
+											else
+											{
+												$output .= '<div class="container">';
+												$output .= '<div class="content-center container white-alpha">';
+												$output .= '<h1>Error</h1>';
+												$output .= '<div class="panel black-alpha">';
+												$output .= '<p>Ein Asset kann nur gesperrt oder entsperrt werden.</p>';
+												$output .= '</div>';
+												$output .= '</div>';
+												$output .= '</div>';
+											}
+										}
+										else
+										{
+											$output .= '<div class="container">';
+											$output .= '<div class="content-center container white-alpha">';
+											$output .= '<h1>Error</h1>';
+											$output .= '<div class="panel black-alpha">';
+											$output .= '<p>Ein Asset kann nur gesperrt oder entsperrt werden.</p>';
+											$output .= '</div>';
+											$output .= '</div>';
+											$output .= '</div>';
+										}
+									}
 									else
 									{
 										if(preg_match('/[^0-9]/',$_GET['attr_value']) == 0)
@@ -516,7 +592,7 @@ else
 									$output .= '<div class="content-center container white-alpha">';
 									$output .= '<h1>Error</h1>';
 									$output .= '<div class="panel black-alpha">';
-									$output .= '<p>Es k&ouml;nnen nur folgende Attribute ge&auml;ndert werden: Seriennummer, CIs, Bemerkung, Typ, Hersteller, Modell, Geb&auml;ude, Stockwerk und Raum.</p>';
+									$output .= '<p>Es k&ouml;nnen nur folgende Attribute ge&auml;ndert werden: Seriennummer, CIs, Bemerkung, Sperrung, Typ, Hersteller, Modell, Geb&auml;ude, Stockwerk und Raum.</p>';
 									$output .= '</div>';
 									$output .= '</div>';
 									$output .= '</div>';
@@ -528,7 +604,7 @@ else
 								$output .= '<div class="content-center container white-alpha">';
 								$output .= '<h1>Error</h1>';
 								$output .= '<div class="panel black-alpha">';
-								$output .= '<p>Es k&ouml;nnen nur folgende Attribute ge&auml;ndert werden: Seriennummer, CIs, Bemerkung, Typ, Hersteller, Modell, Geb&auml;ude, Stockwer und Raum.</p>';
+								$output .= '<p>Es k&ouml;nnen nur folgende Attribute ge&auml;ndert werden: Seriennummer, CIs, Bemerkung, Sperrung, Typ, Hersteller, Modell, Geb&auml;ude, Stockwer und Raum.</p>';
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</div>';
@@ -675,82 +751,42 @@ else
 									}
 									else if($_GET['attr'] == $allowed_attr[3] || $_GET['attr'] == $allowed_attr[4])
 									{
-										if(preg_match('/[^01]/',$_GET['attr_value']) == 0)
+										if(preg_match('/[^0-9]/',$_GET['attr_value']) == 0)
 										{
 											$allowed_status = array('0','1');
 
 											if(in_array($_GET['attr_value'],$allowed_status))
 											{
-												if($_GET['attr_value'] == $allowed_status[0] || $_GET['attr_value'] == $allowed_status[1])
+												$query = sprintf("
+												UPDATE user
+												SET user_%s = '%s'
+												WHERE user_id = '%s';",
+												$sql->real_escape_string($_GET['attr']),
+												$sql->real_escape_string($_GET['attr_value']),
+												$sql->real_escape_string($_GET['id']));
+
+												$sql->query($query);
+
+												if($sql->affected_rows == 1)
 												{
-													$query = sprintf("
-													SELECT user_%s
-													FROM user
-													WHERE user_id = '%s';",
-													$sql->real_escape_string($_GET['attr']),
-													$sql->real_escape_string($_GET['id']));
-
-													$result = $sql->query($query);
-
-													if($row = $result->fetch_array(MYSQLI_NUM))
-													{
-														if($row[0] != $_GET['attr_value'])
-														{
-															$query = sprintf("
-															UPDATE user
-															SET user_%s = '%s'
-															WHERE user_id = '%s';",
-															$sql->real_escape_string($_GET['attr']),
-															$sql->real_escape_string($_GET['attr_value']),
-															$sql->real_escape_string($_GET['id']));
-
-															$sql->query($query);
-
-															if($sql->affected_rows == 1)
-															{
-																$output .= '<div class="container">';
-																$output .= '<div class="content-center container white-alpha">';
-																$output .= '<div class="panel black-alpha">';
-																$output .= '<p>Userstatus wurde erfolgreich angepasst.</p>';
-																$output .= '</div>';
-																$output .= '</div>';
-																$output .= '</div>';
-															}
-															else
-															{
-																$output .= '<div class="container">';
-																$output .= '<div class="content-center container white-alpha">';
-																$output .= '<h1>Error</h1>';
-																$output .= '<div class="panel black-alpha">';
-																$output .= '<p>Userstatus konnte nicht angepasst werden.</p>';
-																$output .= '</div>';
-																$output .= '</div>';
-																$output .= '</div>';
-															}
-														}
-														else
-														{
-															$output .= '<div class="container">';
-															$output .= '<div class="content-center container white-alpha">';
-															$output .= '<h1>Error</h1>';
-															$output .= '<div class="panel black-alpha">';
-															$output .= '<p>Userstatus befindet sich bereits im gew&auml;hlten Zustand.</p>';
-															$output .= '</div>';
-															$output .= '</div>';
-															$output .= '</div>';
-														}
-													}
-													else
-													{
-														$output .= '<div class="container">';
-														$output .= '<div class="content-center container white-alpha">';
-														$output .= '<h1>Error</h1>';
-														$output .= '<div class="panel black-alpha">';
-														$output .= '<p>Es wurde kein User gefunden.</p>';
-														$output .= '</div>';
-														$output .= '</div>';
-														$output .= '</div>';
-													}
+													$output .= '<div class="container">';
+													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Userstatus wurde erfolgreich ge&auml;ndert.</p>';
+													$output .= '</div>';
+													$output .= '</div>';
+													$output .= '</div>';
+												}
+												else
+												{
+													$output .= '<div class="container">';
+													$output .= '<div class="content-center container white-alpha">';
+													$output .= '<h1>Error</h1>';
+													$output .= '<div class="panel black-alpha">';
+													$output .= '<p>Userstatus konnte nicht ge&auml;ndert werden.</p>';
+													$output .= '</div>';
+													$output .= '</div>';
+													$output .= '</div>';
 												}
 											}
 											else
@@ -759,7 +795,7 @@ else
 												$output .= '<div class="content-center container white-alpha">';
 												$output .= '<h1>Error</h1>';
 												$output .= '<div class="panel black-alpha">';
-												$output .= '<p>Ein Account kann nur aktiv oder inaktiv bzw. Admin oder User sein.</p>';
+												$output .= '<p>Die Statuswerte k&ouml;nnen nur 1 oder 0 sein.</p>';
 												$output .= '</div>';
 												$output .= '</div>';
 												$output .= '</div>';
@@ -771,7 +807,7 @@ else
 											$output .= '<div class="content-center container white-alpha">';
 											$output .= '<h1>Error</h1>';
 											$output .= '<div class="panel black-alpha">';
-											$output .= '<p>Ein Account kann nur aktiv oder inaktiv bzw. Admin oder User sein.</p>';
+											$output .= '<p>Die Statuswerte k&ouml;nnen nur 1 oder 0 sein.</p>';
 											$output .= '</div>';
 											$output .= '</div>';
 											$output .= '</div>';

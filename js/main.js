@@ -25,15 +25,6 @@ function ch_style(elemID,attr,attrValue) {
 	}
 	
 }
-
-function clone(elemID) {
-	
-	var elem = document.getElementById(elemID);
-	
-	var clonedElem = elem.cloneNode(true);
-	
-	return clonedElem;
-}
 	
 function edit(ID) {
 	
@@ -99,6 +90,34 @@ function chk_inputlength(inputid,inputlength) {
 	}
 }
 
+function loadimportfile(importcategory) {
+
+	if(importcategory == 'asset')
+	{
+		var type = document.getElementById('assettype');
+
+		var vendor = document.getElementById('assetvendor');
+
+		var model = document.getElementById('assetmodel');
+
+		if(type.value == "" || vendor.value == "" || model.value == "")
+		{
+			alert('Waehlen Sie zuerst Typ,Hersteller und Modell.');
+		}
+		else
+		{
+			var filecontent = ['TypID;HerstellerID;ModellID;Seriennummer'+'\n'+type.value+';'+vendor.value+';'+model.value];
+
+			var filename = 'import_'+type.innerHTML+'_'+vendor.innerHTML+'_'+model.innerHTML+'.csv';
+
+			var file = new File(filecontent,filename,{type: "text/plain"});
+
+			var url = URL.createObjectURL(file);
+
+			window.location = url;
+		}
+	}
+}
 window.onresize = function() {
 	
 	var windowWidth = window.innerWidth;

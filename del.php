@@ -72,49 +72,18 @@ else
 					{
 						if($_GET['category'] == $allowed_category[0])
 						{
-							$exit = 0;
-
-							$query = "
-							SELECT lend_id,lend_assets,lend_archived_assets
-							FROM lend";
+							$query = sprintf("
+							SELECT lend_id
+							FROM lend
+							WHERE lend_assets LIKE '%s'
+							OR lend_archived_assets LIKE '%s'
+							LIMIT 1;",
+							$sql->real_escape_string('%"'.$_GET['id'].'"%'),
+							$sql->real_escape_string('%"'.$_GET['id'].'"%'));
 
 							$result = $sql->query($query);
 
-							while($row = $result->fetch_array(MYSQLI_ASSOC))
-							{
-								$lend_assets = json_decode($row['lend_assets']);
-
-								if(in_array($_GET['id'],$lend_assets))
-								{
-									$lend_id = $row['lend_id'];
-									
-									$exit = 1;
-
-									break;
-								}
-								else
-								{
-									$lend_archived_assets = json_decode($row['lend_archived_assets']);
-									
-									for($i = 0; $i < count($lend_archived_assets); $i++)
-									{
-										$lend_archived_asset = $lend_archived_assets[$i];
-										
-										$lend_archived_asset_id = $lend_archived_asset[0];
-										
-										if($_GET['id'] == $lend_archived_asset_id)
-										{
-											$lend_id = $row['lend_id'];
-											
-											$exit = 1;
-											
-											break 2;
-										}
-									}
-								}
-							}
-
-							if(!empty($exit))
+							if($row = $result->fetch_array(MYSQLI_ASSOC))
 							{
 								$output .= '<div class="container">';
 								$output .= '<div class="content-center container white-alpha">';

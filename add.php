@@ -132,7 +132,7 @@ else
 
 						$output .= '<form action="add.php" method="get">';
 						$output .= '<input type="hidden" name="category" value="'.$_GET['category'].'"/>';
-						$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="type_id">';
+						$output .= '<p><select id="assettype" class="input-default border border-grey focus-border-light-blue" name="type_id">';
 						$output .= '<option value="">Typ w&auml;hlen</option>';
 
 						$query = "
@@ -147,7 +147,7 @@ else
 						}
 
 						$output .= '</select></p>';
-						$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="vendor_id">';
+						$output .= '<p><select id="assetvendor" class="input-default border border-grey focus-border-light-blue" name="vendor_id">';
 						$output .= '<option value="">Hersteller w&auml;hlen</option>';
 
 						$query = "
@@ -162,7 +162,7 @@ else
 						}
 
 						$output .= '</select></p>';
-						$output .= '<p><select class="input-default border border-grey focus-border-light-blue" name="model_id">';
+						$output .= '<p><select id="assetmodel" class="input-default border border-grey focus-border-light-blue" name="model_id">';
 						$output .= '<option value="">Modell w&auml;hlen</option>';
 
 						$query = "
@@ -178,7 +178,7 @@ else
 
 						$output .= '</select></p>';
 						$output .= '<p><input class="input-default border border-grey focus-border-light-blue" name="asset_serial" placeholder="Seriennummer"/></p>';
-						$output .= '<p><button class="block btn-default border border-light-blue light-blue hover-white hover-text-blue">weiter <i class="fas fa-arrow-right"></i></button></p>';
+						$output .= '<p><button class="col-s6 col-m6 col-l6 btn-default border border-light-blue light-blue hover-white hover-text-blue" type="submit">weiter <i class="fas fa-arrow-right"></i></button><button onclick="'."loadimportfile('asset')".';" class="col-s6 col-m6 col-l6 btn-default border border-light-blue light-blue hover-white hover-text-blue" type="button">Import <i class="fa-solid fa-file-csv"></i></button></p>';
 						$output .= '<input type="hidden" name="send" value="1"/>';
 						$output .= '</form>';
 					}
