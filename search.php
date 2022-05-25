@@ -189,7 +189,7 @@ else
 							$i = 0;
 							
 							$query = "
-							SELECT asset_id,type_name,vendor_name,model_name,asset_serial
+							SELECT asset_id,type_name,vendor_name,model_name,asset_serial,asset_locked
 							FROM asset
 							INNER JOIN type ON type_id = asset_type_id
 							INNER JOIN vendor ON vendor_id = asset_vendor_id
@@ -235,7 +235,12 @@ else
 								$output .= '<div class="container-large display-middle-right-large section-medium section-small">';
 								$output .= '<a class="btn-default border border-red red hover-white hover-text-red" href="del.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&returnto='.urlencode('http://'.$_SERVER['HTTP_HOST'].'/search.php?category='.$_GET['category'].'&filter[]='.$filter[0].'&filter[]='.$filter[1].'&filter[]='.$filter[2].'&filter[]='.$filter[3].'&filter[]='.$filter[4].'&filter[]='.$filter[5].'&filter[]='.$filter[6]).'"><i class="fas fa-trash"></i></a> ';
 								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="view.php?category='.$_GET['category'].'&id='.$row['asset_id'].'&tab=general"><i class="fas fa-eye"></i></a> ';
-								$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['asset_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
+
+								if(!$row['asset_locked'])
+								{
+									$output .= '<a class="btn-default border border-light-blue light-blue hover-white hover-text-blue" href="cart.php?aktion=add&category='.$_GET['category'].'&id='.$row['asset_id'].'"><i class="fas fa-shopping-cart"></i> <i class="fas fa-plus"></i></a>';
+								}
+								
 								$output .= '</div>';
 								$output .= '</div>';
 								$output .= '</li>';

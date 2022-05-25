@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Erstellungszeit: 24. Mai 2022 um 16:26
+-- Erstellungszeit: 25. Mai 2022 um 10:02
 -- Server Version: 5.6.13
 -- PHP-Version: 5.4.17
 
@@ -48,16 +48,51 @@ CREATE TABLE IF NOT EXISTS `asset` (
   KEY `asset_building_id` (`asset_building_id`),
   KEY `asset_floor_id` (`asset_floor_id`),
   KEY `asset_room_id` (`asset_room_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=43 ;
 
 --
 -- Daten für Tabelle `asset`
 --
 
 INSERT INTO `asset` (`asset_id`, `asset_type_id`, `asset_vendor_id`, `asset_model_id`, `asset_building_id`, `asset_floor_id`, `asset_room_id`, `asset_serial`, `asset_cis`, `asset_description`, `asset_locked`) VALUES
-(1, 14, 20, 23, 1, 1, 1, '5CG812560Z', '[]', '-', '0'),
-(3, 14, 20, 23, 1, 1, 1, '5CG8125KY7', '[]', '-', '0'),
-(4, 14, 20, 23, 1, 1, 1, '5CG8125KLP', '[]', '-', '0');
+(5, 18, 23, 28, 1, 1, 1, '100108108856', '[]', '-', '0'),
+(6, 18, 23, 28, 1, 1, 1, '180485018612', '[]', '-', '0'),
+(7, 18, 23, 28, 1, 1, 1, '180485015090', '[]', '-', '0'),
+(8, 18, 23, 28, 1, 1, 1, '180485018664', '[]', '-', '0'),
+(9, 18, 23, 28, 1, 1, 1, '180485018591', '[]', '-', '0'),
+(10, 18, 23, 28, 1, 1, 1, '180485018624', '[]', '-', '0'),
+(11, 18, 23, 28, 1, 1, 1, '180485019099', '[]', '-', '0'),
+(12, 18, 23, 28, 1, 1, 1, '180485050877', '[]', '-', '0'),
+(13, 18, 23, 28, 1, 1, 1, '180485018613', '[]', '-', '0'),
+(14, 18, 23, 28, 1, 1, 1, '180485018589', '[]', '-', '0'),
+(15, 18, 23, 28, 1, 1, 1, '180485018590', '[]', '-', '0'),
+(16, 18, 23, 28, 1, 1, 1, '180485020273', '[]', '-', '0'),
+(17, 18, 23, 28, 1, 1, 1, '180485018626', '[]', '-', '0'),
+(18, 18, 23, 28, 1, 1, 1, '180485019889', '[]', '-', '0'),
+(19, 18, 23, 28, 1, 1, 1, '180485018628', '[]', '-', '0'),
+(20, 18, 23, 28, 1, 1, 1, '180485018625', '[]', '-', '0'),
+(21, 18, 23, 28, 1, 1, 1, '180485019890', '[]', '-', '0'),
+(22, 18, 23, 28, 1, 1, 1, '180485015149', '[]', '-', '0'),
+(23, 18, 23, 28, 1, 1, 1, '180485005482', '[]', '-', '0'),
+(24, 19, 24, 29, 1, 1, 1, '37245933-4', '[]', '-', '1'),
+(25, 19, 24, 29, 1, 1, 1, '95154682-4', '[]', '-', '1'),
+(26, 19, 24, 29, 1, 1, 1, '43268947-2', '[]', '-', '1'),
+(27, 19, 24, 29, 1, 1, 1, '95154658-4', '[]', '-', '1'),
+(28, 19, 24, 29, 1, 1, 1, '82302374-7', '[]', '-', '1'),
+(29, 19, 24, 29, 1, 1, 1, '70787492-4', '[]', '-', '1'),
+(30, 19, 24, 29, 1, 1, 1, '82302376-2', '[]', '-', '1'),
+(31, 19, 24, 29, 1, 1, 1, '74381338-1', '[]', '-', '1'),
+(32, 19, 24, 29, 1, 1, 1, '95155014-9', '[]', '-', '1'),
+(33, 19, 24, 29, 1, 1, 1, '82302370-5', '[]', '-', '1'),
+(34, 19, 24, 29, 1, 1, 1, '82302366-3', '[]', '-', '1'),
+(35, 19, 24, 29, 1, 1, 1, '95154882-0', '[]', '-', '1'),
+(36, 19, 24, 29, 1, 1, 1, '43268951-4', '[]', '-', '1'),
+(37, 19, 24, 29, 1, 1, 1, '95154853-1', '[]', '-', '1'),
+(38, 19, 24, 29, 1, 1, 1, '95154979-4', '[]', '-', '1'),
+(39, 19, 24, 29, 1, 1, 1, '95154949-7', '[]', '-', '1'),
+(40, 19, 24, 29, 1, 1, 1, '95154800', '[]', '-', '1'),
+(41, 19, 24, 29, 1, 1, 1, '95154997-6', '[]', '-', '1'),
+(42, 19, 24, 29, 1, 1, 1, '70787490-8', '[]', '-', '1');
 
 -- --------------------------------------------------------
 
@@ -159,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `model` (
   `model_name` varchar(200) NOT NULL,
   PRIMARY KEY (`model_id`),
   UNIQUE KEY `model_name` (`model_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=30 ;
 
 --
 -- Daten für Tabelle `model`
@@ -172,6 +207,7 @@ INSERT INTO `model` (`model_id`, `model_name`) VALUES
 (25, 'EliteDisplay E231e'),
 (26, 'FZ-G1'),
 (28, 'Genucard 3'),
+(29, 'Multi SIM'),
 (23, 'Probook 640 G2');
 
 -- --------------------------------------------------------
@@ -300,7 +336,7 @@ CREATE TABLE IF NOT EXISTS `type` (
   `type_name` varchar(200) NOT NULL,
   PRIMARY KEY (`type_id`),
   UNIQUE KEY `type_name` (`type_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=19 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=20 ;
 
 --
 -- Daten für Tabelle `type`
@@ -310,6 +346,7 @@ INSERT INTO `type` (`type_id`, `type_name`) VALUES
 (14, 'Laptop'),
 (18, 'Mobile Security Device'),
 (16, 'Monitor'),
+(19, 'SIM Karte'),
 (17, 'Tablet'),
 (15, 'Webcam');
 
@@ -363,7 +400,7 @@ CREATE TABLE IF NOT EXISTS `vendor` (
   `vendor_name` varchar(200) NOT NULL,
   PRIMARY KEY (`vendor_id`),
   UNIQUE KEY `vendor_name` (`vendor_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 --
 -- Daten für Tabelle `vendor`
@@ -373,7 +410,8 @@ INSERT INTO `vendor` (`vendor_id`, `vendor_name`) VALUES
 (23, 'Genua'),
 (20, 'HP'),
 (21, 'Logitech'),
-(22, 'Panasonic');
+(22, 'Panasonic'),
+(24, 'Telekom');
 
 --
 -- Constraints der exportierten Tabellen

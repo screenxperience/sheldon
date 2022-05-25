@@ -106,15 +106,29 @@ function loadimportfile(importcategory) {
 		}
 		else
 		{
-			var filecontent = ['TypID;HerstellerID;ModellID;Seriennummer'+'\n'+type.value+';'+vendor.value+';'+model.value];
+			var filecontent = ['TYP;HERSTELLER;MODELL;SERIENNUMMER'+'\n'+type.value+';'+vendor.value+';'+model.value];
 
-			var filename = 'import_'+type.innerHTML+'_'+vendor.innerHTML+'_'+model.innerHTML+'.csv';
+			var filename = 'import.csv';
 
-			var file = new File(filecontent,filename,{type: "text/plain"});
+			var file = new File(filecontent,filename,{type: "application/vnd.ms-excel"});
 
-			var url = URL.createObjectURL(file);
+			var fileurl = URL.createObjectURL(file);
 
-			window.location = url;
+			var anchor = document.createElement('a');
+
+			anchor.setAttribute('href',fileurl);
+
+			anchor.setAttribute('download',filename);
+
+			anchor.style.position = 'absolute';
+
+			anchor.style.left = '-1000px';
+
+			document.body.appendChild(anchor);
+
+			anchor.click();
+
+			ch_location('import.php?category=asset','1');
 		}
 	}
 }
